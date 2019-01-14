@@ -1,0 +1,10 @@
+<p>
+  Hello hr-user!
+</p>
+<div class="dashboard col-sm-3">
+  <a routerLink="/createEmployee">Create a new employee </a><br>
+  <app-vacation-policies [isHrUser]="isHrUser"></app-vacation-policies>
+  <app-holidays [isHrUser]="isHrUser"
+                [holidays]="holidays"></app-holidays>
+</div>
+<mwl-demo-component [holidays]="holidays"></mwl-demo-component>

@@ -1,0 +1,43 @@
+<div class="bg-contact2">
+  <div class="container-contact2">
+    <div class="wrap-contact2">
+      <form class="contact2-form validate-form">
+        <span class="contact2-form-title">
+          Form for create
+        </span>
+
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <input class="input2" #employeeName type="text" name="name">
+          <span class="focus-input2" data-placeholder="NAME"></span>
+        </div>
+
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <input class="input2" #employeeSurname type="text" name="name">
+          <span class="focus-input2" data-placeholder="SURNAME"></span>
+        </div>
+
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <input class="input2" #employeePhone type="text" name="name">
+          <span class="focus-input2" data-placeholder="PHONE NUMBER"></span>
+        </div>
+
+        <div class="wrap-input2 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+          <input class="input2" #email type="text" name="email">
+          <span class="focus-input2" data-placeholder="EMAIL"></span>
+        </div>
+
+        <div class="container-contact2-form-btn">
+          <div class="wrap-contact2-form-btn">
+            <div class="contact2-form-bgbtn"></div>
+            <button type="submit" class="contact2-form-btn" (click)="CreateEmployee(employeeName.value, employeeSurname.value,employeePhone.value, email.value)">
+              Create Employee
+            </button>       
+            <!--<button type="submit" class="contact2-form-btn" (click)="GoBack()">
+              Back
+            </button>-->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

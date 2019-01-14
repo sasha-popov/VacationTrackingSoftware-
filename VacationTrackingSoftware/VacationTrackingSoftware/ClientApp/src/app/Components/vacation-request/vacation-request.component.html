@@ -1,0 +1,42 @@
+<p>View your vacation requests: </p>
+<ul class="heroes">
+  <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
+    <a>
+      <span>
+        on dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}},
+        with type:{{userVacationRequest.vacationType}}, have a status: {{userVacationRequest.status}}<br>
+      </span>
+    </a>
+    <span><button class="delete" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
+      x
+    </button></span>
+</li>
+</ul>
+<div>
+  <p>ADD NEW VACATION REQUEST:</p>
+  <div class="formHoliday">
+    <span class="col-sm-4">
+      Type:
+    </span>
+    <select [(ngModel)]="vacationType" required class="col-sm-8">
+      <option *ngFor="let vacationType of vacationTypes" class="textHolidays" value={{vacationType.name}}>
+        {{vacationType.name}}
+      </option>
+    </select>
+    <label>
+      <span class="col-sm-4">
+        Start date:
+      </span>
+      <input type="date" #startDate class="col-sm-8" />
+    </label>
+    <label>
+      <span class="col-sm-4">
+        End date:
+      </span>
+      <input type="date" #endDate class="col-sm-8" />
+    </label>
+    <button (click)="createVacationRequest(vacationType, startDate.value, endDate.value)">
+      add
+    </button>
+  </div>
+</div>

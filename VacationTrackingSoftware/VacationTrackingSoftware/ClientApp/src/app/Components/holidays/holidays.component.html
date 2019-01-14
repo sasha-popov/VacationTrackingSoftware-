@@ -1,0 +1,31 @@
+<p>View company holidays: </p>
+<ul class="heroes  col-sm-12" *ngIf="holidays" >
+  <li *ngFor="let holiday of holidays" class="textHolidays">
+    <a>
+      <span>{{holiday.date}}-{{holiday.description}}</span>
+    </a>
+    <button *ngIf="isHrUser" class="delete" title="delete holiday" (click)="deleteHoliday(holiday)">
+      x
+    </button>
+  </li>
+</ul>
+<div *ngIf="isHrUser">
+<p>ADD NEW HOLIDAY:</p>
+<div class="formHoliday">
+  <label>
+    <span class="col-sm-4">
+      Date:
+    </span>
+      <input type="date" #dateHoliday class="col-sm-8" />
+  </label>
+  <label>
+    <span class="col-sm-4" >
+    Name:
+      </span>
+    <input #nameHoliday class="col-sm-8" />
+  </label>
+  <button (click)="add(dateHoliday.value, nameHoliday.value)">
+    add
+  </button>
+</div>
+</div>

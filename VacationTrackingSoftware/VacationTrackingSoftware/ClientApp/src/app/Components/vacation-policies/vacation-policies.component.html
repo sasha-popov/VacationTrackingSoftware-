@@ -1,0 +1,52 @@
+<a (click)="clickShowVacationPolicies()">View vacation policies</a>
+<ul class="heroes col-sm-12" *ngIf="isVisible">
+  <li *ngFor="let vacationPolicy of vacationPolicies" class="textHolidays">
+    
+      <span>
+        To {{vacationPolicy.workingYear}} year, type: {{vacationPolicy.vacationType}}
+        count: {{vacationPolicy.count}}, payments: {{vacationPolicy.payments}}
+      </span>
+   
+    <button *ngIf="isHrUser" class="delete" title="delete holiday" (click)="deleteVacationPolicy(vacationPolicy)">
+      x
+    </button>
+  </li>
+</ul>
+<div *ngIf="isHrUser">
+  <p>ADD NEW VACATION POLICY:</p>
+  <div class="formVacation">
+    <label>
+      <span class="col-sm-4">
+        Years:
+      </span>
+      <input #years class="col-sm-8" />
+    </label>
+    <label>
+      <span class="col-sm-4">
+        Types:
+      </span>
+      <select [(ngModel)]="vacationType" required class="col-sm-8">
+        <option *ngFor="let vacationType of vacationTypes" class="textHolidays" value={{vacationType.name}}>
+          {{vacationType.name}}
+        </option>
+      </select>
+    </label>
+    <label>
+      <span class="col-sm-4">
+        Count:
+      </span>
+      <input #count class="col-sm-8" />
+    </label>
+    <label>
+      <span class="col-sm-4">
+        Payments:
+      </span>
+      <input #payments class="col-sm-8" />
+    </label>
+    <button (click)="sendVacationPolicy(years.value, vacationType, count.value, payments.value)">
+      add
+    </button>
+
+  </div>
+</div>
+
