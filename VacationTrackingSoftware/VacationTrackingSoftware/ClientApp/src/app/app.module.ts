@@ -55,7 +55,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'createEmployee', component: CreateEmployeeComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'calendar', component: CalendarComponent },
-      { path: '', component: AuthorizeComponent }
+      { path: 'login', component: AuthorizeComponent },
+      { path: '', redirectTo: '/login', pathMatch:'full' }
     ]), 
     BrowserAnimationsModule,
     CalendarModule.forRoot({

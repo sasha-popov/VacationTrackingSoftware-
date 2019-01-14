@@ -3617,11 +3617,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\opopov3\\Desktop\\SoftServe\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Users\\opopov3\\Desktop\\SoftServe\\DAL\\DAL.csproj",
+      "projectPath": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\DAL\\DAL.csproj",
       "packagesPath": "C:\\Users\\opopov3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\opopov3\\Desktop\\SoftServe\\DAL\\obj\\",
+      "outputPath": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -3640,8 +3640,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "C:\\Users\\opopov3\\Desktop\\SoftServe\\BLL\\BLL.csproj": {
-              "projectPath": "C:\\Users\\opopov3\\Desktop\\SoftServe\\BLL\\BLL.csproj"
+            "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\BLL\\BLL.csproj": {
+              "projectPath": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\BLL\\BLL.csproj"
             }
           }
         }

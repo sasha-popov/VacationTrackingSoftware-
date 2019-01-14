@@ -3097,11 +3097,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\opopov3\\Desktop\\SoftServe\\BLL\\BLL.csproj",
+      "projectUniqueName": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\BLL\\BLL.csproj",
       "projectName": "BLL",
-      "projectPath": "C:\\Users\\opopov3\\Desktop\\SoftServe\\BLL\\BLL.csproj",
+      "projectPath": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\BLL\\BLL.csproj",
       "packagesPath": "C:\\Users\\opopov3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\opopov3\\Desktop\\SoftServe\\BLL\\obj\\",
+      "outputPath": "C:\\Users\\opopov3\\Desktop\\VacationTrackingSoftware-\\VacationTrackingSoftware\\BLL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

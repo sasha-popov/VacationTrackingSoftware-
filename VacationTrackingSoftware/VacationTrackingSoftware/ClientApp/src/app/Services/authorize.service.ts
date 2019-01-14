@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { UserData } from '../InterfacesAndClasses/UserData';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpRequestService } from '.././Services/httpRequest.service'
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
 
 
 @Injectable()
 export class AuthorizeService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpRequestService) { }
 
   chekUser(User: UserData): void {
-    this.http.post('api/Account/Redirect', User, httpOptions).subscribe();
+    this.http.post('api/Account/Redirect', User).subscribe();
   }
 }

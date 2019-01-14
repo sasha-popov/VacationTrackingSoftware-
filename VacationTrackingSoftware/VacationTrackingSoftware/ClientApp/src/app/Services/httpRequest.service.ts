@@ -15,8 +15,8 @@ export class HttpRequestService {
     return this.http.get<T>(url);
   }
 
-  delete<T>(url: string): void {
-    this.http.delete<T>(url, httpOptions);
+  delete<T>(url: string): Observable<T> {
+    return this.http.delete<T>(url, httpOptions);
   }
 
   post<T>(url: string, item: T): Observable<T> {
