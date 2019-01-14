@@ -57,7 +57,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'calendar', component: CalendarComponent },
       { path: 'login', component: AuthorizeComponent },
       { path: '', redirectTo: '/login', pathMatch: 'full' },
-      { path: 'Home', component: HomeComponent}
+      { path: 'home', component: HomeComponent}
     ]), 
     BrowserAnimationsModule,
     CalendarModule.forRoot({

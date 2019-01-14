@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserData } from '../../InterfacesAndClasses/UserData'
 import { AuthorizeService } from '../../Services/authorize.service'
-//import { Router } from '@angular.router';
 import { Observable } from 'rxjs';
+import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
+import { Router, NavigationExtras } from "@angular/router";
 
 @Component({
   selector: 'app-authorize',
@@ -11,18 +12,30 @@ import { Observable } from 'rxjs';
 })
 export class AuthorizeComponent implements OnInit {
   user: UserData;
-  constructor(private authorizeService: AuthorizeService) { }
+  userRole: UserRole;
+  constructor(private authorizeService: AuthorizeService, private router: Router) { }
 
   ngOnInit() {
-    this.authorizeService.chekUser;
+    //this.authorizeService.chekUser;
   }
 
+
+
   Replace(userName: string, userPassword: string): void{
+    //it is optional
     this.user = {
       name: userName,
       password: userPassword
     }
-    this.authorizeService.chekUser(this.user);
+    this.authorizeService.chekUser(this.user).subscribe(userRole => this.userRole = userRole);
   }
-
+  Console(): void {
+    console.log(this.userRole);
+        let navigationExtras: NavigationExtras = {
+          queryParams: {
+            userRole: JSON.stringify(this.userRole)
+          }
+    };
+    this.router.navigate(["home"], navigationExtras);
+  }
 }

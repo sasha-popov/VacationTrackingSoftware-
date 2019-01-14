@@ -10,9 +10,9 @@ namespace DAL.Repositories
     {
         public UserRoleRepository(ProjectContext context) : base(context) { }
 
-        public UserRole GetWithRole(int id)
+        public UserRole GetWithAllObjects(int id)
         {
-            return RepositoryContext.UserRoles.Include(x => x.Role).Where(x=>x.Id==id).FirstOrDefault();
+            return RepositoryContext.UserRoles.Include(x => x.Role).Include(x=>x.User).Where(x=>x.User.Id==id).FirstOrDefault();
         }
     }
 }

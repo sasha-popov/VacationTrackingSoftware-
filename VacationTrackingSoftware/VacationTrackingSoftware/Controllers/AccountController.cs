@@ -31,12 +31,15 @@ namespace VacationTrackingSoftware.Controllers
         {
             _accountService.CreateEmployee(employee);
         }
-        [HttpPost("[action]")]
-        public ActionResult Redirect(UserDataDTO user) {
-            User currentUser = _userRepository.GetWithUserRoles(user.Name, user.Password);
-            UserRole userRole = _userRoleRepository.GetWithRole(currentUser.Id);
+        [HttpGet("[action]/{name}/{password}")]
+        public UserRole Redirect(string name, string password) {
+            //if have more one role, need to replace this code
+            User currentUser = _userRepository.GetWithUserRoles(name, password);
+            UserRole userRole = _userRoleRepository.GetWithAllObjects(currentUser.Id);
+            userRole.Role.UserRoles = null;
+            userRole.User.UserRoles = null;
             //it is not work
-            return new RedirectResult("/employee");
+            return userRole;
         }
     }
 }

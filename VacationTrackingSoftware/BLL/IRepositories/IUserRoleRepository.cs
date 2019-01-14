@@ -7,6 +7,6 @@ namespace BLL.IRepositories
 {
     public interface IUserRoleRepository : IGenericRepository<UserRole>
     {
-        UserRole GetWithRole(int id);
+        UserRole GetWithAllObjects(int id);
     }
 }

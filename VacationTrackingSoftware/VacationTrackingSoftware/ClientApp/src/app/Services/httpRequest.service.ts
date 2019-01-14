@@ -12,7 +12,7 @@ export class HttpRequestService {
   constructor(private http: HttpClient) { }
 
   get<T>(url: string): Observable<T> {
-    return this.http.get<T>(url);
+    return this.http.get<T>(url, httpOptions);
   }
 
   delete<T>(url: string): Observable<T> {

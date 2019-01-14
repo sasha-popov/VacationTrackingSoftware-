@@ -13,7 +13,6 @@ namespace BLL.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime DateRecruitment { get; set; }
-
         //public TeamUser TeamUserId { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
     }
