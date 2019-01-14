@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './Components/home/home.component';
 import { AuthorizeComponent } from './Components/authorize/authorize.component';
 import { HrUserComponent } from './Components/hr-user/hr-user.component';
 import { CreateEmployeeComponent } from './Components/create-employee/create-employee.component';
@@ -13,6 +12,7 @@ import { HolidaysComponent } from './Components/holidays/holidays.component';
 import { VacationPoliciesComponent } from './Components/vacation-policies/vacation-policies.component';
 import { VacationRequestComponent } from './Components/vacation-request/vacation-request.component';
 import { EmployeeComponent } from './Components/employee/employee.component';
+import { HomeComponent } from './Components/home/home.component'
 
 import { AuthorizeService } from './Services/authorize.service';
 import { EmployeeService } from './Services/employee.service';
@@ -56,7 +56,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'employee', component: EmployeeComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'login', component: AuthorizeComponent },
-      { path: '', redirectTo: '/login', pathMatch:'full' }
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'Home', component: HomeComponent}
     ]), 
     BrowserAnimationsModule,
     CalendarModule.forRoot({
