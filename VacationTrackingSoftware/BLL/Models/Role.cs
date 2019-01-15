@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Text;
 
-namespace BLL.Models
-{
-    public class Role
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+//namespace BLL.Models
+//{
+//    public class Role
+//    {
+//        public int Id { get; set; }
+//        public string Name { get; set; }
 
-        public ICollection<UserRole> UserRoles { get; set; }
+//        public ICollection<UserRole> UserRoles { get; set; }
 
-    }
-}
+//    }
+//}

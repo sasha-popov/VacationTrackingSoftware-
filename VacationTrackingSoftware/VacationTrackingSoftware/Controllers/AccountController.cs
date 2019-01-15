@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
 using BLL.Services;
+using DAL.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VacationTrackingSoftware.Controllers
@@ -15,31 +18,56 @@ namespace VacationTrackingSoftware.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private IUserRepository _userRepository;
-        private IUserRoleRepository _userRoleRepository;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
         private IAccountService _accountService;
+        private IWorkerRepository _workerRepository;
+        private ProjectContext _appDbContext;
 
-        public AccountController(IUserRepository userRepository, IUserRoleRepository userRoleRepository, IAccountService accountService)
+        public AccountController(
+            UserManager<AppUser> userManager, 
+            IMapper mapper,
+            IAccountService accountService,
+            IWorkerRepository workerRepository,
+            ProjectContext appDbContext
+            )
         {
-            _userRepository = userRepository;
-            _userRoleRepository = userRoleRepository;
+            _userManager = userManager;
+            _mapper = mapper;
             _accountService = accountService;
+            _workerRepository = workerRepository;
+            _appDbContext = appDbContext;
         }
 
+        // POST api/accounts
         [HttpPost("[action]")]
-        public void CreateEmployee(User employee)
+        public async Task<IActionResult> PostCreate(RegistrationViewModel model)
         {
-            _accountService.CreateEmployee(employee);
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            var userIdentity = _mapper.Map<AppUser>(model);
+
+            var result =await _userManager.CreateAsync(userIdentity, "password");
+
+            //if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+
+            await _appDbContext.AddAsync(new Worker {Name= userIdentity.FirstName});
+            await _appDbContext.SaveChangesAsync();
+
+            return new OkObjectResult("Account created");
         }
-        [HttpGet("[action]/{name}/{password}")]
-        public UserRole Redirect(string name, string password) {
-            //if have more one role, need to replace this code
-            User currentUser = _userRepository.GetWithUserRoles(name, password);
-            UserRole userRole = _userRoleRepository.GetWithAllObjects(currentUser.Id);
-            userRole.Role.UserRoles = null;
-            userRole.User.UserRoles = null;
-            //it is not work
-            return userRole;
-        }
+
+
+    }
+    public class RegistrationViewModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Location { get; set; }
     }
 }

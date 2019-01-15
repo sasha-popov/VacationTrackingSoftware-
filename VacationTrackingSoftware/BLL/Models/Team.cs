@@ -9,7 +9,7 @@ namespace BLL.Models
         public int Id { get; set; }
         public string Name { get; set; }
         //check if user have a status "Manager"
-        public User Manager { get; set; }
+        public Worker Manager { get; set; }
 
         public ICollection<Project> Projects { get; set; }
         //add only employees

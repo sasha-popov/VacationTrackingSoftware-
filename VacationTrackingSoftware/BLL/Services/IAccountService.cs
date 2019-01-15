@@ -7,6 +7,6 @@ namespace BLL.Services
 {
    public interface IAccountService
     {
-        void CreateEmployee(User user);
+        //void CreateEmployee(User user);
     }
 }

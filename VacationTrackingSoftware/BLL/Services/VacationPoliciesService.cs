@@ -13,16 +13,18 @@ namespace BLL.Services
     {
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
-        private IUserRepository _userRepository;
+        //private IUserRepository _userRepository;
         private IEmployeeService _employeeService;
         private readonly IMapper _mapper;
 
 
-        public VacationPoliciesService(IMapper mapper, IVacationTypeRepository vacationTypeRepository, IVacationPolicyRepository vacationPolicyRepository, IUserRepository userRepository, IEmployeeService employeeService)
+        public VacationPoliciesService(IMapper mapper, IVacationTypeRepository vacationTypeRepository, IVacationPolicyRepository vacationPolicyRepository, 
+            //IUserRepository userRepository,
+            IEmployeeService employeeService)
         {
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
-            _userRepository = userRepository;
+            //_userRepository = userRepository;
             _employeeService = employeeService;
             _mapper = mapper;
         }

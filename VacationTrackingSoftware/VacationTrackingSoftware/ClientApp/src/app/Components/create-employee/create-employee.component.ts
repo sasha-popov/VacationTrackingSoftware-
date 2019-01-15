@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Employee } from '../../InterfacesAndClasses/Employee'
+import { UserRegistration  } from '../../InterfacesAndClasses/UserRegistration'
 import { EmployeeService } from '../../Services/employee.service'
 import { Location } from '@angular/common';
 
@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent implements OnInit {
-  employee: Employee;
+  employee: UserRegistration ;
 
   constructor(private employeeService: EmployeeService, private location: Location) { }
 
@@ -18,12 +18,14 @@ export class CreateEmployeeComponent implements OnInit {
   }
   CreateEmployee(name: string, surname: string, phoneNumber: string, email: string): void {
     this.employee = {
-      name: name,
-      surname: surname,
-      phoneNumber: phoneNumber,
-      email: email
+      firstName: name,
+      lastName: surname,
+      //phoneNumber: phoneNumber,
+      email: email,
+      password: "12312",
+      location:"Ukraine"
     }
-    this.employeeService.createEmployee(this.employee);
+    this.employeeService.createEmployee(this.employee).subscribe();
     this.location.back();
   }
 

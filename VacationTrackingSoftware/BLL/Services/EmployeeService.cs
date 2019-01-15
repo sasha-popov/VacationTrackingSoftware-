@@ -12,25 +12,26 @@ namespace BLL.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private IUserRepository _userRepository;
-        private IRoleRepository _roleRepository;
-        private IUserRoleRepository _userRoleRepository;
+        //private IUserRepository _userRepository;
+        //private IRoleRepository _roleRepository;
+        //private IUserRoleRepository _userRoleRepository;
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
         private ICompanyHolidayRepository _companyHolidayRepository;
 
-        public EmployeeService(IUserRepository userRepository, 
-            IRoleRepository roleRepository, 
-            IUserRoleRepository userRoleRepository, 
+        public EmployeeService(
+            //IUserRepository userRepository, 
+            //IRoleRepository roleRepository, 
+            //IUserRoleRepository userRoleRepository, 
             IUserVacationRequestRepository userVacationRequestRepository,
             IVacationTypeRepository vacationTypeRepository,
             IVacationPolicyRepository vacationPolicyRepository,
             ICompanyHolidayRepository companyHolidayRepository)
         {
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
-            _userRoleRepository = userRoleRepository;
+            //_userRepository = userRepository;
+            //_roleRepository = roleRepository;
+            //_userRoleRepository = userRoleRepository;
             _userVacationRequestRepository = userVacationRequestRepository;
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
@@ -43,7 +44,7 @@ namespace BLL.Services
             Mapper.Reset();
             Mapper.Initialize(x => x.CreateMap<UserVacationRequestDTO, UserVacationRequest>()
             .ForMember("VacationType", opt => opt.MapFrom(c => _vacationTypeRepository.FindByCondition(y => y.Name == userVacationRequestDTO.VacationType).First()))
-            .ForMember("User", opt => opt.MapFrom(user => _userRepository.GetById(userVacationRequestDTO.User)))
+            //.ForMember("User", opt => opt.MapFrom(user => _userRepository.GetById(userVacationRequestDTO.User)))
             .ForMember("Status", opt => opt.MapFrom(statuses => 1))
             );
             var result = Mapper.Map<UserVacationRequestDTO, UserVacationRequest>(userVacationRequestDTO);

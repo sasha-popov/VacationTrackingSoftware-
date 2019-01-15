@@ -18,7 +18,7 @@ namespace VacationTrackingSoftware.Controllers
     {
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
-        private IUserRepository _userRepository;
+        //private IUserRepository _userRepository;
         private IEmployeeService _employeeService;
         private readonly IMapper _mapper;
         private IVacationPoliciesService _vacationPoliciesService;
@@ -27,13 +27,13 @@ namespace VacationTrackingSoftware.Controllers
         public VacationPoliciesController(IMapper mapper,
                                          IVacationTypeRepository vacationTypeRepository, 
                                          IVacationPolicyRepository vacationPolicyRepository, 
-                                         IUserRepository userRepository,
+                                         //IUserRepository userRepository,
                                          IEmployeeService employeeService,
                                          IVacationPoliciesService vacationPoliciesService)
         {
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
-            _userRepository = userRepository;
+            //_userRepository = userRepository;
             _employeeService = employeeService;
             _mapper = mapper;
             _vacationPoliciesService = vacationPoliciesService;

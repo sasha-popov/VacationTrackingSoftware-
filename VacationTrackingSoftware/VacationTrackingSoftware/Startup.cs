@@ -1,4 +1,3 @@
-using AngularASPNETCore2WebApiAuth.Data;
 using AutoMapper;
 using BLL.IRepositories;
 using BLL.Services;
@@ -28,20 +27,19 @@ namespace VacationTrackingSoftware
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ProjectContext>(option => 
+            //services.AddDbContext<ProjectContext>(option =>
             //    option.UseSqlServer(Configuration.GetConnectionString("Defaultconnection")));
             services.AddDbContext<ProjectContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-      b => b.MigrationsAssembly("AngularASPNETCore2WebApiAuth")));
+      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
+            //services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<ITeamUserRepository, TeamUserRepository>();
-            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            //services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IUserVacationRequestRepository, UserVacationRequestRepository>();
             services.AddScoped<IVacationPolicyRepository, VacationPolicyRepository>();
             services.AddScoped<IVacationTypeRepository, VacationTypeRepository>();
