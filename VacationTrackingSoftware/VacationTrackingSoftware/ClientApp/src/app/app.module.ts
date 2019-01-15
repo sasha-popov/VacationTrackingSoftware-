@@ -29,7 +29,7 @@ import { HttpRequestService } from './Services/httpRequest.service'
 import { FlatpickrModule } from 'angularx-flatpickr';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';        
-import { AuthguardGuardService } from './Services/authguard-guard.service';
+//import { AuthguardGuardService } from './Services/authguard-guard.service';
   
 
 @NgModule({

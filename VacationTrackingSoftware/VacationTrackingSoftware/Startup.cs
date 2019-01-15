@@ -1,3 +1,4 @@
+using AngularASPNETCore2WebApiAuth.Data;
 using AutoMapper;
 using BLL.IRepositories;
 using BLL.Services;
@@ -27,8 +28,11 @@ namespace VacationTrackingSoftware
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProjectContext>(option => 
-                option.UseSqlServer(Configuration.GetConnectionString("Defaultconnection")));
+            //services.AddDbContext<ProjectContext>(option => 
+            //    option.UseSqlServer(Configuration.GetConnectionString("Defaultconnection")));
+            services.AddDbContext<ProjectContext>(options =>
+      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+      b => b.MigrationsAssembly("AngularASPNETCore2WebApiAuth")));
 
 
             services.AddScoped<IUserRepository, UserRepository>();
@@ -55,7 +59,6 @@ namespace VacationTrackingSoftware
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
