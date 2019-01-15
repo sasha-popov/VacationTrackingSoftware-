@@ -52,15 +52,11 @@ namespace VacationTrackingSoftware.Controllers
 
             var result =await _userManager.CreateAsync(userIdentity, "password");
 
-            //if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
-
+            //if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState))
             await _appDbContext.AddAsync(new Worker {Name= userIdentity.FirstName});
             await _appDbContext.SaveChangesAsync();
-
             return new OkObjectResult("Account created");
         }
-
-
     }
     public class RegistrationViewModel
     {

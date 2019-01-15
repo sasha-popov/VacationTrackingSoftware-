@@ -9,7 +9,7 @@ export class EmployeeService {
 
   constructor(private http: HttpRequestService) { }
 
-  createEmployee(employee: UserRegistration): Observable<UserRegistration> {
+  createEmployee(employee: UserRegistration) {
     return this.http.post<UserRegistration>("api/Account/PostCreate", employee); 
   }
 }
