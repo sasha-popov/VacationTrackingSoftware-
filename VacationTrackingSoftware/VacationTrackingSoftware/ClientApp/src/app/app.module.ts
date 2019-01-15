@@ -29,6 +29,7 @@ import { HttpRequestService } from './Services/httpRequest.service'
 import { FlatpickrModule } from 'angularx-flatpickr';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';        
+import { AuthguardGuardService } from './Services/authguard-guard.service';
   
 
 @NgModule({
@@ -57,7 +58,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'calendar', component: CalendarComponent },
       { path: 'login', component: AuthorizeComponent },
       { path: '', redirectTo: '/login', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent}
+      {
+        path: 'home',
+        //canActivate: [AuthguardGuardService], 
+        component: HomeComponent
+      }
     ]), 
     BrowserAnimationsModule,
     CalendarModule.forRoot({

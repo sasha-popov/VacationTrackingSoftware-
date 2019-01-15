@@ -1,3 +1,3 @@
 <h1>Home page</h1>
-<app-employee *ngIf="userRole.role.name==Employee"></app-employee>
-<app-hr-user *ngIf="userRole.role.name==HrUser"></app-hr-user>
+<app-employee *ngIf="isEmployee"></app-employee>
+<app-hr-user *ngIf="isHrUser"></app-hr-user>

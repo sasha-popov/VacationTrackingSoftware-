@@ -7,10 +7,10 @@ import { Router, NavigationExtras } from "@angular/router";
 
 @Injectable()
 export class AuthorizeService {
-  constructor(private http: HttpRequestService, private router: Router) { }
+  constructor(private http: HttpRequestService, private router: Router) {
+  }
 
   chekUser(User: UserData): Observable<UserRole> {
     return this.http.get<UserRole>('api/Account/Redirect/' + User.name + '/' + User.password);
-    
   }
 }

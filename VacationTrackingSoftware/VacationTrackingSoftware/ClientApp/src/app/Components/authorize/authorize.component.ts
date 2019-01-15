@@ -4,6 +4,7 @@ import { AuthorizeService } from '../../Services/authorize.service'
 import { Observable } from 'rxjs';
 import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
 import { Router, NavigationExtras } from "@angular/router";
+import { HomeService } from '../../Services/home.service';
 
 @Component({
   selector: 'app-authorize',
@@ -13,10 +14,9 @@ import { Router, NavigationExtras } from "@angular/router";
 export class AuthorizeComponent implements OnInit {
   user: UserData;
   userRole: UserRole;
-  constructor(private authorizeService: AuthorizeService, private router: Router) { }
+  constructor(private authorizeService: AuthorizeService, private router: Router, private homeService: HomeService) { }
 
   ngOnInit() {
-    //this.authorizeService.chekUser;
   }
 
 
@@ -27,15 +27,12 @@ export class AuthorizeComponent implements OnInit {
       name: userName,
       password: userPassword
     }
-    this.authorizeService.chekUser(this.user).subscribe(userRole => this.userRole = userRole);
-  }
-  Console(): void {
-    console.log(this.userRole);
-        let navigationExtras: NavigationExtras = {
-          queryParams: {
-            userRole: JSON.stringify(this.userRole)
-          }
-    };
-    this.router.navigate(["home"], navigationExtras);
+    this.authorizeService.chekUser(this.user).subscribe(userRole => {
+      if (userRole.role.id == 1) this.homeService.logInHrUser(userRole.user.id);
+      if (userRole.role.id == 2) this.homeService.logInEmployee(userRole.user.id);
+      if (userRole.role.id == 3) this.homeService.logInHrUser(userRole.user.id);
+      if (userRole != null) this.router.navigate(["home"]);
+    });
+    
   }
 }

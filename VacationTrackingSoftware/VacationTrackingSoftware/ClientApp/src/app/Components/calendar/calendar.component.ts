@@ -4,7 +4,9 @@ import {
   ViewChild,
   OnInit,
   Input,
-  TemplateRef
+  OnChanges,
+  TemplateRef,
+  SimpleChanges
 } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { Subject, Observable } from 'rxjs';
@@ -45,14 +47,15 @@ const colors: any = {
   styleUrls: ['angular-calendar.css', 'flatpickr.css'],
   templateUrl: './calendar.component.html'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnChanges {
   @ViewChild('modalContent')
   modalContent: TemplateRef<any>;
-  @Input() holidays;
   @Input() userVacationRequests;
-  //holidays: Holiday[];
-  //vacationRequests: UserVacationRequest[];
-
+  @Input() holidays;
+  
+  ngOnChanges() {
+        this.createEvents();
+  }
   view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
@@ -83,39 +86,31 @@ export class CalendarComponent implements OnInit {
 
 
 
-  constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService) { }
-  ngOnInit() {
-    //this.showAll();
-    //this.showUserVacationRequest();
-
+  constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService) {
 
   }
+  ngOnInit() {
+  }
   events: CalendarEvent[]=[];
-  //showAll(): void {
-  //  this.holidayService.showAll()
-  //    .subscribe(holidays => this.holidays = holidays);
-  //  console.log("Show active");
-  //}
-  //showUserVacationRequest(): void {
-  //  this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.vacationRequests = requests);
-  //}
   createEvents(): void {
-    this.events = [];  
-    this.holidays.map((element) => {
-      return {
-        start: new Date(element.date),
-        end: new Date(endOfDay(element.date)),
-        title: element.description,
-        color: colors.yellow,
-        actions: this.actions,
-        allDay: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        },
-        draggable: true
-      }
-    }).forEach(item => this.events.push(item));
+    this.events = [];
+    if (this.holidays != undefined) {
+      this.holidays.map((element) => {
+        return {
+          start: new Date(element.date),
+          end: new Date(endOfDay(element.date)),
+          title: element.description,
+          color: colors.yellow,
+          actions: this.actions,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true
+          },
+          draggable: true
+        }
+      }).forEach(item => this.events.push(item));
+    }
     if (this.userVacationRequests != undefined) {
       this.userVacationRequests.map((element) => {
         var color: EventColor;
@@ -140,7 +135,7 @@ export class CalendarComponent implements OnInit {
             afterEnd: true
           },
           draggable: true
-        }
+        } 
       }).forEach(itemV => this.events.push(itemV));
       this.refresh.next();
     }
