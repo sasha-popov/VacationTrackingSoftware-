@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using BLL.IRepositories;
 using BLL.Models;
 using DAL.Data;
@@ -46,15 +47,22 @@ namespace DAL.Repositories
             RepositoryContext.Entry(entity).State = EntityState.Modified;
         }
 
+        public async Task SaveAsync()
+        {
+          await RepositoryContext.SaveChangesAsync();
+        }
+
         public void Save()
         {
-            this.RepositoryContext.SaveChanges();
+            RepositoryContext.SaveChanges();
         }
 
         public IEnumerable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
             return this.RepositoryContext.Set<TEntity>().Where(expression);
         }
+
+
     }
 
 }

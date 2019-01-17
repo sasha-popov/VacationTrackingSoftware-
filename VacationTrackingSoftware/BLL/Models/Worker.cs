@@ -7,7 +7,7 @@ namespace BLL.Models
     public class Worker
     {
         public int Id { get; set; }
-        public AppUser UserId { get; set; }
+        public AppUser User { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }

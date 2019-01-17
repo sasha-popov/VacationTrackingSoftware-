@@ -21,7 +21,7 @@ namespace BLL.Services
             if (checkDublicate.Count() == 0 && newHoliday.Date.DayOfWeek.ToString() != "Saturday" && newHoliday.Date.DayOfWeek.ToString() != "Sunday")
             {
                 _companyHolidayRepository.Create(newHoliday);
-                _companyHolidayRepository.Save();
+                _companyHolidayRepository.SaveAsync();
             }
     }
 }

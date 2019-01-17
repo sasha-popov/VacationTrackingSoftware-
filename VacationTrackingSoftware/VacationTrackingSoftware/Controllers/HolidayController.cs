@@ -7,6 +7,7 @@ using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,8 @@ namespace VacationTrackingSoftware.Controllers
             _companyHolidayRepository = companyHolidayRepository;
             _companyHolidayService = companyHolidayService;
         }
+        [Authorize]
+        //[Authorize(Policy = "ApiUser")]
         [HttpGet("[action]")]
         public List<CompanyHoliday> GetForCurrentYear()
         {
@@ -34,7 +37,7 @@ namespace VacationTrackingSoftware.Controllers
         public void DeleteHoliday(string name,DateTime date) {
             var currentHoliday = _companyHolidayRepository.FindByCondition(x=>x.Description==name && x.Date==date).First();
             _companyHolidayRepository.Delete(currentHoliday);
-            _companyHolidayRepository.Save();
+            _companyHolidayRepository.SaveAsync();
         }
 
         [HttpPost("[action]")]

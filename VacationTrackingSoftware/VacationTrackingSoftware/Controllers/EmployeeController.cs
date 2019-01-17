@@ -43,7 +43,7 @@ namespace VacationTrackingSoftware.Controllers
             //change this
             var currentVacationRequest = _userVacationRequestRepository.FindByCondition(x => x.StartDate==startDate && x.EndDate==endDate).First();
             _userVacationRequestRepository.Delete(currentVacationRequest);
-            _userVacationRequestRepository.Save();
+            _userVacationRequestRepository.SaveAsync();
         }
 
     }

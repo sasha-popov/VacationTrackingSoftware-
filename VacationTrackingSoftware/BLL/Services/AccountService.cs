@@ -39,7 +39,7 @@ namespace BLL.Services
         //    user.Password = GetRandomString(6);
         //    //_userRepository.Create(user);
         //    //addManagerRole(user);
-        //    //_userRepository.Save();
+        //    //_userRepository.SaveAsync();
         //}
 
         internal string GetRandomString(int stringLength)

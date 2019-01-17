@@ -33,7 +33,7 @@ namespace BLL.Services
             var result = _mapper.Map<VacationPolicy>(newVacationPolicy);
             result.VacationType = _vacationTypeRepository.FindByCondition(y => y.Name == newVacationPolicy.VacationType).First();
             _vacationPolicyRepository.Create(result);
-            _vacationPolicyRepository.Save();
+            _vacationPolicyRepository.SaveAsync();
         }
 
         public List<VacationPolicyDTO> GetVacationPolicies()
@@ -47,7 +47,7 @@ namespace BLL.Services
         {
             var currentVacationPolicy = _vacationPolicyRepository.FindForDelete(years, vacationType, payments);
             _vacationPolicyRepository.Delete(currentVacationPolicy);
-            _vacationPolicyRepository.Save();
+            _vacationPolicyRepository.SaveAsync();
         }
     }
 }

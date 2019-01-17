@@ -14,7 +14,7 @@ export class CreateEmployeeComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private location: Location) { }
 
   ngOnInit() {
-    this.employeeService.createEmployee
+    //this.employeeService.createEmployee
   }
   CreateEmployee(name: string, surname: string, phoneNumber: string, email: string): void {
     this.employee = {
@@ -26,7 +26,7 @@ export class CreateEmployeeComponent implements OnInit {
       location:"Ukraine"
     }
     this.employeeService.createEmployee(this.employee).subscribe();
-    this.location.back();
+    //this.location.back();
   }
 
   GoBack() {

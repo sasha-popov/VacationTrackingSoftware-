@@ -11,12 +11,13 @@ using DAL.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using VacationTrackingSoftware.Helpers;
 
 namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
@@ -39,24 +40,26 @@ namespace VacationTrackingSoftware.Controllers
             _appDbContext = appDbContext;
         }
 
-        // POST api/accounts
-        [HttpPost("[action]")]
-        public async Task<IActionResult> PostCreate(RegistrationViewModel model)
+        //POST api/accounts
+       [HttpPost("[action]")]
+        public async Task<IActionResult> PostCreate([FromBody]RegistrationViewModel model)
         {
             //if (!ModelState.IsValid)
             //{
             //    return BadRequest(ModelState);
             //}
 
-            var userIdentity = _mapper.Map<AppUser>(model);
+            AppUser userIdentity = new AppUser {FirstName=model.FirstName, LastName=model.LastName, Email=model.Email, UserName=model.FirstName+model.LastName};
 
-            var result =await _userManager.CreateAsync(userIdentity, "password");
+            var result = await _userManager.CreateAsync(userIdentity, "password");
 
-            //if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState))
-            await _appDbContext.AddAsync(new Worker {Name= userIdentity.FirstName});
-            await _appDbContext.SaveChangesAsync();
-            return new OkObjectResult("Account created");
+            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+
+            _workerRepository.Create(new Worker { Email = model.Email });
+            _workerRepository.Save();
+            return null;
         }
+
     }
     public class RegistrationViewModel
     {

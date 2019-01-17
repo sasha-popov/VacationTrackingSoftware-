@@ -1,38 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserData } from '../../InterfacesAndClasses/UserData'
 import { AuthorizeService } from '../../Services/authorize.service'
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
-import { Router, NavigationExtras } from "@angular/router";
+import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
 import { HomeService } from '../../Services/home.service';
+import { Credentials } from '../../InterfacesAndClasses/Credentials'
 
 @Component({
   selector: 'app-authorize',
   templateUrl: './authorize.component.html',
   styleUrls: ['./authorize.component.css']
 })
-export class AuthorizeComponent implements OnInit {
-  user: UserData;
-  userRole: UserRole;
-  constructor(private authorizeService: AuthorizeService, private router: Router, private homeService: HomeService) { }
+export class AuthorizeComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+  brandNew: boolean;
+  errors: string;
+  isRequesting: boolean;
+  submitted: boolean = false;
+  credentials: Credentials = { email: '', password: '' };
+  constructor(private authorizeService: AuthorizeService, private router: Router, private homeService: HomeService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    // subscribe to router event
+    this.subscription = this.activatedRoute.queryParams.subscribe(
+      (param: any) => {
+        this.brandNew = param['brandNew'];
+        this.credentials.email = param['email'];
+      });
+  }
+  ngOnDestroy() {
+    // prevent memory leak by unsubscribing
+    this.subscription.unsubscribe();
   }
 
-
-
-  Replace(userName: string, userPassword: string): void{
-    //it is optional
-    this.user = {
-      name: userName,
-      password: userPassword
+  login({ value, valid }: { value: Credentials, valid: boolean }) {
+    this.submitted = true;
+    this.isRequesting = true;
+    this.errors = '';
+    if (valid) {
+      this.authorizeService.login(value.email, value.password)
+        .finally(() => this.isRequesting = false)
+        .subscribe(
+          result => {
+            if (result) {
+              this.router.navigate(['/dashboard/home']);
+            }
+          },
+          error => this.errors = error);
     }
-    this.authorizeService.chekUser(this.user).subscribe(userRole => {
-      if (userRole.role.id == 1) this.homeService.logInHrUser(userRole.user.id);
-      if (userRole.role.id == 2) this.homeService.logInEmployee(userRole.user.id);
-      if (userRole.role.id == 3) this.homeService.logInHrUser(userRole.user.id);
-      if (userRole != null) this.router.navigate(["home"]);
-    });
-    
   }
+
 }

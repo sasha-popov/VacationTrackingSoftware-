@@ -57,7 +57,7 @@ namespace BLL.Services
                 {
                     result.Payment = daysForVacation.Payments;
                     _userVacationRequestRepository.Create(result);
-                    _userVacationRequestRepository.Save();
+                    _userVacationRequestRepository.SaveAsync();
                 }
             }
         }

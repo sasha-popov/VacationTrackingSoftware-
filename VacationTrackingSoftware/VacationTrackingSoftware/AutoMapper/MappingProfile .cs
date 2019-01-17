@@ -14,7 +14,7 @@ namespace VacationTrackingSoftware.AutoMapper
             CreateMap<VacationPolicy, VacationPolicyDTO>()
             .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name));
             CreateMap<VacationPolicyDTO, VacationPolicy>()
-             .ForMember("VacationType", opt => opt.MapFrom(c => new VacationType())); ;
+             .ForMember("VacationType", opt => opt.MapFrom(c => new VacationType())); 
         }       
     }
 }

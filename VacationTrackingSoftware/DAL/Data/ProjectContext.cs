@@ -19,5 +19,6 @@ namespace DAL.Data
         public DbSet<VacationPolicy> VacationPolicies { get; set; }
         public DbSet<VacationType> VacationTypes { get; set; }
         public DbSet<CompanyHoliday> CompanyHolidays { get; set; }
+        public DbSet<Worker> Workers { get; set; }
     }
 }
