@@ -3,27 +3,29 @@
   <div class="login-html">
     <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
     <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
-    <div class="login-form">
-      <div class="sign-in-htm">
-        <div class="group">
-          <label for="user" class="label">Username</label>
-          <input #userName id="user" type="text" class="input">
-        </div>
-        <div class="group">
-          <label for="pass" class="label">Password</label>
-          <input #userPassword id="pass" type="password" class="input" data-type="password">
-        </div>
-        <div class="group">
-          <!--<input type="submit" class="button" routerLink="/hrUser" value="Sign In">-->
-          <button (click)="Replace(userName.value, userPassword.value)">Sign In</button>
-          <!--<button (click)="Console()">ConsoleInfo</button>-->
-        </div>
-        <div class="hr"></div>
-        <div class="foot-lnk">
-          <div *ngIf="user">{{user|json}}</div>
-        </div>
+    <form #f="ngForm" novalidate (ngSubmit)="login(f)">
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" required name="email" class="form-control" placeholder="Email" [ngModel]="credentials.email" #email="ngModel" tmFocus validateEmail>
+        <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Please enter a valid email</small>
       </div>
-    </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" required name="password" placeholder="Password" ngModel>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid || isRequesting">Login</button>
+        <!--<app-spinner [isRunning]="isRequesting"></app-spinner>-->
+      </div>
+
+      <div *ngIf="errors" class="alert alert-danger" role="alert">
+        <strong>Oops!</strong> {{errors}}
+      </div>
+
+    </form>
+  </div>
   </div>
 </div>
-</div>
+

@@ -14,18 +14,18 @@ export class CreateEmployeeComponent implements OnInit {
   constructor(private employeeService: EmployeeService, private location: Location) { }
 
   ngOnInit() {
-    //this.employeeService.createEmployee
   }
-  CreateEmployee(name: string, surname: string, phoneNumber: string, email: string): void {
+  CreateEmployee(name: string, surname: string, phoneNumber: string, email: string, password: string, role: string): void {
     this.employee = {
       firstName: name,
       lastName: surname,
-      //phoneNumber: phoneNumber,
+      phoneNumber: phoneNumber,
       email: email,
-      password: "12312",
-      location:"Ukraine"
+      password: password,
+      role: role
+      //location: "Ukraine",
     }
-    this.employeeService.createEmployee(this.employee).subscribe();
+    this.employeeService.createEmployee(this.employee).subscribe();   
     //this.location.back();
   }
 

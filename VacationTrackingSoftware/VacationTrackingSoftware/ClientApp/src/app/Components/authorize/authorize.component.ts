@@ -12,7 +12,7 @@ import { Credentials } from '../../InterfacesAndClasses/Credentials'
   templateUrl: './authorize.component.html',
   styleUrls: ['./authorize.component.css']
 })
-export class AuthorizeComponent implements OnInit, OnDestroy {
+export class AuthorizeComponent implements OnInit, OnDestroy { 
   private subscription: Subscription;
   brandNew: boolean;
   errors: string;
@@ -26,7 +26,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.subscription = this.activatedRoute.queryParams.subscribe(
       (param: any) => {
         this.brandNew = param['brandNew'];
-        this.credentials.email = param['email'];
+        this.credentials.email = param['email']; 
       });
   }
   ngOnDestroy() {
@@ -40,11 +40,11 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.errors = '';
     if (valid) {
       this.authorizeService.login(value.email, value.password)
-        .finally(() => this.isRequesting = false)
+        //.finally(() => this.isRequesting = false)
         .subscribe(
           result => {
             if (result) {
-              this.router.navigate(['/dashboard/home']);
+              this.router.navigate(['/home']);
             }
           },
           error => this.errors = error);

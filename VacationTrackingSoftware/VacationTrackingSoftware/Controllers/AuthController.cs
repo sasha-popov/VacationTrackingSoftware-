@@ -22,7 +22,8 @@ namespace VacationTrackingSoftware.Controllers
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
 
-        public AuthController(UserManager<AppUser> userManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AuthController(UserManager<AppUser> userManager
+            ,IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
         {
             _userManager = userManager;
             _jwtFactory = jwtFactory;
@@ -43,8 +44,14 @@ namespace VacationTrackingSoftware.Controllers
             {
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
             }
+            var user = _userManager.FindByNameAsync(credentials.UserName).Result;
 
-            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented });
+            //if to be more roles for one user, than need change this code
+            IList<string> currentRoles = await _userManager.GetRolesAsync(user);
+            string currentRole = currentRoles.First();
+            //int indexRole=
+
+            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, currentRole);
             return new OkObjectResult(jwt);
         }
 
@@ -58,13 +65,13 @@ namespace VacationTrackingSoftware.Controllers
 
             if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
 
-            // check the credentials
+            //check the credentials
             if (await _userManager.CheckPasswordAsync(userToVerify, password))
             {
                 return await Task.FromResult(_jwtFactory.GenerateClaimsIdentity(userName, userToVerify.Id));
             }
 
-            // Credentials are invalid, or account doesn't exist
+            //Credentials are invalid, or account doesn't exist
             return await Task.FromResult<ClaimsIdentity>(null);
         }
     }

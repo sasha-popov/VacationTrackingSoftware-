@@ -26,12 +26,31 @@
           <span class="focus-input2" data-placeholder="EMAIL"></span>
         </div>
 
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <input class="input2" #password type="text" name="name">
+          <span class="focus-input2" data-placeholder="PASSWORD"></span>
+        </div>
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <span class="col-sm-4">
+            Type:
+          </span>
+          <span>
+            <select #roleType required class="col-sm-8">
+              <option class="textHolidays" value="Employee">
+                Employee
+              </option>
+              <option class="textHolidays" value="Manager">
+                Manager
+              </option>
+            </select>
+          </span>
+        </div>
         <div class="container-contact2-form-btn">
           <div class="wrap-contact2-form-btn">
             <div class="contact2-form-bgbtn"></div>
-            <button type="submit" class="contact2-form-btn" (click)="CreateEmployee(employeeName.value, employeeSurname.value,employeePhone.value, email.value)">
-              Create Employee
-            </button>       
+            <button type="submit" class="contact2-form-btn" (click)="CreateEmployee(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value)">
+              Create
+            </button>
             <!--<button type="submit" class="contact2-form-btn" (click)="GoBack()">
               Back
             </button>-->

@@ -18,18 +18,21 @@ import { AuthorizeService } from './Services/authorize.service';
 import { EmployeeService } from './Services/employee.service';
 import { HolidayService } from './Services/holiday.service';
 import { VacationPoliciesService } from './Services/vacation-policies.service';
-import { VacationRequestService } from './Services/vacation-request.service';  
+import { VacationRequestService } from './Services/vacation-request.service';
+import { BaseService } from './Services/BaseService';
+import { HomeService } from './Services/home.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from './Components/calendar/calendar.component';
-import { HttpRequestService } from './Services/httpRequest.service'
+import { HttpRequestService } from './Services/httpRequest.service';
+import { ConfigService } from './Services/ConfigService';
 
 import { FlatpickrModule } from 'angularx-flatpickr';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';        
-//import { AuthguardGuardService } from './Services/authguard-guard.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthGuard } from './Services/auth-guard';
   
 
 @NgModule({
@@ -56,11 +59,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'createEmployee', component: CreateEmployeeComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'calendar', component: CalendarComponent },
-      { path: 'login', component: AuthorizeComponent },
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: 'login', component: AuthorizeComponent }, 
+      { path: '', redirectTo: '/login', pathMatch: 'full' },         
       {
         path: 'home',
-        //canActivate: [AuthguardGuardService], 
+        canActivate: [AuthGuard],  
         component: HomeComponent
       }
     ]), 
@@ -75,7 +78,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HolidayService,
     VacationPoliciesService,
     VacationRequestService,
-    HttpRequestService
+    HttpRequestService,
+    HomeService,
+    ConfigService,
+    AuthGuard
   ],
 
   bootstrap: [AppComponent],

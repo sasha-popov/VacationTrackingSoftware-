@@ -15,7 +15,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HolidayController : ControllerBase
+    public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
         private ICompanyHolidayService _companyHolidayService;

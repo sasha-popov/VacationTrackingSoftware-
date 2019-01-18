@@ -11,7 +11,7 @@ namespace VacationTrackingSoftware.Helpers
         {
             public static class JwtClaimIdentifiers
             {
-                public const string Rol = "rol", Id = "id";
+                public const string Rol = "rol", Id = "id", RolesUser= "rolesUser";
             }
 
             public static class JwtClaims

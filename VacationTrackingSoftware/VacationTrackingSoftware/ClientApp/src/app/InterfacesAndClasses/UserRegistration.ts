@@ -5,5 +5,7 @@ import { validate, Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max, I
   password: string;
   firstName: string;
   lastName: string;
-  location: string;
+   //location: string;
+   phoneNumber: string;
+   role: string;
 }

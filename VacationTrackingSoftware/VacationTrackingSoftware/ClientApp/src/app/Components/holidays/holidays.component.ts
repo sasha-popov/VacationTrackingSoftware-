@@ -11,11 +11,11 @@ export class HolidaysComponent implements OnChanges {
   @Input() isHrUser;
  // holidays: Holiday[];
   holiday: Holiday;
-  @Input() holidays; 
+  @Input() holidays;
   constructor(private holidayService: HolidayService) { }
 
   ngOnChanges() {
-    //this.showAll();
+    //this.showAll(); 
   }
 
   //showAll(): void {

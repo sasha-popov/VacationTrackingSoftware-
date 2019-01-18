@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using VacationTrackingSoftware.AutoMapper;
 using VacationTrackingSoftware.Token;
 using VacationTrackingSoftware.Helpers;
+using VacationTrackingSoftware.Auth;
 
 namespace VacationTrackingSoftware
 {
@@ -57,6 +58,8 @@ namespace VacationTrackingSoftware
             services.AddScoped<IVacationPoliciesService, VacationPoliciesService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICompanyHolidayService, CompanyHolidayService>();
+
+            services.AddSingleton<IJwtFactory, JwtFactory>();
             // add identity
             var builder = services.AddIdentityCore<AppUser>(o =>
             {
@@ -71,11 +74,8 @@ namespace VacationTrackingSoftware
             builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-
-
             // Get options from app settings
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
             // Configure JwtIssuerOptions
             services.Configure<JwtIssuerOptions>(options =>
             {
@@ -149,7 +149,7 @@ namespace VacationTrackingSoftware
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

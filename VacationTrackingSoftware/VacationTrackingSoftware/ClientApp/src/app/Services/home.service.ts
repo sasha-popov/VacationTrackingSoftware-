@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 })
 export class HomeService {
    isManager: boolean;
-   isHrUser:boolean;
+   isHrUser:boolean; 
    isEmployee:boolean;
   //in future need to change
   idUser: number;
-  constructor() {
+  constructor() { 
   }
 
   logInManager(id: number): void {

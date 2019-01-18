@@ -33,13 +33,13 @@ export class VacationRequestComponent implements OnChanges, OnInit {
     this.userVacationRequest = {
       id: 0,
       startDate: startDate,
-      endDate: endDate,
+      endDate: endDate,  
       user: 8,
       vacationType: vacationType,    
       status:"new"
     } 
     this.vacationRequestService.createVacationRequest(this.userVacationRequest).subscribe(vr => this.userVacationRequests.push(this.userVacationRequest));  
-  }
+  } 
 
   //showUserVacationRequest(): void {
   //  this.vacationRequestService.showUserVacationRequest() 

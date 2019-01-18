@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO;
@@ -48,16 +50,44 @@ namespace VacationTrackingSoftware.Controllers
             //{
             //    return BadRequest(ModelState);
             //}
-
+            var LISTROLE = _appDbContext.Roles.ToList();
             AppUser userIdentity = new AppUser {FirstName=model.FirstName, LastName=model.LastName, Email=model.Email, UserName=model.FirstName+model.LastName};
 
-            var result = await _userManager.CreateAsync(userIdentity, "password");
-
+            var result = await _userManager.CreateAsync(userIdentity, model.Password);
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
-
-            _workerRepository.Create(new Worker { Email = model.Email });
+            else {
+                await _userManager.AddToRoleAsync(userIdentity, model.Role);
+            }   
+            _workerRepository.Create(new Worker { DateRecruitment = DateTime.Now , User= userIdentity });
             _workerRepository.Save();
+            //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
             return null;
+        }
+
+        private void SendDataToWorker(string email, string nickName, string password) {
+            var fromAddress = new MailAddress("sashapopov24051996@gmail.com", "Company");
+            var toAddress = new MailAddress(email, "Worker");
+            string fromPassword = "Control1996";
+            string subject = "Login and password";
+            string body = "Your nickName:"+nickName+", and your password:"+password;
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
         }
 
     }
@@ -67,6 +97,9 @@ namespace VacationTrackingSoftware.Controllers
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Location { get; set; }
+        //public string Location { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public string Role { get; set; }
     }
 }

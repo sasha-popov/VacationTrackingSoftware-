@@ -1,3 +1,7 @@
 <h1>Home page</h1>
-<app-employee *ngIf="isEmployee"></app-employee>
-<app-hr-user *ngIf="isHrUser"></app-hr-user>
+<button type="submit" class="contact2-form-btn" (click)="logOut()">
+  Log out
+</button>
+<app-employee *ngIf="myRoles.Employee===currentRole"></app-employee>
+<app-hr-user></app-hr-user>
+<router-outlet></router-outlet>
