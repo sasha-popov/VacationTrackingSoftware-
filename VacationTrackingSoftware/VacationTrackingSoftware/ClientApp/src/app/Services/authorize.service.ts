@@ -41,7 +41,8 @@ export class AuthorizeService extends BaseService {
         console.log(res);
         localStorage.setItem('auth_token', res["auth_token"]); 
         localStorage.setItem('rolesUser', res["rolesUser"]);
-        localStorage.setItem('id', res["id"]);   
+        localStorage.setItem('id', res["id"]);
+        localStorage.setItem("name", res["name"]);
           this.loggedIn = true;
           this._authNavStatusSource.next(true);
           return true;  

@@ -2,7 +2,6 @@
 .heroes {
   list-style-type: none;
   padding: 0;
-  
 }
 
   .heroes li {
@@ -11,7 +10,7 @@
     background-color: #EEE;
     margin: .5em;
     padding: .3em 0;
-    height: 1.6em;
+    height: 3.1em;
     border-radius: 4px;
     font-size: 73%;
     width: 88%;
@@ -53,7 +52,6 @@
   }
 
 button {
-  background-color: #eee;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -62,21 +60,25 @@ button {
   font-family: Arial;
 }
 
-  button:hover {
-    background-color: #cfd8dc;
-  }
 
   button.delete {
-    position: relative;
-    left: 87%;
+    /*position: relative;*/
+    /*left: 92%;*/
     top: -19px;
-    background-color: gray !important;
     color: white;
+    height: 18px;
     height: 18px;
     padding-top: 2px;
   }
 
-.formHoliday {
-font-size:8pt;
+.formVacation {
+  font-size: 8pt;
 }
 
+.pos {
+  float: right;
+}
+
+.main {
+  margin-top: 5pt;
+}

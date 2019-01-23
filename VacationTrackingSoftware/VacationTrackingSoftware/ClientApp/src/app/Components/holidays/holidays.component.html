@@ -1,11 +1,11 @@
-<a (click)="clickShowHolidays()">View company holidays: </a>
+<!--<a (click)="clickShowHolidays()">View company holidays: </a>-->
+<button type="button" (click)="clickShowHolidays()" class="btn btn-primary btn-lg btn-block main">View company holidays:</button>
 <div *ngIf="isVisible">
 <ul class="heroes  col-sm-12" *ngIf="holidays" >
   <li *ngFor="let holiday of holidays" class="textHolidays">
-    <a>
-      <span>{{holiday.date|date}}-{{holiday.description}}</span>
-    </a>
-    <button *ngIf="isHrUser" class="delete" title="delete holiday" (click)="deleteHoliday(holiday)">
+      <span class="col-sm-10">Date:{{holiday.date|date}}
+    Name:{{holiday.description}}</span>
+    <button *ngIf="isHrUser" title="delete holiday" (click)="deleteHoliday(holiday)" class="btn btn-secondary btn-sm pos">
       x
     </button>
   </li>
@@ -25,8 +25,8 @@
     Name:
       </span>
     <input #nameHoliday class="col-sm-8" />
-  </label>
-  <button (click)="add(dateHoliday.value, nameHoliday.value)">
+  </label><br>
+  <button (click)="add(dateHoliday.value, nameHoliday.value)" class="btn btn-primary btn-sm">
     add
   </button>
 </div>

@@ -1,7 +1,4 @@
-<h1>Home page</h1>
-<button type="submit" class="contact2-form-btn" (click)="logOut()">
-  Log out
-</button>
+<app-app-header title='Momentz-4-ever'></app-app-header>
 <app-employee *ngIf="allRoles.Employee===currentRole"></app-employee>
 <app-hr-user *ngIf="allRoles.HrUser===currentRole"></app-hr-user>
 <app-manager *ngIf="allRoles.Manager===currentRole"></app-manager>

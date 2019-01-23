@@ -1,8 +1,9 @@
-<p>
-  Hello hr-user!
-</p>
+
 <div class="dashboard col-sm-3">
-  <a routerLink="/createUser">Create a new Worker</a><br>
+  <button type="button" class="btn btn-primary btn-lg btn-block main" routerLink="/createUser">
+    Create a new Worker
+  </button>
+  <!--<a routerLink="/createUser">Create a new Worker</a><br>-->
   <app-vacation-policies [isHrUser]="isHrUser"></app-vacation-policies>
   <app-holidays [isHrUser]="isHrUser"
                 [holidays]="holidays"></app-holidays>

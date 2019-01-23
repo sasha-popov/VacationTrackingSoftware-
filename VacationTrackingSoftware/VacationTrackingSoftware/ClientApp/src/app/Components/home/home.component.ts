@@ -10,7 +10,7 @@ import { Roles } from '../../Roles';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit{
-  public constructor(private route: ActivatedRoute, private homeService: HomeService, private router: Router, private authorizeService: AuthorizeService) {
+  public constructor(private route: ActivatedRoute, private homeService: HomeService) { 
   }
   currentRole: any;
   allRoles;
@@ -18,10 +18,6 @@ export class HomeComponent implements OnInit{
     this.allRoles = Roles;
     Roles.Admin;
     this.currentRole = parseInt(localStorage.getItem('rolesUser'),10);
-  }
-  logOut() {
-    this.authorizeService.logout();   
-    this.router.navigate(['/']);
   }
 
 }

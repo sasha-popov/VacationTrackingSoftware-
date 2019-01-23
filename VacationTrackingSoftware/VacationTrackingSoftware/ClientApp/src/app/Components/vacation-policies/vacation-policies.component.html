@@ -1,13 +1,12 @@
-<a (click)="clickShowVacationPolicies()">View vacation policies</a><br>
+<!--<a (click)="clickShowVacationPolicies()">View vacation policies</a><br>-->
+<button type="button" (click)="clickShowVacationPolicies()" class="btn btn-primary btn-lg btn-block main">View vacation policies</button>
 <ul class="heroes col-sm-12" *ngIf="isVisible">
-  <li *ngFor="let vacationPolicy of vacationPolicies" class="textHolidays">
-    
-      <span>
-        To {{vacationPolicy.workingYear}} year, type: {{vacationPolicy.vacationType}}
-        count: {{vacationPolicy.count}}, payments: {{vacationPolicy.payments}}
-      </span>
-   
-    <button *ngIf="isHrUser" class="delete" title="delete holiday" (click)="deleteVacationPolicy(vacationPolicy)">
+  <li *ngFor="let vacationPolicy of vacationPolicies">
+    <span class="col-sm-10">
+      To {{vacationPolicy.workingYear}} year, type: {{vacationPolicy.vacationType}}
+      count: {{vacationPolicy.count}}, payments: {{vacationPolicy.payments}}
+    </span>
+    <button *ngIf="isHrUser" title="delete holiday" (click)="deleteVacationPolicy(vacationPolicy)" class="btn btn-secondary btn-sm pos">
       x
     </button>
   </li>
@@ -35,15 +34,15 @@
       <span class="col-sm-4">
         Count:
       </span>
-      <input #count class="col-sm-8" />
+      <input #count class="col-sm-8 " />
     </label>
     <label>
       <span class="col-sm-4">
         Payments:
       </span>
       <input #payments class="col-sm-8" />
-    </label>
-    <button (click)="sendVacationPolicy(years.value, vacationType, count.value, payments.value)">
+    </label><br>
+    <button (click)="sendVacationPolicy(years.value, vacationType, count.value, payments.value)" class="btn btn-primary btn-sm">
       add
     </button>
 

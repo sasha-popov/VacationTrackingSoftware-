@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { Team } from 'src/app/InterfacesAndClasses/Team';
 import { TeamService } from '../../Services/team.service'
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -16,7 +17,7 @@ export class CreateEmployeeComponent implements OnInit {
   teams: Team[];
 
 
-  constructor(private employeeService: EmployeeService, private location: Location, private teamService: TeamService) { }
+  constructor(private employeeService: EmployeeService, private location: Location, private teamService: TeamService, private router: Router) { }
 
   ngOnInit() {
     this.getAllTeams();
@@ -32,8 +33,8 @@ export class CreateEmployeeComponent implements OnInit {
       role: role,
       teamId: teamId
     }
-    this.employeeService.createEmployee(this.employee).subscribe(result =>
-      this.location.back());    
+    this.employeeService.createEmployee(this.employee).subscribe();
+      this.router.navigate(['/']);    
   }
   getAllTeams() {
     this.teamService.getAllTeams().subscribe(result => this.teams = result); 

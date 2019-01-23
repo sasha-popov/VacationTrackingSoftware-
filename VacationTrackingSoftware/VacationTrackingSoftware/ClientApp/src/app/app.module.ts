@@ -35,7 +35,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './Services/auth-guard';
-import { ManagerComponent } from './Components/manager/manager.component'; 
+import { ManagerComponent } from './Components/manager/manager.component';
+import { AppHeaderComponent } from './Components/app-header/app-header.component'; 
   
 
 @NgModule({
@@ -49,7 +50,7 @@ import { ManagerComponent } from './Components/manager/manager.component';
     VacationPoliciesComponent,
     EmployeeComponent,
     VacationRequestComponent, 
-    CalendarComponent, ManagerComponent  
+    CalendarComponent, ManagerComponent, AppHeaderComponent  
   ],
   imports: [ 
     NgbModule,

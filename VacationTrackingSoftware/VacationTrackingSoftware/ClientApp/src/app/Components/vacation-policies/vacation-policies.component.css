@@ -52,7 +52,6 @@
   }
 
 button {
-  background-color: #eee;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -61,20 +60,23 @@ button {
   font-family: Arial;
 }
 
-  button:hover {
-    background-color: #cfd8dc;
-  }
 
   button.delete {
     /*position: relative;*/
     /*left: 92%;*/
     top: -19px;
-    background-color: gray !important;
     color: white;
+    height: 18px;
     height: 18px;
     padding-top: 2px;
   }
 
 .formVacation {
   font-size: 8pt;
+}
+.pos {
+  float:right;
+}
+.main {
+  margin-top: 5pt;
 }
