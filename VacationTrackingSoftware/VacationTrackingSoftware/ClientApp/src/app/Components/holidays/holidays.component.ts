@@ -2,6 +2,7 @@ import { Component, OnChanges, Input } from '@angular/core';
 import { HolidayService } from '../../Services/holiday.service';
 import { Holiday } from '../../InterfacesAndClasses/Holiday'
 import { map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 //import { CalendarComponent } from '../../Components/calendar'
 
 @Component({
@@ -14,12 +15,21 @@ export class HolidaysComponent implements OnChanges {
  // holidays: Holiday[];
   holiday: Holiday;
   @Input() holidays;
+  isVisible:string
   date: string;
   constructor(private holidayService: HolidayService) { }
 
   ngOnChanges() {
-    this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
-    //this.showAll(); 
+    //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
+    //this.showAll();  
+  }
+  clickShowHolidays(): void {
+    if (this.isVisible == "yes") {
+      this.isVisible = "";
+    }
+    else {
+      this.isVisible = "yes";
+    }
   }
 
   deleteHoliday(holiday: Holiday): void {

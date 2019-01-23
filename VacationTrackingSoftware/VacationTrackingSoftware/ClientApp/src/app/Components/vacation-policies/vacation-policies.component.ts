@@ -19,7 +19,7 @@ export class VacationPoliciesComponent implements OnInit {
   vacationTypes: VacationType[];
   date: string;
 
-  clickShowVacationPolicies(): void { 
+  clickShowVacationPolicies(): void {  
     if (this.isVisible == "yes") {
       this.isVisible = "";
     }

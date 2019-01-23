@@ -1,4 +1,5 @@
-<p>View company holidays: </p>
+<a (click)="clickShowHolidays()">View company holidays: </a>
+<div *ngIf="isVisible">
 <ul class="heroes  col-sm-12" *ngIf="holidays" >
   <li *ngFor="let holiday of holidays" class="textHolidays">
     <a>
@@ -9,6 +10,7 @@
     </button>
   </li>
 </ul>
+  </div>
 <div *ngIf="isHrUser">
 <p>ADD NEW HOLIDAY:</p>
 <div class="formHoliday">

@@ -12,19 +12,22 @@ import { Console } from '@angular/core/src/console';
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',
   styleUrls: ['./vacation-request.component.css'],
-  providers: [DatePipe]
 })
-export class VacationRequestComponent implements OnInit {
+export class VacationRequestComponent implements OnInit, OnChanges {
   userVacationRequest: UserVacationRequest;
   //userVacationRequests: UserVacationRequest[];
   @Input() userVacationRequests;
   date: string;
   currentRole: any;
   allRoles;
-  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService, private datePipe: DatePipe) { }
+  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService) { }
   vacationTypes: VacationType[];
+  ngOnChanges() {
+    //this.showUserVacationRequest();
+
+  }
   ngOnInit() {
-    this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
+    //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
     this.getVacationTypes();
     this.allRoles = Roles;
