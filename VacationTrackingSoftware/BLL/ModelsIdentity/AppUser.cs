@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BLL.Models;
+using Microsoft.AspNetCore.Identity;
 
 public class AppUser : IdentityUser
 {
@@ -7,4 +8,5 @@ public class AppUser : IdentityUser
     public string LastName { get; set; }
     public long? FacebookId { get; set; }
     public string PictureUrl { get; set; }
+    //public Worker Worker { get; set; }
 }

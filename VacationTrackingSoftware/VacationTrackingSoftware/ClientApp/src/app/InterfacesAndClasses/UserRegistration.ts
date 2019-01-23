@@ -8,4 +8,5 @@ import { validate, Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max, I
    //location: string;
    phoneNumber: string;
    role: string;
+   teamId: number;
 }

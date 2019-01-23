@@ -2,6 +2,7 @@
 <button type="submit" class="contact2-form-btn" (click)="logOut()">
   Log out
 </button>
-<app-employee *ngIf="myRoles.Employee===currentRole"></app-employee>
-<app-hr-user></app-hr-user>
+<app-employee *ngIf="allRoles.Employee===currentRole"></app-employee>
+<app-hr-user *ngIf="allRoles.HrUser===currentRole"></app-hr-user>
+<app-manager *ngIf="allRoles.Manager===currentRole"></app-manager>
 <router-outlet></router-outlet>

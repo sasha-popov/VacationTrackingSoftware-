@@ -17,5 +17,10 @@ namespace DAL.Repositories
         {
             await RepositoryContext.AddAsync(worker);
         }
+
+        public Worker GetWithUser(string userId)
+        {
+            return RepositoryContext.Workers.Include(x => x.User).Where(x => x.User.Id == userId).FirstOrDefault();
+        }
     }
 }

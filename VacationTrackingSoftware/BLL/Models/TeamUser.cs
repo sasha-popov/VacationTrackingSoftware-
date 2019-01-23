@@ -8,6 +8,6 @@ namespace BLL.Models
     {
         public int Id { get; set; }
         public Team Team { get; set; }
-        public Worker User { get; set; }
+        public AppUser User { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,16 +37,17 @@ namespace VacationTrackingSoftware.Controllers
         public void DeleteHoliday(string name,DateTime date) {
             var currentHoliday = _companyHolidayRepository.FindByCondition(x=>x.Description==name && x.Date==date).First();
             _companyHolidayRepository.Delete(currentHoliday);
-            _companyHolidayRepository.SaveAsync();
+            _companyHolidayRepository.Save();
         }
 
         [HttpPost("[action]")]
-        public void AddHoliday(CompanyHoliday newHoliday)
+        public CompanyHoliday AddHoliday(CompanyHoliday newHoliday)
         {
             if (ModelState.IsValid )
             {
-                _companyHolidayService.AddHoliday(newHoliday);
-            }   
+               return _companyHolidayService.AddHoliday(newHoliday);
+            }
+            return null;
         }
 
 

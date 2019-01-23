@@ -4,4 +4,5 @@ export interface VacationPolicy {
   vacationType: string;
   count: number;
   payments: number;
+  userId: string;
 } 

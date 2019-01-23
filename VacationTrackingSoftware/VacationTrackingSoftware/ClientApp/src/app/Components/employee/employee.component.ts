@@ -21,10 +21,10 @@ export class EmployeeComponent implements OnInit {
   userVacationRequests: UserVacationRequest[];
   showAll(): void {
     this.holidayService.showAll()
-      .subscribe(holidays => this.holidays = holidays);
+      .subscribe(holidays => this.holidays = holidays);  
     //console.log(this.holidays.length);    
   }
   showUserVacationRequest(): void {
-    this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests);
+    this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests); 
   }
 }

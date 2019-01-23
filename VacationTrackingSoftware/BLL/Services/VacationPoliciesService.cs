@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
 {
@@ -16,10 +18,11 @@ namespace BLL.Services
         //private IUserRepository _userRepository;
         private IEmployeeService _employeeService;
         private readonly IMapper _mapper;
-
+        private readonly UserManager<AppUser> _userManager;
 
         public VacationPoliciesService(IMapper mapper, IVacationTypeRepository vacationTypeRepository, IVacationPolicyRepository vacationPolicyRepository, 
             //IUserRepository userRepository,
+            UserManager<AppUser> userManager,
             IEmployeeService employeeService)
         {
             _vacationTypeRepository = vacationTypeRepository;
@@ -27,13 +30,16 @@ namespace BLL.Services
             //_userRepository = userRepository;
             _employeeService = employeeService;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public void SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
         {
-            var result = _mapper.Map<VacationPolicy>(newVacationPolicy);
+            VacationPolicy result = _mapper.Map<VacationPolicy>(newVacationPolicy);
+            var hrUser =_userManager.FindByIdAsync(newVacationPolicy.UserId).Result;
+            //result.HrUser=hrUser;
             result.VacationType = _vacationTypeRepository.FindByCondition(y => y.Name == newVacationPolicy.VacationType).First();
             _vacationPolicyRepository.Create(result);
-            _vacationPolicyRepository.SaveAsync();
+            _vacationPolicyRepository.Save();
         }
 
         public List<VacationPolicyDTO> GetVacationPolicies()

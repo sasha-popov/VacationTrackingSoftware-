@@ -117,7 +117,7 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ManagerId");
+                    b.Property<string>("ManagerId");
 
                     b.Property<string>("Name");
 
@@ -136,7 +136,7 @@ namespace DAL.Migrations
 
                     b.Property<int?>("TeamId");
 
-                    b.Property<int?>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -161,7 +161,7 @@ namespace DAL.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<int?>("UserId");
+                    b.Property<string>("UserId");
 
                     b.Property<int?>("VacationTypeId");
 
@@ -344,7 +344,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("BLL.Models.Team", b =>
                 {
-                    b.HasOne("BLL.Models.Worker", "Manager")
+                    b.HasOne("AppUser", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId");
                 });
@@ -352,17 +352,17 @@ namespace DAL.Migrations
             modelBuilder.Entity("BLL.Models.TeamUser", b =>
                 {
                     b.HasOne("BLL.Models.Team", "Team")
-                        .WithMany("TeamUsers")
+                        .WithMany()
                         .HasForeignKey("TeamId");
 
-                    b.HasOne("BLL.Models.Worker", "User")
+                    b.HasOne("AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BLL.Models.UserVacationRequest", b =>
                 {
-                    b.HasOne("BLL.Models.Worker", "User")
+                    b.HasOne("AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 

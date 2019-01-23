@@ -7,7 +7,7 @@ namespace BLL.Statuses
     public enum RequestStatuses
     {
      New=1,
-     Declined,
-     Allowed  
+     Accepted,
+     Declined  
     }
 }

@@ -49,9 +49,15 @@ namespace VacationTrackingSoftware.Controllers
             //if to be more roles for one user, than need change this code
             IList<string> currentRoles = await _userManager.GetRolesAsync(user);
             string currentRole = currentRoles.First();
+            int RoleEnum=0;
+            if (currentRole == "Employee") RoleEnum = (int)Roles.Employee;
+            if (currentRole == "HrUser") RoleEnum = (int)Roles.HrUser;
+            if (currentRole == "Manager") RoleEnum = (int)Roles.Manager;
+            if (currentRole == "Admin") RoleEnum = (int)Roles.Admin;
+
             //int indexRole=
 
-            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, currentRole);
+            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, RoleEnum);
             return new OkObjectResult(jwt);
         }
 

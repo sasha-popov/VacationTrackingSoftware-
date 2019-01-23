@@ -15,14 +15,20 @@ namespace BLL.Services
             _companyHolidayRepository = companyHolidayService;
         }
 
-        public void AddHoliday(CompanyHoliday newHoliday)
+        public CompanyHoliday AddHoliday(CompanyHoliday newHoliday)
         {
+            CompanyHoliday result;
             var checkDublicate = _companyHolidayRepository.FindByCondition(x => x.Date == newHoliday.Date);
             if (checkDublicate.Count() == 0 && newHoliday.Date.DayOfWeek.ToString() != "Saturday" && newHoliday.Date.DayOfWeek.ToString() != "Sunday")
             {
                 _companyHolidayRepository.Create(newHoliday);
-                _companyHolidayRepository.SaveAsync();
+                _companyHolidayRepository.Save();
+                result = newHoliday;
             }
+            else {
+                result = null;
+            }
+            return result;
     }
 }
 }

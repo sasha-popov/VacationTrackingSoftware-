@@ -13,10 +13,11 @@ export class HomeComponent implements OnInit{
   public constructor(private route: ActivatedRoute, private homeService: HomeService, private router: Router, private authorizeService: AuthorizeService) {
   }
   currentRole: any;
-  allRoles: any;
+  allRoles;
   ngOnInit() {
     this.allRoles = Roles;
-    this.currentRole = localStorage.getItem('rolesUser');
+    Roles.Admin;
+    this.currentRole = parseInt(localStorage.getItem('rolesUser'),10);
   }
   logOut() {
     this.authorizeService.logout();   

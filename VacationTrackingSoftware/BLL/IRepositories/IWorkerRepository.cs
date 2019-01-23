@@ -9,5 +9,7 @@ namespace BLL.IRepositories
     public interface IWorkerRepository : IGenericRepository<Worker>
     {
         Task CreateWorkerAsync(Worker worker);
+
+        Worker GetWithUser(string userId);
     }
 }

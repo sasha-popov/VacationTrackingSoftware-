@@ -24,10 +24,11 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // subscribe to router event
     this.subscription = this.activatedRoute.queryParams.subscribe(
-      (param: any) => {
+      (param: any) => { 
         this.brandNew = param['brandNew'];
-        this.credentials.email = param['email']; 
+        this.credentials.email = param['email'];   
       });
+    if (localStorage.getItem('auth_token') != null) this.router.navigate(['/home']);
   }
   ngOnDestroy() {
     // prevent memory leak by unsubscribing

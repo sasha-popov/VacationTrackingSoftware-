@@ -1,0 +1,11 @@
+<p>
+  Hello Manager!
+</p>
+<div class="dashboard col-sm-3">
+  <app-vacation-policies></app-vacation-policies>
+  <app-holidays [holidays]="holidays"></app-holidays>
+  <app-vacation-request [userVacationRequests]="userVacationRequests"></app-vacation-request>
+</div>
+
+<mwl-demo-component [holidays]="holidays"
+                    [userVacationRequests]="userVacationRequests"></mwl-demo-component>

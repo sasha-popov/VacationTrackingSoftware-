@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO;
@@ -47,6 +48,7 @@ namespace VacationTrackingSoftware.Controllers
         [HttpPost("[action]")]
         public void SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
         {
+
             if (ModelState.IsValid)
             {
                 _vacationPoliciesService.SendVacationPolicy(newVacationPolicy);

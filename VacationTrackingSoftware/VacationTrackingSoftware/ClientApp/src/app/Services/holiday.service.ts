@@ -13,12 +13,13 @@ export class HolidayService {
     return this.http.get<Holiday[]>("api/Holiday/GetForCurrentYear");
   }
 
-  deleteHoliday(holiday: Holiday): void{
-    this.http.delete<Holiday>("api/Holiday/DeleteHoliday/" + holiday.description + "/" + holiday.date);
+  deleteHoliday(holiday: Holiday){
+    return this.http.delete<Holiday>("api/Holiday/DeleteHoliday/" + holiday.description + "/" + holiday.date);
   }
 
+
   addHoliday(holiday: Holiday): Observable<Holiday> {
-   return this.http.post<Holiday>("api/Holiday/AddHoliday", holiday); 
+    return this.http.post<Holiday>("api/Holiday/AddHoliday", holiday);  
   }
 
 }

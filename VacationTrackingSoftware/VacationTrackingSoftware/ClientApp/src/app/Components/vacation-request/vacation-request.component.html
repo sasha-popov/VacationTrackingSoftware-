@@ -1,18 +1,34 @@
 <p>View your vacation requests: </p>
 <ul class="heroes">
   <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
+    <div>
     <a>
       <span>
-        on dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}},
+        on dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}
         with type:{{userVacationRequest.vacationType}}, have a status: {{userVacationRequest.status}}<br>
       </span>
     </a>
-    <span><button class="delete" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
-      x
-    </button></span>
-</li>
+    <span *ngIf="allRoles.Employee===currentRole">
+      <button class="delete" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
+        x
+      </button>
+    </span>
+    <span *ngIf="allRoles.Manager===currentRole">
+    <span>
+      <button (click)="changeStatus(true, userVacationRequest.id, userVacationRequest)">
+        Accept
+      </button>
+    </span>
+    <span>
+      <button (click)="changeStatus(false, userVacationRequest.id, userVacationRequest)">
+        Decline
+      </button>
+    </span>
+      </span>
+      </div>
+  </li>
 </ul>
-<div>
+<div *ngIf="allRoles.Employee===currentRole">
   <p>ADD NEW VACATION REQUEST:</p>
   <div class="formHoliday">
     <span class="col-sm-4">

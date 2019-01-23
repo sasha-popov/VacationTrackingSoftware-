@@ -17,10 +17,10 @@ namespace DAL.Repositories
             return RepositoryContext.VacationPolicies.Include(x => x.VacationType);
         }
 
-       public List<VacationPolicy> FindCurrentVacationPolicy(UserVacationRequest userVacationRequest)
+        public List<VacationPolicy> FindCurrentVacationPolicy(UserVacationRequest userVacationRequest)
         {
-            int workingYears = DateTime.Now.Year - userVacationRequest.User.DateRecruitment.Year;
-            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.VacationType.Id == userVacationRequest.VacationType.Id).Where(x => x.WorkingYear >= workingYears).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;
+            //int workingYears = DateTime.Now.Year - userVacationRequest.Worker.DateRecruitment.Year;
+            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.VacationType.Id == userVacationRequest.VacationType.Id).Where(x => x.WorkingYear >= 3).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;
         }
 
         public VacationPolicy FindForDelete(int years, string vacationType, int payments)

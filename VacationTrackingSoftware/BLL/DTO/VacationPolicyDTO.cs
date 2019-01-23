@@ -17,5 +17,7 @@ namespace BLL.DTO
         public int Count { get; set; }
         [Required(ErrorMessage = "Payments is required")]
         public string Payments { get; set; }
+
+        public string UserId { get; set; }
     }
 }

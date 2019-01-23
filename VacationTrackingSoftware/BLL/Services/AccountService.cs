@@ -8,39 +8,55 @@ namespace BLL.Services
 {
    public class AccountService:IAccountService 
     {
-        //private IUserRepository _userRepository;
-        //private IRoleRepository _roleRepository;
-        //private IUserRoleRepository _userRoleRepository;
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
         private ICompanyHolidayRepository _companyHolidayRepository;
-
+        private IWorkerRepository _workerRepository;
+        private ITeamRepository _teamRepository;
+        private ITeamUserRepository _teamUserRepository;
         public AccountService(
-            //IUserRepository userRepository,
-            //IRoleRepository roleRepository,
-            //IUserRoleRepository userRoleRepository,
             IUserVacationRequestRepository userVacationRequestRepository,
             IVacationTypeRepository vacationTypeRepository,
             IVacationPolicyRepository vacationPolicyRepository,
-            ICompanyHolidayRepository companyHolidayRepository)
+            ICompanyHolidayRepository companyHolidayRepository,
+            IWorkerRepository workerRepository,
+            ITeamRepository teamRepository,
+            ITeamUserRepository teamUserRepository)
         {
-            //_userRepository = userRepository;
-            //_roleRepository = roleRepository;
-            //_userRoleRepository = userRoleRepository;
             _userVacationRequestRepository = userVacationRequestRepository;
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
             _companyHolidayRepository = companyHolidayRepository;
+            _workerRepository = workerRepository;
+            _teamRepository = teamRepository;
+            _teamUserRepository = teamUserRepository;
         }
 
-        //public void CreateEmployee(User user)
-        //{
-        //    user.Password = GetRandomString(6);
-        //    //_userRepository.Create(user);
-        //    //addManagerRole(user);
-        //    //_userRepository.SaveAsync();
-        //}
+        public void CreateWorkerAndTeamUser(AppUser user, int teamId, string role)
+        {
+            _workerRepository.Create(new Worker { DateRecruitment = DateTime.Now, User = user });
+            _workerRepository.Save();
+            Worker worker = _workerRepository.GetWithUser(user.Id);
+            Team team = _teamRepository.GetById(teamId);
+            if (team != null)
+            {
+                if (role == "Employee")
+                {
+
+                    TeamUser teamUser = new TeamUser { Team = team, User = user };
+                    _teamUserRepository.Create(teamUser);
+                    _teamUserRepository.Save();
+                }
+                else if (role == "Manager")
+                {
+                    team.Manager = user;
+                    _teamRepository.Update(team);
+                    _teamRepository.Save();
+                }
+            }
+
+        }
 
         internal string GetRandomString(int stringLength)
         {
@@ -53,14 +69,5 @@ namespace BLL.Services
 
             return sb.ToString(0, stringLength);
         }
-
-        //private void addManagerRole(User user)
-        //{
-        //    Role role = _roleRepository.GetById(2);
-        //    UserRole userRole = new UserRole();
-        //    userRole.Role = role;
-        //    userRole.User = user;
-        //    _userRoleRepository.Create(userRole);
-        //}
     }
 }

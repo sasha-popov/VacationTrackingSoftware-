@@ -26,6 +26,6 @@ export class HomeService {
 
   logInEmployee(id: number) {
     this.isEmployee = true;
-    this.idUser = id;
-  }
+    this.idUser = id; 
+  } 
 }

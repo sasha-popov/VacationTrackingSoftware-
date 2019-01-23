@@ -26,13 +26,15 @@ namespace VacationTrackingSoftware.Controllers
         private IAccountService _accountService;
         private IWorkerRepository _workerRepository;
         private ProjectContext _appDbContext;
+        private ITeamRepository _teamRepository;
 
         public AccountController(
             UserManager<AppUser> userManager, 
             IMapper mapper,
             IAccountService accountService,
             IWorkerRepository workerRepository,
-            ProjectContext appDbContext
+            ProjectContext appDbContext,
+            ITeamRepository teamRepository
             )
         {
             _userManager = userManager;
@@ -40,6 +42,7 @@ namespace VacationTrackingSoftware.Controllers
             _accountService = accountService;
             _workerRepository = workerRepository;
             _appDbContext = appDbContext;
+            _teamRepository = teamRepository;
         }
 
         //POST api/accounts
@@ -50,18 +53,18 @@ namespace VacationTrackingSoftware.Controllers
             //{
             //    return BadRequest(ModelState);
             //}
-            var LISTROLE = _appDbContext.Roles.ToList();
-            AppUser userIdentity = new AppUser {FirstName=model.FirstName, LastName=model.LastName, Email=model.Email, UserName=model.FirstName+model.LastName};
-
+            
+            Worker worker = new Worker { DateRecruitment = DateTime.Now };
+            AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName};
+            _workerRepository.Save();
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
             else {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
-            }   
-            _workerRepository.Create(new Worker { DateRecruitment = DateTime.Now , User= userIdentity });
-            _workerRepository.Save();
+            }
+            _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId, model.Role);
             //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
-            return null;
+            return new OkObjectResult("Account created");
         }
 
         private void SendDataToWorker(string email, string nickName, string password) {
@@ -89,6 +92,10 @@ namespace VacationTrackingSoftware.Controllers
                 smtp.Send(message);
             }
         }
+        [HttpGet("[action]")]
+        public List<Team> GetAllTeams() {
+            return _teamRepository.GetAll().ToList();
+        }
 
     }
     public class RegistrationViewModel
@@ -99,7 +106,7 @@ namespace VacationTrackingSoftware.Controllers
         public string LastName { get; set; }
         //public string Location { get; set; }
         public string PhoneNumber { get; set; }
-
         public string Role { get; set; }
+        public int TeamId { get; set; }
     }
 }

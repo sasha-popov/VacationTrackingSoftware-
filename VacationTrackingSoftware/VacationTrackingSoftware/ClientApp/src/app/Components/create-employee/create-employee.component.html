@@ -45,15 +45,26 @@
             </select>
           </span>
         </div>
+        <div class="wrap-input2 validate-input" data-validate="Name is required">
+          <span class="col-sm-4">
+            Team
+          </span>
+          <select #teamId required class="col-sm-8">
+            <option *ngFor="let team of teams" class="textHolidays" value={{team.id}}>
+              {{team.name}}
+            </option>
+            <option value=0>without team</option>
+          </select>
+        </div>
         <div class="container-contact2-form-btn">
           <div class="wrap-contact2-form-btn">
             <div class="contact2-form-bgbtn"></div>
-            <button type="submit" class="contact2-form-btn" (click)="CreateEmployee(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value)">
+            <button type="submit" class="contact2-form-btn" (click)="CreateUser(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value, teamId.value)">
               Create
             </button>
-            <!--<button type="submit" class="contact2-form-btn" (click)="GoBack()">
-              Back
-            </button>-->
+            <button type="submit" class="contact2-form-btn" (click)="GoBack()">
+        Back
+      </button>
           </div>
         </div>
       </form>

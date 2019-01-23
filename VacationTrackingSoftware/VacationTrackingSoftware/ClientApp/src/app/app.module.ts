@@ -21,18 +21,21 @@ import { VacationPoliciesService } from './Services/vacation-policies.service';
 import { VacationRequestService } from './Services/vacation-request.service';
 import { BaseService } from './Services/BaseService';
 import { HomeService } from './Services/home.service';
-
+ 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from './Components/calendar/calendar.component';
 import { HttpRequestService } from './Services/httpRequest.service';
 import { ConfigService } from './Services/ConfigService';
+import { CalendarService } from './Services/CalendarService';
+import { TeamService } from './Services/team.service';
 
 import { FlatpickrModule } from 'angularx-flatpickr';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './Services/auth-guard';
+import { ManagerComponent } from './Components/manager/manager.component'; 
   
 
 @NgModule({
@@ -46,9 +49,9 @@ import { AuthGuard } from './Services/auth-guard';
     VacationPoliciesComponent,
     EmployeeComponent,
     VacationRequestComponent, 
-    CalendarComponent  
+    CalendarComponent, ManagerComponent  
   ],
-  imports: [
+  imports: [ 
     NgbModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
@@ -56,22 +59,24 @@ import { AuthGuard } from './Services/auth-guard';
     FlatpickrModule.forRoot(),
     RouterModule.forRoot([   
       { path: 'hrUser', component: HrUserComponent },
-      { path: 'createEmployee', component: CreateEmployeeComponent },
+      { path: 'createUser', component: CreateEmployeeComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'login', component: AuthorizeComponent }, 
       { path: '', redirectTo: '/login', pathMatch: 'full' },         
-      {
+      { 
         path: 'home',
         canActivate: [AuthGuard],  
         component: HomeComponent
-      }
+      },
     ]), 
     BrowserAnimationsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     CalendarModule.forRoot({
      provide: DateAdapter,
      useFactory: adapterFactory 
-    })
+    }),
+
   ],
   providers: [AuthorizeService,
     EmployeeService,
@@ -81,7 +86,9 @@ import { AuthGuard } from './Services/auth-guard';
     HttpRequestService,
     HomeService,
     ConfigService,
-    AuthGuard
+    AuthGuard,
+    CalendarService,
+    TeamService
   ],
 
   bootstrap: [AppComponent],

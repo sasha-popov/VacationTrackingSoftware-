@@ -8,6 +8,7 @@ import { Holiday } from '../../InterfacesAndClasses/Holiday'
   styleUrls: ['./hr-user.component.css']
 })
 export class HrUserComponent implements OnInit {
+
   constructor(private holidayService: HolidayService) { } 
   ngOnInit() {
     this.showAll();
@@ -15,6 +16,7 @@ export class HrUserComponent implements OnInit {
   isHrUser = true;
   holidays: Holiday[];
   showAll(): void {
+
     this.holidayService.showAll()
       .subscribe(holidays => this.holidays = holidays);
     //console.log(this.holidays.length);    

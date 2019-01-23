@@ -6,7 +6,8 @@ import {
   Input,
   OnChanges,
   TemplateRef,
-  SimpleChanges
+  SimpleChanges,
+  SimpleChange
 } from '@angular/core';
 import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours } from 'date-fns';
 import { Subject, Observable } from 'rxjs';
@@ -19,6 +20,9 @@ import { VacationRequestService } from '../../Services/vacation-request.service'
 import { forEach } from '@angular/router/src/utils/collection';
 import { map } from "rxjs/operators";
 import { EventColor } from 'calendar-utils';
+import { CalendarService } from '../../Services/CalendarService';
+import { Roles } from '../../Roles';
+import { DatePipe } from '@angular/common';
 
 const colors: any = {
   red: {
@@ -32,11 +36,11 @@ const colors: any = {
   yellow: {
     primary: '#e3bc08',
     secondary: '#FDF1BA'    
-  },
+  }, 
   green:{
     primary: '#14FF47',
     secondary: '#14FF47',
-  }
+  } 
 
   
 };
@@ -48,19 +52,21 @@ const colors: any = {
   templateUrl: './calendar.component.html'
 })
 export class CalendarComponent implements OnInit, OnChanges {
+  currentRole: any;
   @ViewChild('modalContent')
   modalContent: TemplateRef<any>;
   @Input() userVacationRequests;
   @Input() holidays;
+  pipe = new DatePipe('en-US');
   
-  ngOnChanges() {
-        this.createEvents();
+  ngOnChanges(changes: SimpleChanges) {
+    this.createEvents();
   }
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Month; 
 
   CalendarView = CalendarView;
 
-  viewDate: Date = new Date();
+  viewDate: Date = new Date(); 
 
   modalData: {
     action: string;
@@ -86,12 +92,13 @@ export class CalendarComponent implements OnInit, OnChanges {
 
 
 
-  constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService) {
+  constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService, private calendarService:CalendarService) {
 
   }
   ngOnInit() {
+    this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
   }
-  events: CalendarEvent[]=[];
+  events: CalendarEvent[] = [];
   createEvents(): void {
     this.events = [];
     if (this.holidays != undefined) {
@@ -111,22 +118,30 @@ export class CalendarComponent implements OnInit, OnChanges {
         }
       }).forEach(item => this.events.push(item));
     }
+
     if (this.userVacationRequests != undefined) {
+      var description;
       this.userVacationRequests.map((element) => {
-        var color: EventColor;
+        if (this.currentRole == Roles.Employee) {
+          description = element.vacationType;
+        }
+        else if (this.currentRole == Roles.Manager) {
+          description = element.vacationType + ", employee:" + element.userName + ". StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate)+".";
+        }
+        var color: EventColor; 
         if (element.status == "New") {
           color = colors.blue;
         }
         else if (element.status == "Declined") {
           color = colors.red;
         }
-        else if (element.status == "Allowed") {
+        else if (element.status == "Accepted") { 
           color = colors.green;
         }
         return {
           start: new Date(element.startDate),
           end: new Date(element.endDate),
-          title: element.vacationType,
+          title: description,
           color: color,
           actions: this.actions,
           allDay: true,

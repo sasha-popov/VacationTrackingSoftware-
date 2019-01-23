@@ -16,7 +16,17 @@ namespace DAL.Repositories
 
         public IEnumerable<UserVacationRequest> FindByConditionWithUser(Expression<Func<UserVacationRequest, bool>> expression)
         {
-            return this.RepositoryContext.UserVacantionRequests.Include(x=>x.User).Include(x=>x.VacationType).Where(expression);
+            return this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(expression);
+        }
+
+        public List<UserVacationRequest> GetAllWithTypeHolidays()
+        {
+            return this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).ToList();
+        }
+
+        public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
+        {
+            return RepositoryContext.UserVacantionRequests.Include(x => x.User).FirstOrDefault(x => x.StartDate == startDate && x.EndDate == endDate && x.User.Id == userId);
         }
     }
 }

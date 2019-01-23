@@ -7,44 +7,49 @@ using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
 using BLL.Statuses;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        //private IUserRepository _userRepository;
-        //private IRoleRepository _roleRepository;
-        //private IUserRoleRepository _userRoleRepository;
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
         private ICompanyHolidayRepository _companyHolidayRepository;
+        private IWorkerRepository _workerRepository;
+        private ITeamRepository _teamRepository;
+        private UserManager<AppUser> _userManager;
+        private ITeamUserRepository _teamUserRepository;
 
         public EmployeeService(
-            //IUserRepository userRepository, 
-            //IRoleRepository roleRepository, 
-            //IUserRoleRepository userRoleRepository, 
             IUserVacationRequestRepository userVacationRequestRepository,
             IVacationTypeRepository vacationTypeRepository,
             IVacationPolicyRepository vacationPolicyRepository,
-            ICompanyHolidayRepository companyHolidayRepository)
+            ICompanyHolidayRepository companyHolidayRepository,
+            IWorkerRepository workerRepository,
+            ITeamRepository teamRepository,
+            ITeamUserRepository teamUserRepository ,
+            UserManager<AppUser> userManager)
         {
-            //_userRepository = userRepository;
-            //_roleRepository = roleRepository;
-            //_userRoleRepository = userRoleRepository;
             _userVacationRequestRepository = userVacationRequestRepository;
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
             _companyHolidayRepository = companyHolidayRepository;
+            _workerRepository = workerRepository;
+            _teamRepository = teamRepository;
+            _userManager = userManager;
+            _teamUserRepository = teamUserRepository;
         }
 
 
-        public void CreateVacationRequest(UserVacationRequestDTO userVacationRequestDTO)
+        public UserVacationRequestDTO CreateVacationRequest(UserVacationRequestDTO userVacationRequestDTO)
         {
+            UserVacationRequestDTO response;
             Mapper.Reset();
             Mapper.Initialize(x => x.CreateMap<UserVacationRequestDTO, UserVacationRequest>()
             .ForMember("VacationType", opt => opt.MapFrom(c => _vacationTypeRepository.FindByCondition(y => y.Name == userVacationRequestDTO.VacationType).First()))
-            //.ForMember("User", opt => opt.MapFrom(user => _userRepository.GetById(userVacationRequestDTO.User)))
+            .ForMember("User", opt => opt.MapFrom(user => _userManager.FindByIdAsync(userVacationRequestDTO.UserId).Result))
             .ForMember("Status", opt => opt.MapFrom(statuses => 1))
             );
             var result = Mapper.Map<UserVacationRequestDTO, UserVacationRequest>(userVacationRequestDTO);
@@ -57,19 +62,30 @@ namespace BLL.Services
                 {
                     result.Payment = daysForVacation.Payments;
                     _userVacationRequestRepository.Create(result);
-                    _userVacationRequestRepository.SaveAsync();
+                    _userVacationRequestRepository.Save();
+                    response = userVacationRequestDTO;
+                }
+                else
+                {
+                    response = null;
                 }
             }
+            else
+            { response = null; }
+
+            return response;
+
         }
 
-        public List<UserVacationRequestDTO> ShowUserVacationRequest(int id)
+        public List<UserVacationRequestDTO> ShowUserVacationRequest(string id)
         {
             var userVacationRequests = _userVacationRequestRepository.FindByConditionWithUser(x => x.User.Id == id).ToList();
             Mapper.Reset();
             Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
             .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
-            .ForMember("User", opt => opt.MapFrom(user => user.User.Id))
-            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses),statuses.Status))));
+            .ForMember("UserId", opt => opt.MapFrom(user => user.User.Id))
+            .ForMember("UserName", opt => opt.MapFrom(user => user.User.UserName))
+            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
             var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(userVacationRequests);
             return result;
         }
@@ -79,12 +95,15 @@ namespace BLL.Services
             var currentRequests = _userVacationRequestRepository.FindByConditionWithUser(x => x.User.Id == newRequest.User.Id).ToList();
 
             List<bool> checkOverlaps = new List<bool>();
-            if (currentRequests.Count == 0) {
+            if (currentRequests.Count == 0)
+            {
                 checkOverlaps.Add(false);
-            }else {
+            }
+            else
+            {
                 foreach (var request in currentRequests)
                 {
-                    checkOverlaps.Add((request.StartDate < newRequest.EndDate && newRequest.StartDate < request.EndDate));
+                    checkOverlaps.Add((request.StartDate.Day <= newRequest.EndDate.Day && newRequest.StartDate.Day <= request.EndDate.Day));
                 }
             }
             return checkOverlaps;
@@ -96,7 +115,8 @@ namespace BLL.Services
             var allHolidays = _companyHolidayRepository.FindByCondition(x => x.Date.Year == DateTime.Now.Year);
             List<DateTime> allDatesPrev = new List<DateTime>();
 
-            if (allvacations.Count != 0) {
+            if (allvacations.Count != 0)
+            {
                 //count prev days without sat and sun
                 foreach (var vacation in allvacations)
                 {
@@ -107,7 +127,7 @@ namespace BLL.Services
                         }
                 }
                 //count prev days without company holidays
-                allDatesPrev= GetListDaysWithoutCompanyHolidays(allDatesPrev);
+                allDatesPrev = GetListDaysWithoutCompanyHolidays(allDatesPrev);
                 //foreach (var checkHoliday in allHolidays)
                 //{
                 //    var item = allDatesPrev.SingleOrDefault(x => x.DayOfYear == checkHoliday.Date.DayOfYear);
@@ -116,7 +136,7 @@ namespace BLL.Services
                 //        allDatesPrev.Remove(item);
                 //    }
                 //}
-            }                     
+            }
 
             //count days of current request
             List<DateTime> allDatesForCurrentRequest = new List<DateTime>();
@@ -128,7 +148,7 @@ namespace BLL.Services
                 }
             }
             //count days of current request without company holiday
-            allDatesForCurrentRequest= GetListDaysWithoutCompanyHolidays(allDatesForCurrentRequest);
+            allDatesForCurrentRequest = GetListDaysWithoutCompanyHolidays(allDatesForCurrentRequest);
             //foreach (var checkHoliday in allHolidays)
             //{
             //    var item = allDatesForCurrentRequest.SingleOrDefault(x => x.DayOfYear == checkHoliday.Date.DayOfYear);
@@ -145,7 +165,7 @@ namespace BLL.Services
             //it check if is dates yet
             int countAllDatesForCurrentRequest = allDatesForCurrentRequest.Count;
             int countAllDatesPrev = allDatesPrev.Count;
-            if (commonCountOfday>= countAllDatesForCurrentRequest + countAllDatesPrev)
+            if (commonCountOfday >= countAllDatesForCurrentRequest + countAllDatesPrev)
             {
                 VacationPolicy PolicyWithPay = currentVacationPolicy.Find(x => x.Payments == x.Count);
                 int remainderPayDays = PolicyWithPay.Count - (countAllDatesForCurrentRequest + countAllDatesPrev);
@@ -179,6 +199,43 @@ namespace BLL.Services
                 }
             }
             return allDateTimes;
+        }
+
+        public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
+        {
+            List<Team> TeamsOfManager = _teamRepository.FindByManager(user.Id);
+            List <TeamUser> TeamUsers= _teamUserRepository.FindWithObjects();
+            List<AppUser> UsersOfManager = new List<AppUser>();
+
+            foreach (var teamUser in TeamUsers)
+            {
+                foreach (var team in TeamsOfManager)
+                {
+                    if (team.Id == teamUser.Team.Id) UsersOfManager.Add(teamUser.User);
+                }
+            }
+
+            List<UserVacationRequest> UserVacationRequests = _userVacationRequestRepository.GetAllWithTypeHolidays().ToList();
+            List<UserVacationRequest> UserVacationRequestsForManager = new List<UserVacationRequest>();
+
+            foreach (var uv in UserVacationRequests)
+            {
+                foreach (var u in UsersOfManager)
+                {
+                    if (u.Id == uv.User.Id) UserVacationRequestsForManager.Add(uv);
+                }
+            }
+
+            UserVacationRequestsForManager.Where(x => x.Status == (int)RequestStatuses.New);
+
+            Mapper.Reset();
+            Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
+            .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
+            .ForMember("UserId", opt => opt.MapFrom(u => u.User.Id))
+            .ForMember("UserName", opt => opt.MapFrom(u => u.User.UserName))
+            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
+            var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
+            return result;
         }
 
     }

@@ -8,7 +8,7 @@ import { ConfigService } from './ConfigService';
 import { BaseService } from '../Services/BaseService';
 import { Credentials } from '../InterfacesAndClasses/Credentials';
 import { map } from "rxjs/operators";
-import { create } from 'domain';
+import { Token } from '../InterfacesAndClasses/Token';
 @Injectable()
 export class AuthorizeService extends BaseService {
 
@@ -27,21 +27,21 @@ export class AuthorizeService extends BaseService {
     // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
     // header component resulting in authed user nav links disappearing despite the fact user is still logged in
     this._authNavStatusSource.next(this.loggedIn);
-    this.baseUrl = configService.getApiURI();
+    this.baseUrl = configService.getApiURI(); 
   }
 
   login(userName, password){
     //let headers = new Headers();
     //headers.append('Content-Type', 'application/json');    
     return this.http
-      .post(
-        this.baseUrl + '/Auth/login',
-        JSON.stringify({ userName, password })
+      .postToken(this.baseUrl + '/Auth/login',
+      JSON.stringify({ userName, password })
       ).pipe(map(res => {
         //need fix it
         console.log(res);
-        localStorage.setItem('auth_token', res.auth_token);
-        localStorage.setItem('rolesUser', res.rolesUser);  
+        localStorage.setItem('auth_token', res["auth_token"]); 
+        localStorage.setItem('rolesUser', res["rolesUser"]);
+        localStorage.setItem('id', res["id"]);   
           this.loggedIn = true;
           this._authNavStatusSource.next(true);
           return true;  

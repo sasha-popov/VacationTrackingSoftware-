@@ -7,6 +7,6 @@ namespace BLL.Services
 {
     public interface ICompanyHolidayService
     {
-        void AddHoliday(CompanyHoliday newHoliday);
+        CompanyHoliday AddHoliday(CompanyHoliday newHoliday);
     }
 }

@@ -39,13 +39,14 @@ export class VacationPoliciesComponent implements OnInit {
       .subscribe(types => this.vacationTypes = types);  
   }
 
-  sendVacationPolicy(years: number, vacationType: string, count: number, payments: number): void {
+  sendVacationPolicy(years: number, vacationType: string, count: number, payments: number): void { 
     this.vacationPolicy = {
       id: 0,
       workingYear: years,
       vacationType: vacationType,
       count: count,
-      payments: payments 
+      payments: payments,
+      userId: localStorage.getItem('id')
     }
     this.vacationPoliciesService.sendVacationPolicy(this.vacationPolicy).subscribe(vp => this.vacationPolicies.push(this.vacationPolicy));   
   }
