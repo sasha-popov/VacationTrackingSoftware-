@@ -44,7 +44,6 @@ const colors: any = {
 
   
 };
-
 @Component({
   selector: 'mwl-demo-component',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,19 +73,19 @@ export class CalendarComponent implements OnInit, OnChanges {
   };
 
   actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
+    //{
+    //  label: '<i class="fa fa-fw fa-pencil"></i>',
+    //  onClick: ({ event }: { event: CalendarEvent }): void => {
+    //    this.handleEvent('Edited', event);
+    //  }
+    //},
+    //{
+    //  label: '<i class="fa fa-fw fa-times"></i>',
+    //  onClick: ({ event }: { event: CalendarEvent }): void => {
+    //    this.events = this.events.filter(iEvent => iEvent !== event);
+    //    this.handleEvent('Deleted', event);
+    //  }
+    //}
   ];
   refresh: Subject<any> = new Subject();
 
@@ -126,7 +125,7 @@ export class CalendarComponent implements OnInit, OnChanges {
           description = element.vacationType;
         }
         else if (this.currentRole == Roles.Manager) {
-          description = element.vacationType + ", employee:" + element.userName + ". StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate)+".";
+          description = "Employee: " + element.userName+", vacation type: "+element.vacationType + ", StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate)+".";
         }
         var color: EventColor; 
         if (element.status == "New") {

@@ -14,9 +14,11 @@ export class HolidaysComponent implements OnChanges {
  // holidays: Holiday[];
   holiday: Holiday;
   @Input() holidays;
+  date: string;
   constructor(private holidayService: HolidayService) { }
 
   ngOnChanges() {
+    this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     //this.showAll(); 
   }
 

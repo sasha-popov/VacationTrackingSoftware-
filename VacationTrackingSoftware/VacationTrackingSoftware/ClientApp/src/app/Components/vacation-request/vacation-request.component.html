@@ -1,5 +1,7 @@
-<p>View your vacation requests: </p>
-<ul class="heroes">
+<p *ngIf="allRoles.Employee===currentRole">View your vacation requests: </p>
+<p *ngIf="allRoles.Manager===currentRole">View new vacation requests of employees: </p>
+
+<ul>
   <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
     <div>
     <a>

@@ -2,7 +2,7 @@
 <ul class="heroes  col-sm-12" *ngIf="holidays" >
   <li *ngFor="let holiday of holidays" class="textHolidays">
     <a>
-      <span>{{holiday.date}}-{{holiday.description}}</span>
+      <span>{{holiday.date|date}}-{{holiday.description}}</span>
     </a>
     <button *ngIf="isHrUser" class="delete" title="delete holiday" (click)="deleteHoliday(holiday)">
       x
