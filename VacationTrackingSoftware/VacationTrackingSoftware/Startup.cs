@@ -40,6 +40,11 @@ namespace VacationTrackingSoftware
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //disable automatic validation
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             //services.AddDbContext<ProjectContext>(option =>
             //    option.UseSqlServer(Configuration.GetConnectionString("Defaultconnection")));
             services.AddDbContext<ProjectContext>(options =>

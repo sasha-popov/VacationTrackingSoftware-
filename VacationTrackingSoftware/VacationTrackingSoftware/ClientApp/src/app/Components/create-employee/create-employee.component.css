@@ -136,7 +136,7 @@ textarea:-ms-input-placeholder {
 }
 
 /*---------------------------------------------*/
-button {
+/*button {
   outline: none !important;
   border: none;
   background: transparent;
@@ -144,7 +144,7 @@ button {
 
   button:hover {
     cursor: pointer;
-  }
+  }*/
 
 iframe {
   border: none !important;
@@ -175,18 +175,13 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: rgba(219,21,99,0.8);
-  background: -webkit-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: -o-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: -moz-linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
-  background: linear-gradient(45deg, rgba(213,0,125,0.8), rgba(229,57,53,0.8));
+  background: #5AB903;
 }
 
 .wrap-contact2 {
   width: 790px;
   background: #fff;
   border-radius: 10px;
-  overflow: hidden;
   padding: 72px 55px 90px 55px;
 }
 
@@ -251,11 +246,11 @@ iframe {
     -o-transition: all 0.4s;
     -moz-transition: all 0.4s;
     transition: all 0.4s;
-    background: rgba(219,21,99,1);
+    /*background: rgba(219,21,99,1);
     background: -webkit-linear-gradient(45deg, #d5007d, #e53935);
     background: -o-linear-gradient(45deg, #d5007d, #e53935);
     background: -moz-linear-gradient(45deg, #d5007d, #e53935);
-    background: linear-gradient(45deg, #d5007d, #e53935);
+    background: linear-gradient(45deg, #d5007d, #e53935);*/
   }
 
   .focus-input2::after {
@@ -314,7 +309,7 @@ textarea.input2 {
 
 /*------------------------------------------------------------------
 [ Button ]*/
-.container-contact2-form-btn {
+/*.container-contact2-form-btn {
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -372,7 +367,7 @@ textarea.input2 {
 
 .wrap-contact2-form-btn:hover .contact2-form-bgbtn {
   left: 0;
-}
+}*/
 
 /*------------------------------------------------------------------
 [ Responsive ]*/
@@ -447,4 +442,18 @@ textarea.input2 {
     visibility: visible;
     opacity: 1;
   }
+}
+
+span.col-sm-4.teamText {
+  font-family: Poppins-Regular;
+  color: #ADADAD;
+}
+
+.buttons {
+  margin-top:20px;
+margin-left:15%;
+}
+
+.ChooseTeam {
+margin-top:10px;
 }

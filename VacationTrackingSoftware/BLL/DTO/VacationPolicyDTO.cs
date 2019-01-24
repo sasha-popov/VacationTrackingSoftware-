@@ -7,7 +7,6 @@ namespace BLL.DTO
 {
     public class VacationPolicyDTO
     {
-
         public int Id { get; set; }
         [Required(ErrorMessage = "Vacation type is required")]
         public string VacationType { get; set; }

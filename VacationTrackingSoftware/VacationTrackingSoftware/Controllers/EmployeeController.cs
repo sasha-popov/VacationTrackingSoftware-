@@ -32,8 +32,11 @@ namespace VacationTrackingSoftware.Controllers
         [HttpPost("[action]")]
         public UserVacationRequestDTO CreateVacationRequest(UserVacationRequestDTO newVacationRequest)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
             return _employeeService.CreateVacationRequest(newVacationRequest);
-
         }
 
         [HttpGet("[action]")]

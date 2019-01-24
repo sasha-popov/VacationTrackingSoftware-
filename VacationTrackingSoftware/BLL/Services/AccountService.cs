@@ -41,21 +41,24 @@ namespace BLL.Services
             Team team = _teamRepository.GetById(teamId);
             if (team != null)
             {
-                if (role == "Employee")
-                {
-
                     TeamUser teamUser = new TeamUser { Team = team, User = user };
                     _teamUserRepository.Create(teamUser);
                     _teamUserRepository.Save();
-                }
-                else if (role == "Manager")
+            }
+        }
+
+        public void CreateWorkerAndUpdateTeams (AppUser user, int[] teamsId)
+        {
+            List<Team> teams = _teamRepository.FindByListIdTeam(teamsId);
+            if (teams.Count != 0)
+            {
+                foreach (var team in teams)
                 {
                     team.Manager = user;
                     _teamRepository.Update(team);
-                    _teamRepository.Save();
                 }
+                _teamRepository.Save();
             }
-
         }
 
         internal string GetRandomString(int stringLength)

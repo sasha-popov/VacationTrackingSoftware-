@@ -1,12 +1,12 @@
 <p *ngIf="allRoles.Employee===currentRole">View your vacation requests: </p>
-<p *ngIf="allRoles.Manager===currentRole">View new vacation requests of employees: </p>
+<p *ngIf="allRoles.Manager===currentRole">View vacation requests of employees: </p>
 
 <ul >
   <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
     <div>
     <a>
       <span>
-        on dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}
+        On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}
         with type:{{userVacationRequest.vacationType}}, have a status: {{userVacationRequest.status}}<br>
       </span>
     </a>

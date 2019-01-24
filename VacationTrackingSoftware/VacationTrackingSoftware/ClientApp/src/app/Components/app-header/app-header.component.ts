@@ -10,14 +10,14 @@ import { Router } from '@angular/router';
 export class AppHeaderComponent implements OnInit {
   @Input() title: string;
   userName: string;
-  constructor(private authorizeService: AuthorizeService, private router: Router) { }
+  constructor(private authorizeService: AuthorizeService, private router: Router) { }  
   ngOnInit() {
-    this.userName = localStorage.getItem('name'); 
+    this.userName = localStorage.getItem('name');  
   }
 
   logOut() {
     this.authorizeService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/']);   
   }
 
 }

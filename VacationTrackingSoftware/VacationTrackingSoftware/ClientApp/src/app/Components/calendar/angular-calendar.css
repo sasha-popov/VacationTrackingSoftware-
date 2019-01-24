@@ -485,3 +485,7 @@
   height: 0;
   border-color: transparent;
   border-style: solid; }
+
+.btnCheck {
+  margin-left:5px;
+}

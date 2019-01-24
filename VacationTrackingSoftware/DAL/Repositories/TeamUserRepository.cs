@@ -13,9 +13,9 @@ namespace DAL.Repositories
     {
         public TeamUserRepository(ProjectContext context) : base(context) { }
 
-        public List<TeamUser> FindWithObjects()
+        public List<TeamUser> FindWithObjects(string idManager)
         {
-            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).ToList();
+            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).Where(x=>x.Team.Manager.Id==idManager).ToList();
         }
     }
 }

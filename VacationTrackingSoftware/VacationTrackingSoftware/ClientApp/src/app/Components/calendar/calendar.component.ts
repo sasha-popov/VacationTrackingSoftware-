@@ -174,7 +174,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     event,
     newStart,
     newEnd
-  }: CalendarEventTimesChangedEvent): void {
+  }: CalendarEventTimesChangedEvent): void { 
     event.start = newStart;
     event.end = newEnd;
     this.handleEvent('Dropped or resized', event);

@@ -54,6 +54,7 @@ import { AppHeaderComponent } from './Components/app-header/app-header.component
   ],
   imports: [ 
     NgbModule,
+    NgMultiSelectDropDownModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserRegistration } from '../InterfacesAndClasses/UserRegistration'
+import { UserRegistration, ManagerRegistration } from '../InterfacesAndClasses/UserRegistration'
 import { HttpRequestService } from '.././Services/httpRequest.service'
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,10 @@ import { Observable } from 'rxjs';
 export class EmployeeService {
   test = "ttt";
   constructor(private http: HttpRequestService) { }
-  createEmployee(employee: UserRegistration): Observable<UserRegistration>{
+  createEmployee(employee: UserRegistration){
     return this.http.post<UserRegistration>("api/Account/PostCreate", employee); 
+  }
+  createManager(personalData: ManagerRegistration) {
+    return this.http.post("api/Account/PostCreate1", personalData);
   }
 }

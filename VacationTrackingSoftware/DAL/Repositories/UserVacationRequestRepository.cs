@@ -24,6 +24,11 @@ namespace DAL.Repositories
             return this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).ToList();
         }
 
+        public List<UserVacationRequest> GetForListOfUsers(List<AppUser> users)
+        {
+            return this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(x => users.Contains(x.User)).ToList();
+        }
+
         public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
         {
             return RepositoryContext.UserVacantionRequests.Include(x => x.User).FirstOrDefault(x => x.StartDate == startDate && x.EndDate == endDate && x.User.Id == userId);

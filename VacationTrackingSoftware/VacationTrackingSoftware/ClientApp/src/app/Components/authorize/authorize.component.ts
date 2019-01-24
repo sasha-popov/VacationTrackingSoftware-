@@ -45,10 +45,10 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         .subscribe(
           result => {
             if (result) {
-              this.router.navigate(['/home']);
+              this.router.navigate(['/home']); 
             }
           },
-          error => this.errors = error);
+        error => this.errors = error.error.login_failure);
     }
   }
 

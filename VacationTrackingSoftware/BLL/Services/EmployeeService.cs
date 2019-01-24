@@ -149,14 +149,6 @@ namespace BLL.Services
             }
             //count days of current request without company holiday
             allDatesForCurrentRequest = GetListDaysWithoutCompanyHolidays(allDatesForCurrentRequest);
-            //foreach (var checkHoliday in allHolidays)
-            //{
-            //    var item = allDatesForCurrentRequest.SingleOrDefault(x => x.DayOfYear == checkHoliday.Date.DayOfYear);
-            //    if (item != null)
-            //    {
-            //        allDatesForCurrentRequest.Remove(item);
-            //    }
-            //}
 
             //get vacation policy for category        
             List<VacationPolicy> currentVacationPolicy = _vacationPolicyRepository.FindCurrentVacationPolicy(newrequest);
@@ -203,28 +195,31 @@ namespace BLL.Services
 
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
         {
-            List<Team> TeamsOfManager = _teamRepository.FindByManager(user.Id);
-            List <TeamUser> TeamUsers= _teamUserRepository.FindWithObjects();
-            List<AppUser> UsersOfManager = new List<AppUser>();
+            //in coments it is bad aproach
+            //List<Team> TeamsOfManager = _teamRepository.FindByManager(user.Id);
+            List <AppUser> UsersOfManager= _teamUserRepository.FindWithObjects(user.Id).Select(x=>x.User).ToList();
+            //List<AppUser> UsersOfManager = new List<AppUser>();
 
-            foreach (var teamUser in TeamUsers)
-            {
-                foreach (var team in TeamsOfManager)
-                {
-                    if (team.Id == teamUser.Team.Id) UsersOfManager.Add(teamUser.User);
-                }
-            }
+            //foreach (var teamUser in TeamUsers)
+            //{
+            //    foreach (var team in TeamsOfManager)
+            //    {
+            //        if (team.Id == teamUser.Team.Id) UsersOfManager.Add(teamUser.User);
+            //    }
+            //}
 
-            List<UserVacationRequest> UserVacationRequests = _userVacationRequestRepository.GetAllWithTypeHolidays().ToList();
-            List<UserVacationRequest> UserVacationRequestsForManager = new List<UserVacationRequest>();
+            //List<UserVacationRequest> UserVacationRequests = _userVacationRequestRepository.GetAllWithTypeHolidays().ToList();
+            //List<UserVacationRequest> UserVacationRequestsForManager = new List<UserVacationRequest>();
 
-            foreach (var uv in UserVacationRequests)
-            {
-                foreach (var u in UsersOfManager)
-                {
-                    if (u.Id == uv.User.Id) UserVacationRequestsForManager.Add(uv);
-                }
-            }
+            //foreach (var uv in UserVacationRequests)
+            //{
+            //    foreach (var u in UsersOfManager)
+            //    {
+            //        if (u.Id == uv.User.Id) UserVacationRequestsForManager.Add(uv);
+            //    }
+            //}
+
+            List<UserVacationRequest> UserVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
 
             UserVacationRequestsForManager.Where(x => x.Status == (int)RequestStatuses.New);
 

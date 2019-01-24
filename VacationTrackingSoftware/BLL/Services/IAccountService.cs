@@ -8,5 +8,6 @@ namespace BLL.Services
    public interface IAccountService
     {
         void CreateWorkerAndTeamUser(AppUser user, int teamId, string role);
+        void CreateWorkerAndUpdateTeams(AppUser user, int[] teamsId);
     }
 }
