@@ -7,11 +7,11 @@
     <a>
       <span>
         On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}
-        with type:{{userVacationRequest.vacationType}}, have a status: {{userVacationRequest.status}}<br>
+        with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}<br>
       </span>
     </a>
     <span *ngIf="allRoles.Employee===currentRole">
-      <button class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
+      <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
         Delete
       </button>
     </span>
@@ -55,6 +55,12 @@
     </label>
     <button (click)="createVacationRequest(vacationType, startDate.value, endDate.value)" class="btn btn-primary btn-sm">
       add
-    </button>
+    </button><br>
+    <div *ngIf="errors" class="alert alert-danger" role="alert">
+      <strong>Oops!</strong> {{errors}}
+    </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+      {{success}}
+    </div>
   </div>
 </div>

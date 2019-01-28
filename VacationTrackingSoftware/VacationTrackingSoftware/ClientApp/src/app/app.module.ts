@@ -36,7 +36,10 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './Services/auth-guard';
 import { ManagerComponent } from './Components/manager/manager.component';
-import { AppHeaderComponent } from './Components/app-header/app-header.component'; 
+import { AppHeaderComponent } from './Components/app-header/app-header.component';
+import { ScheduleTeamsComponent } from './Components/schedule-teams/schedule-teams.component';
+import { MatDialogModule } from '@angular/material';
+import { TestPopupComponent } from './Components/test-popup/test-popup.component';
   
 
 @NgModule({
@@ -49,28 +52,29 @@ import { AppHeaderComponent } from './Components/app-header/app-header.component
     HolidaysComponent,
     VacationPoliciesComponent,
     EmployeeComponent,
-    VacationRequestComponent, 
-    CalendarComponent, ManagerComponent, AppHeaderComponent  
+    VacationRequestComponent,
+    CalendarComponent, ManagerComponent, AppHeaderComponent, ScheduleTeamsComponent, TestPopupComponent
   ],
-  imports: [ 
+  imports: [
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     FlatpickrModule.forRoot(),
-    RouterModule.forRoot([   
+    RouterModule.forRoot([
       { path: 'hrUser', component: HrUserComponent },
       { path: 'createUser', component: CreateEmployeeComponent },
       { path: 'employee', component: EmployeeComponent },
       { path: 'calendar', component: CalendarComponent },
-      { path: 'login', component: AuthorizeComponent }, 
-      { path: '', redirectTo: '/login', pathMatch: 'full' },         
-      { 
+      { path: 'login', component: AuthorizeComponent },
+      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      {
         path: 'home',
-        canActivate: [AuthGuard],  
+        canActivate: [AuthGuard],
         component: HomeComponent
       },
+      { path: 'testPopup', component: TestPopupComponent}
     ]), 
     BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),
@@ -78,6 +82,7 @@ import { AppHeaderComponent } from './Components/app-header/app-header.component
      provide: DateAdapter,
      useFactory: adapterFactory 
     }),
+    MatDialogModule
 
   ],
   providers: [AuthorizeService,
@@ -95,5 +100,6 @@ import { AppHeaderComponent } from './Components/app-header/app-header.component
 
   bootstrap: [AppComponent],
   //exports: [CalendarComponent]
+  entryComponents: [CreateEmployeeComponent]
 })
 export class AppModule { }  

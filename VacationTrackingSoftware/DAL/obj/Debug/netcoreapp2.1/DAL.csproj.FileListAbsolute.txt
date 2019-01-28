@@ -50,7 +50,9 @@ C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\DAL.dll
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\DAL.pdb
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\BLL.dll
+C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\Newtonsoft.Json.dll
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\BLL.pdb
+C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\bin\Debug\netcoreapp2.1\Newtonsoft.Json.xml
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\obj\Debug\netcoreapp2.1\DAL.csprojAssemblyReference.cache
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\obj\Debug\netcoreapp2.1\DAL.csproj.CoreCompileInputs.cache
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\DAL\obj\Debug\netcoreapp2.1\DAL.AssemblyInfoInputs.cache

@@ -32,14 +32,16 @@ namespace BLL.Services
             _mapper = mapper;
             _userManager = userManager;
         }
-        public void SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
+        public bool SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
         {
             VacationPolicy result = _mapper.Map<VacationPolicy>(newVacationPolicy);
-            var hrUser =_userManager.FindByIdAsync(newVacationPolicy.UserId).Result;
+            //var hrUser =_userManager.FindByIdAsync(newVacationPolicy.UserId).Result;
             //result.HrUser=hrUser;
+            //add validation
             result.VacationType = _vacationTypeRepository.FindByCondition(y => y.Name == newVacationPolicy.VacationType).First();
             _vacationPolicyRepository.Create(result);
             _vacationPolicyRepository.Save();
+            return true;
         }
 
         public List<VacationPolicyDTO> GetVacationPolicies()

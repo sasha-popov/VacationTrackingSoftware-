@@ -18,7 +18,7 @@ export class HolidayService {
   }
 
 
-  addHoliday(holiday: Holiday): Observable<Holiday> {
+  addHoliday(holiday: Holiday) {
     return this.http.post<Holiday>("api/Holiday/AddHoliday", holiday);  
   }
 

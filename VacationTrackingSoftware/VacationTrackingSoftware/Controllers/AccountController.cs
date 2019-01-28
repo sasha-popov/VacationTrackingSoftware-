@@ -11,6 +11,7 @@ using BLL.IRepositories;
 using BLL.Models;
 using BLL.Services;
 using DAL.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -132,7 +134,6 @@ namespace VacationTrackingSoftware.Controllers
         public string PhoneNumber { get; set; }
         [Required]
         public string Role { get; set; }
-        [Required]
         public int TeamId { get; set; }
     }
 
@@ -152,7 +153,6 @@ namespace VacationTrackingSoftware.Controllers
         public string PhoneNumber { get; set; }
         [Required]
         public string Role { get; set; }
-        [Required]
         public int[] TeamsId { get; set; }
     }
 }

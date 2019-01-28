@@ -3,6 +3,7 @@ import { HolidayService } from '../../Services/holiday.service';
 import { Holiday } from '../../InterfacesAndClasses/Holiday'
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { error } from 'util';
 //import { CalendarComponent } from '../../Components/calendar'
 
 @Component({
@@ -17,6 +18,7 @@ export class HolidaysComponent implements OnChanges {
   @Input() holidays;
   isVisible:string
   date: string;
+  errors: string;
   constructor(private holidayService: HolidayService) { }
 
   ngOnChanges() {
@@ -49,6 +51,10 @@ export class HolidaysComponent implements OnChanges {
     this.holidayService.addHoliday(this.holiday).subscribe(result => { 
       if (result != null)
         this.holidays.push(this.holiday);
+    },
+      error => {
+        if (error.error.text == "Account created") {/*code for alert*/ }
+        else { this.errors = error.error.holidayError; }
       })
     };
     //this.holidays.push(this.holiday);

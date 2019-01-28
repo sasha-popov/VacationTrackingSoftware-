@@ -22,7 +22,7 @@ export class VacationRequestService {
   }
 
   deleteUserVacationRequest(userVacationRequest: UserVacationRequest){
-    this.http.delete<UserVacationRequest>("api/Employee/deleteUserVacationRequest/" + userVacationRequest.startDate + "/" + userVacationRequest.endDate).subscribe();      
+    return this.http.delete<UserVacationRequest>("api/Employee/deleteUserVacationRequest/" + userVacationRequest.startDate + "/" + userVacationRequest.endDate);      
   }
 
   changeStatus(choose: boolean, id: number)

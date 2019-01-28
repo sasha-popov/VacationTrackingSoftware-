@@ -6,5 +6,6 @@ export interface UserVacationRequest {
   endDate: Date;
   vacationType: string;
   status: string;
+  payment: number;
 }  
 

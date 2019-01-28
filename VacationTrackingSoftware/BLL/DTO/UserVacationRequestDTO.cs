@@ -9,7 +9,6 @@ namespace BLL.DTO
     {
         [Required]
         public int Id { get; set; }
-        [Required]
         public string UserName { get; set; }
         [Required]
         public string UserId { get; set; }
@@ -21,5 +20,7 @@ namespace BLL.DTO
         public string VacationType { get; set; }
         [Required]
         public string Status { get; set; }
+        [Required]
+        public int Payment { get; set; }
     }
 }

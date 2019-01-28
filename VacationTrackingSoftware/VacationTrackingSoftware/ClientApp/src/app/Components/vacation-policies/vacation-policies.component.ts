@@ -18,6 +18,8 @@ export class VacationPoliciesComponent implements OnInit {
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
   date: string;
+  errors: string;
+  success: string;
 
   clickShowVacationPolicies(): void {  
     if (this.isVisible == "yes") {
@@ -48,7 +50,10 @@ export class VacationPoliciesComponent implements OnInit {
       payments: payments,
       userId: localStorage.getItem('id')
     }
-    this.vacationPoliciesService.sendVacationPolicy(this.vacationPolicy).subscribe(vp => this.vacationPolicies.push(this.vacationPolicy));   
+    this.vacationPoliciesService.sendVacationPolicy(this.vacationPolicy).subscribe(vp => this.vacationPolicies.push(this.vacationPolicy),error => {
+      if (error.status != 400) { this.success = error.error.text; this.errors = ""; this.vacationPolicies.push(this.vacationPolicy); }
+      else { this.errors = error.error.vacationPolicyError; this.success = "" }
+    });   
   }
 
   showAll(): void {

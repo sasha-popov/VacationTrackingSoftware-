@@ -63,6 +63,7 @@ namespace BLL.Services
                     result.Payment = daysForVacation.Payments;
                     _userVacationRequestRepository.Create(result);
                     _userVacationRequestRepository.Save();
+                    userVacationRequestDTO.Payment = daysForVacation.Payments;
                     response = userVacationRequestDTO;
                 }
                 else
@@ -166,11 +167,11 @@ namespace BLL.Services
                 {
                     return new CountOfVacationDTO { Payments = countAllDatesForCurrentRequest, Free = 0 };
                 }
-                else if (countAllDatesPrev > PolicyWithPay.Count)
+                else if (countAllDatesPrev >= PolicyWithPay.Count)
                 {
                     return new CountOfVacationDTO { Payments = 0, Free = countAllDatesForCurrentRequest };
                 }
-                else if (countAllDatesPrev < PolicyWithPay.Count)
+                else if (countAllDatesPrev <= PolicyWithPay.Count)
                 {
                     return new CountOfVacationDTO { Payments = allDatesForCurrentRequest.Count + remainderPayDays, Free = -remainderPayDays };
                 }

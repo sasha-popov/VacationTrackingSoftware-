@@ -10,11 +10,13 @@ using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VacationTrackingSoftware.Helpers;
 
 namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
@@ -35,19 +37,33 @@ namespace VacationTrackingSoftware.Controllers
 
         [HttpDelete("[action]/{name}/{date}")]
         public void DeleteHoliday(string name,DateTime date) {
-            var currentHoliday = _companyHolidayRepository.FindByCondition(x=>x.Description==name && x.Date==date).First();
-            _companyHolidayRepository.Delete(currentHoliday);
-            _companyHolidayRepository.Save();
+            var currentHoliday = _companyHolidayRepository.FindByCondition(x=>x.Description==name && x.Date==date).FirstOrDefault();
+            if (currentHoliday != null)
+            {
+                _companyHolidayRepository.Delete(currentHoliday);
+                _companyHolidayRepository.Save();
+            }
         }
 
         [HttpPost("[action]")]
-        public CompanyHoliday AddHoliday(CompanyHoliday newHoliday)
+        public IActionResult AddHoliday(CompanyHoliday newHoliday)
         {
-            if (ModelState.IsValid )
+            //var response;
+            if (ModelState.IsValid)
             {
-               return _companyHolidayService.AddHoliday(newHoliday);
+                 var result=_companyHolidayService.AddHoliday(newHoliday);
+                //result == null? response = BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState)): response= new OkObjectResult("Holidays create");
+                if (result == null)
+                {
+                    return BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState));
+                }
+                else {
+                    return new OkObjectResult("Holidays create");
+                }
             }
-            return null;
+            else {
+                return BadRequest(Errors.AddErrorToModelState("holidayError", "Invalid dates", ModelState));
+            }
         }
 
 

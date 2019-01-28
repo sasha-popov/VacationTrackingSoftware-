@@ -175,7 +175,7 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: #5AB903;
+  /*background: #65B6E1;*/
 }
 
 .wrap-contact2 {
@@ -183,6 +183,7 @@ iframe {
   background: #fff;
   border-radius: 10px;
   padding: 72px 55px 90px 55px;
+  border-style: solid;
 }
 
 

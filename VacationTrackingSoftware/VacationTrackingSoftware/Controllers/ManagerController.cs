@@ -10,23 +10,27 @@ using Microsoft.AspNetCore.Mvc;
 using BLL.Statuses;
 using BLL.Models;
 using VacationTrackingSoftware.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class ManagerController : ControllerBase
     {
         private IEmployeeService _employeeService;
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private readonly UserManager<AppUser> _userManager;
         private IWorkerRepository _workerRepository;
-        public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository)
+        private ITeamRepository _teamRepository;
+        public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository)
         {
             _employeeService = employeeService;
             _userVacationRequestRepository = userVacationRequestRepository;
             _userManager = userManager;
             _workerRepository = workerRepository;
+            _teamRepository = teamRepository;
         }
         [HttpPost("[action]")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel) {
@@ -38,5 +42,13 @@ namespace VacationTrackingSoftware.Controllers
             _userVacationRequestRepository.Save();
             return uservacationRequest;
         }
+        [HttpGet("[action]")]
+        public List<Team> GetListTeamsAndEmployeeForWorker() {
+            string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
+            var result= _teamRepository.FindByManager(id);
+            return result;
+        }
+
+
     }
 }

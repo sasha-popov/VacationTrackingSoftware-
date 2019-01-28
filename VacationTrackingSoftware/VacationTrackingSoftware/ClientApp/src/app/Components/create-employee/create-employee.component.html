@@ -1,87 +1,90 @@
-<div class="bg-contact2">
-  <div class="container-contact2">
-    <div class="wrap-contact2">
-      <form class="contact2-form validate-form">
-        <span class="contact2-form-title">
-          Form for create
-        </span>
-
-        <div class="wrap-input2 validate-input" data-validate="Name is required">
-          <span class="focus-input2" data-placeholder="NAME"></span>
-          <input class="input2" #employeeName type="text" name="name">
-        </div>
-
-        <div class="wrap-input2 validate-input" data-validate="Name is required">
-          <span class="focus-input2" data-placeholder="SURNAME"></span>
-          <input class="input2" #employeeSurname type="text" name="name">
-        </div>
-
-        <div class="wrap-input2 validate-input" data-validate="Name is required">
-          <span class="focus-input2" data-placeholder="PHONE NUMBER"></span>
-          <input class="input2" #employeePhone type="text" name="name">
-        </div>
-
-        <div class="wrap-input2 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-          <span class="focus-input2" data-placeholder="EMAIL"></span>
-          <input class="input2" #email type="text" name="email">
-        </div>
-        <div class="wrap-input2 validate-input" data-validate="Password is required">
-          <span class="focus-input2" data-placeholder="PASSWORD"></span>
-          <input class="input2" #password type="text" name="name">
-        </div>
-        <span class="col-sm-4 teamText">
-          TYPE:
-        </span>
-        <span>
-          <select #roleType required [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}" class="col-sm-8">
-            <option class="textHolidays" value="Employee">
-              Employee
-            </option>
-            <option class="textHolidays" value="Manager">
-              Manager
-            </option>
-          </select>
-        </span>
-        <br>
-        <div *ngIf="selectedRole==='Employee'" class="ChooseTeam">
-          <span class="col-sm-4 teamText">
-            TEAM:
-          </span>
-          <select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" required class="col-sm-8">
-            <option *ngFor="let team of teams" value={{team.id}}>
-              {{team.name}}
-            </option>
-            <option value=0>without team</option>
-          </select>
-        </div>
-        <br>
-        <div *ngIf="selectedRole==='Manager'">
-          <span class="col-sm-4 teamText">
-            TEAMS:
-          </span>
-          <div class="col-sm-8">
-            <ng-multiselect-dropdown [placeholder]="'Choose teams'"
-                                     [data]="teams"
-                                     [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
-                                     [settings]="dropdownSettings"
-                                     (onSelect)="onItemSelect($event)"
-                                     (onSelectAll)="onSelectAll($event)">
-            </ng-multiselect-dropdown>
+    <div class="wrap-contact2" id="formRegistration">
+      <span class="contact2-form-title">
+        Form for create
+      </span>
+      <mat-dialog-content>
+        <form class="contact2-form validate-form">
+          <div class="wrap-input2 validate-input" data-validate="Name is required">
+            <span class="focus-input2" data-placeholder="NAME"></span>
+            <input class="input2" #employeeName type="text" name="name">
           </div>
+
+          <div class="wrap-input2 validate-input" data-validate="Name is required">
+            <span class="focus-input2" data-placeholder="SURNAME"></span>
+            <input class="input2" #employeeSurname type="text" name="name">
+          </div>
+
+          <div class="wrap-input2 validate-input" data-validate="Name is required">
+            <span class="focus-input2" data-placeholder="PHONE NUMBER"></span>
+            <input class="input2" #employeePhone type="text" name="name">
+          </div>
+
+          <div class="wrap-input2 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+            <span class="focus-input2" data-placeholder="EMAIL"></span>
+            <input class="input2" #email type="text" name="email">
+          </div>
+          <div class="wrap-input2 validate-input" data-validate="Password is required">
+            <span class="focus-input2" data-placeholder="PASSWORD"></span>
+            <input class="input2" #password type="text" name="name">
+          </div>
+          <span class="col-sm-4 teamText">
+            TYPE:
+          </span>
+          <span>
+            <select #roleType required [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}" class="col-sm-8">
+              <option class="textHolidays" value="Employee">
+                Employee
+              </option>
+              <option class="textHolidays" value="Manager">
+                Manager
+              </option>
+            </select>
+          </span>
+          <br>
+          <div *ngIf="selectedRole==='Employee'" class="ChooseTeam">
+            <span class="col-sm-4 teamText">
+              TEAM:
+            </span>
+            <select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" required class="col-sm-8">
+              <option *ngFor="let team of teams" value={{team.id}}>
+                {{team.name}}
+              </option>
+              <option value=0>without team</option>
+            </select>
+          </div>
+          <br>
+          <div *ngIf="selectedRole==='Manager'">
+            <span class="col-sm-4 teamText">
+              TEAMS:
+            </span>
+            <div class="col-sm-8">
+              <ng-multiselect-dropdown [placeholder]="'Choose teams'"
+                                       [data]="teams"
+                                       [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                                       [settings]="dropdownSettings"
+                                       (onSelect)="onItemSelect($event)"
+                                       (onSelectAll)="onSelectAll($event)">
+              </ng-multiselect-dropdown>
+            </div>
+          </div><br>
+        </form>
+      </mat-dialog-content>
+      <mat-dialog-actions>
+        <div class="buttons">
+          <button class="btn btn-primary btn-lg" (click)="createUser(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value)">
+            Create
+          </button>
+          <button class="btn btn-secondary btn-lg" (click)="close()">
+            Close
+          </button>
         </div><br>
-      </form>
-      <div class="buttons">
-        <button class="btn btn-primary btn-lg" (click)="CreateUser(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value)">
-          Create
-        </button>
-        <button class="btn btn-secondary btn-lg" (click)="GoBack()">
-          Back
-        </button>
-      </div><br>
+      </mat-dialog-actions>
       <div *ngIf="errors" class="alert alert-danger" role="alert">
         <strong>Oops!</strong> {{errors}}
       </div>
+      <div *ngIf="successfully" class="alert alert-success" role="alert">
+        {{success}}
+      </div>
     </div>
-  </div>
-</div>
+
 

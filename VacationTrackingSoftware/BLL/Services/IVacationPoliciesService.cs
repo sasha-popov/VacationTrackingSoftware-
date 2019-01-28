@@ -9,7 +9,7 @@ namespace BLL.Services
     {
         List<VacationPolicyDTO> GetVacationPolicies();
         void DeleteVacationPolicy(int years, string vacationType, int payments);
-        void SendVacationPolicy(VacationPolicyDTO newVacationPolicy);
+        bool SendVacationPolicy(VacationPolicyDTO newVacationPolicy);
 
     }
 }

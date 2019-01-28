@@ -8,18 +8,20 @@ using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VacationTrackingSoftware.Helpers;
 
 namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VacationPoliciesController : ControllerBase
     {
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
-        //private IUserRepository _userRepository;
         private IEmployeeService _employeeService;
         private readonly IMapper _mapper;
         private IVacationPoliciesService _vacationPoliciesService;
@@ -28,13 +30,11 @@ namespace VacationTrackingSoftware.Controllers
         public VacationPoliciesController(IMapper mapper,
                                          IVacationTypeRepository vacationTypeRepository, 
                                          IVacationPolicyRepository vacationPolicyRepository, 
-                                         //IUserRepository userRepository,
                                          IEmployeeService employeeService,
                                          IVacationPoliciesService vacationPoliciesService)
         {
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
-            //_userRepository = userRepository;
             _employeeService = employeeService;
             _mapper = mapper;
             _vacationPoliciesService = vacationPoliciesService;
@@ -46,13 +46,21 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
-        public void SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
+        public IActionResult SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
         {
-
+            bool result;
             if (ModelState.IsValid)
             {
-                _vacationPoliciesService.SendVacationPolicy(newVacationPolicy);
+                result=_vacationPoliciesService.SendVacationPolicy(newVacationPolicy);
+                if (result == false)
+                {
+                    return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "This fields is not available", ModelState));
+                }
+                else {
+                    return new OkObjectResult("Vacation policy create");
+                } 
             }
+            return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "This fields is not available", ModelState));
         }
 
         [HttpGet("[action]")]

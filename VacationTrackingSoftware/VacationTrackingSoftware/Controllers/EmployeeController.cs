@@ -7,14 +7,17 @@ using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using VacationTrackingSoftware.Helpers;
 
 namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private IEmployeeService _employeeService;
@@ -30,13 +33,22 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
-        public UserVacationRequestDTO CreateVacationRequest(UserVacationRequestDTO newVacationRequest)
+        public IActionResult CreateVacationRequest(UserVacationRequestDTO newVacationRequest)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            return _employeeService.CreateVacationRequest(newVacationRequest);
+            if (!ModelState.IsValid || newVacationRequest.StartDate<DateTime.Now)
+            {
+                return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "Invalid data, please try again", ModelState));
+            }
+            var vacationRequest= _employeeService.CreateVacationRequest(newVacationRequest);
+            if (vacationRequest != null)
+            {
+                //string count=vacationRequest.Payment.ToString();
+                return new OkObjectResult(vacationRequest);
+            }
+            else {
+                return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "You do not have so many vacation days, or invalid DateTime.Please check the data and try again", ModelState));
+            }
+
         }
 
         [HttpGet("[action]")]
@@ -54,7 +66,8 @@ namespace VacationTrackingSoftware.Controllers
             AppUser user = _userManager.FindByIdAsync(userId).Result;
             if (_userManager.IsInRoleAsync(user, "Manager").Result)
             {
-                return _employeeService.ShowUserVacationRequestForManager(user);
+                var result= _employeeService.ShowUserVacationRequestForManager(user);
+                return result;
             }
 
             return null;
@@ -66,8 +79,12 @@ namespace VacationTrackingSoftware.Controllers
             //change this
             var userId = User.FindFirst("id").Value;
             var currentVacationRequest = _userVacationRequestRepository.GetWithWorker(startDate, endDate, userId);
-            _userVacationRequestRepository.Delete(currentVacationRequest);
-            _userVacationRequestRepository.Save();
+            if (currentVacationRequest != null && startDate>DateTime.Now)
+            {
+                _userVacationRequestRepository.Delete(currentVacationRequest);
+                _userVacationRequestRepository.Save();
+            }
+
         }
 
     }

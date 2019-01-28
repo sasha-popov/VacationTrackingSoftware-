@@ -44,7 +44,13 @@
     </label><br>
     <button (click)="sendVacationPolicy(years.value, vacationType, count.value, payments.value)" class="btn btn-primary btn-sm">
       add
-    </button>
+    </button><br>
+    <div *ngIf="errors" class="alert alert-danger" role="alert">
+      <strong>Oops!</strong> {{errors}}
+    </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+      {{success}}
+    </div>
 
   </div>
 </div>

@@ -8,6 +8,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { error } from '@angular/compiler/src/util';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 
 @Component({
   selector: 'app-create-employee',
@@ -26,18 +27,19 @@ export class CreateEmployeeComponent implements OnInit{
   teamsId = [];
   selectedItem: number;
   errors: string;
-  constructor(private employeeService: EmployeeService, private location: Location, private teamService: TeamService, private router: Router) {
+  successfully: string;
+  constructor(private employeeService: EmployeeService, private location: Location, private teamService: TeamService, private router: Router, private dialogRef: MatDialogRef<CreateEmployeeComponent>) {
 
   }
   ngOnInit() {
     this.getAllTeams();
     console.log(this.teams);
   }
-  CreateUser(name: string, surname: string, phoneNumber: string, email: string, password: string, role: string): void {
+  createUser(name: string, surname: string, phoneNumber: string, email: string, password: string, role: string): void {
     this.errors = '';
     this.check = this.checkDate(name, surname, phoneNumber, email, password, role);
     if (this.check == true) {
-      if (this.selectedItems.length == 0) {
+      if (role == "Employee") {
         this.employee = {
           firstName: name,
           lastName: surname,
@@ -48,15 +50,19 @@ export class CreateEmployeeComponent implements OnInit{
           teamId: this.selectedItem
         }
         this.employeeService.createEmployee(this.employee).subscribe(res => {
+          //optional
           this.router.navigate(['/']);
         },
-          error => this.errors = error.error.registration);
+          error => {
+            if (error.status = 400) { this.errors = error.error.registration; this.successfully = "" }
+            else if (error.status = 200) { this.successfully = error.error.registration; this.errors = "" }
+          })
       }
       else {
         this.selectedItems.forEach(item => {
           this.teamsId.push(item.id)
         })
-        
+
         this.manager = {
           firstName: name,
           lastName: surname,
@@ -67,13 +73,16 @@ export class CreateEmployeeComponent implements OnInit{
           teamsId: this.teamsId
         }
         this.employeeService.createManager(this.manager).subscribe(res => {
+
           this.router.navigate(['/']);
         },
-          error => this.errors = error.error.registration);
+          error => {
+            if (error.status = 400) { this.errors = error.error.registration; this.successfully = "" }
+            else if (error.status = 200) { this.successfully = error.error.registration; this.errors = "" }
+          })
       }
-
-
-    } 
+    }
+    else { this.errors="Please, write all fields" }
   }
 
   checkDate(name: string, surname: string, phoneNumber: string, email: string, password: string, role: string): boolean {
@@ -97,8 +106,8 @@ export class CreateEmployeeComponent implements OnInit{
     }); 
   }
 
-  GoBack() { 
-    this.location.back();     
+  close() {
+    this.dialogRef.close();
   }
 
   onItemSelect(item: any) {
