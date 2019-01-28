@@ -40,6 +40,7 @@ import { AppHeaderComponent } from './Components/app-header/app-header.component
 import { ScheduleTeamsComponent } from './Components/schedule-teams/schedule-teams.component';
 import { MatDialogModule } from '@angular/material';
 import { TestPopupComponent } from './Components/test-popup/test-popup.component';
+
   
 
 @NgModule({
@@ -47,8 +48,8 @@ import { TestPopupComponent } from './Components/test-popup/test-popup.component
     AppComponent,
     HomeComponent,
     AuthorizeComponent,
-    HrUserComponent,
     CreateEmployeeComponent,
+    HrUserComponent,
     HolidaysComponent,
     VacationPoliciesComponent,
     EmployeeComponent,
@@ -82,8 +83,7 @@ import { TestPopupComponent } from './Components/test-popup/test-popup.component
      provide: DateAdapter,
      useFactory: adapterFactory 
     }),
-    MatDialogModule
-
+    MatDialogModule,
   ],
   providers: [AuthorizeService,
     EmployeeService,

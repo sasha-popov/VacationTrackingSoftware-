@@ -28,14 +28,9 @@ export class HrUserComponent implements OnInit {
   openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.hasBackdrop = false;
+    //dialogConfig.autoFocus = true;  
+    dialogConfig.hasBackdrop = true;
     //this.dialog.open(CreateEmployeeComponent, dialogConfig);
-    if (this.fileNameDialogRef == null) {
-      this.fileNameDialogRef = this.dialog.open(CreateEmployeeComponent, dialogConfig);
-    }
-    else {
-      this.fileNameDialogRef = null;
-    }
+      let dialogRef = this.dialog.open(CreateEmployeeComponent, dialogConfig);
   }
 }
