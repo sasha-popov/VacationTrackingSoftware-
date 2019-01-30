@@ -38,7 +38,6 @@ namespace VacationTrackingSoftware.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
             if (identity == null)
             {
@@ -54,8 +53,6 @@ namespace VacationTrackingSoftware.Controllers
             if (currentRole == "HrUser") RoleEnum = (int)Roles.HrUser;
             if (currentRole == "Manager") RoleEnum = (int)Roles.Manager;
             if (currentRole == "Admin") RoleEnum = (int)Roles.Admin;
-
-            //int indexRole=
 
             var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, RoleEnum);
             return new OkObjectResult(jwt);

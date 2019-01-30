@@ -10,7 +10,7 @@ namespace DAL.Data
     public class ProjectContext : IdentityDbContext<AppUser>
     {
         public ProjectContext(DbContextOptions options) : base(options) { }
-        public ProjectContext() { }
+        //public ProjectContext() { }
 
         public DbSet<Project> Projects { get; set; }
         public DbSet<Team> Teams { get; set; }

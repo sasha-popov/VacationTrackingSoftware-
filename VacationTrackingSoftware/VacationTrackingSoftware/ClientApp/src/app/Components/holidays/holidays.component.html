@@ -4,7 +4,7 @@
   <li *ngFor="let holiday of holidays" class="textHolidays">
       <span class="col-sm-10">Date:{{holiday.date|date}}
     Name:{{holiday.description}}</span>
-    <button *ngIf="currentRole===roles.HrUser" title="delete holiday" (click)="clickdeleteHoliday(delete,holiday)" class="btn btn-secondary btn-sm pos">
+    <button *ngIf="currentRole===roles.HrUser" title="delete holiday" (click)="clickdeleteHoliday('delete',holiday)" class="btn btn-secondary btn-sm pos">
       x
     </button>
   </li>

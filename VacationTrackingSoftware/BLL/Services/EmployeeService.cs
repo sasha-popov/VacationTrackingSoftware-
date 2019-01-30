@@ -84,20 +84,26 @@ namespace BLL.Services
         public List<UserVacationRequestDTO> ShowUserVacationRequest(string id)
         {
             var userVacationRequests = _userVacationRequestRepository.FindForUser(id).ToList();
-            //Mapper.Reset();
-            //Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
-            //.ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
-            //.ForMember("UserId", opt => opt.MapFrom(user => user.User.Id))
-            //.ForMember("UserName", opt => opt.MapFrom(user => user.User.UserName))
-            //.ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
-            //var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(userVacationRequests);
             var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequests);
             return result;
         }
+        public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
+        {
+            //in coments it is bad aproach
+            List<AppUser> UsersOfManager = _teamUserRepository.FindForManager(user.Id).Select(x => x.User).ToList();
+
+            
+            List<UserVacationRequest> userVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
+            //optional
+            var actualRequests = userVacationRequestsForManager.Where(x => x.StartDate > DateTime.Now);
+             var result = _mapper.Map<List<UserVacationRequestDTO>>(actualRequests);
+            return result;
+        }
+
 
         private List<bool> CheckDublicate(UserVacationRequest newRequest)
         {
-            var currentRequests = _userVacationRequestRepository.FindByConditionWithUser(x => x.User.Id == newRequest.User.Id).ToList();
+            var currentRequests = _userVacationRequestRepository.FindForUser(newRequest.User.Id).ToList();
 
             List<bool> checkOverlaps = new List<bool>();
             if (currentRequests.Count == 0)
@@ -116,7 +122,8 @@ namespace BLL.Services
 
         private CountOfVacationDTO CheckVacationPolicies(UserVacationRequest newrequest)
         {
-            var allvacations = _userVacationRequestRepository.FindByConditionWithUser(x => x.User.Id == newrequest.User.Id).Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
+            //check it
+            var allvacations = _userVacationRequestRepository.FindForUser(newrequest.User.Id).Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
             var allHolidays = _companyHolidayRepository.FindByCondition(x => x.Date.Year == DateTime.Now.Year);
             List<DateTime> allDatesPrev = new List<DateTime>();
 
@@ -133,14 +140,6 @@ namespace BLL.Services
                 }
                 //count prev days without company holidays
                 allDatesPrev = GetListDaysWithoutCompanyHolidays(allDatesPrev);
-                //foreach (var checkHoliday in allHolidays)
-                //{
-                //    var item = allDatesPrev.SingleOrDefault(x => x.DayOfYear == checkHoliday.Date.DayOfYear);
-                //    if (item != null)
-                //    {
-                //        allDatesPrev.Remove(item);
-                //    }
-                //}
             }
 
             //count days of current request
@@ -198,46 +197,7 @@ namespace BLL.Services
             return allDateTimes;
         }
 
-        public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
-        {
-            //in coments it is bad aproach
-            //List<Team> TeamsOfManager = _teamRepository.FindByManager(user.Id);
-            List <AppUser> UsersOfManager= _teamUserRepository.FindForManager(user.Id).Select(x=>x.User).ToList();
-            //List<AppUser> UsersOfManager = new List<AppUser>();
 
-            //foreach (var teamUser in TeamUsers)
-            //{
-            //    foreach (var team in TeamsOfManager)
-            //    {
-            //        if (team.Id == teamUser.Team.Id) UsersOfManager.Add(teamUser.User);
-            //    }
-            //}
-
-            //List<UserVacationRequest> UserVacationRequests = _userVacationRequestRepository.GetAllWithTypeHolidays().ToList();
-            //List<UserVacationRequest> UserVacationRequestsForManager = new List<UserVacationRequest>();
-
-            //foreach (var uv in UserVacationRequests)
-            //{
-            //    foreach (var u in UsersOfManager)
-            //    {
-            //        if (u.Id == uv.User.Id) UserVacationRequestsForManager.Add(uv);
-            //    }
-            //}
-
-            List<UserVacationRequest> UserVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
-
-            //UserVacationRequestsForManager.Where(x => x.Status == (int)RequestStatuses.New);
-            //Mapper.Reset();
-            //Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
-            //.ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
-            //.ForMember("UserId", opt => opt.MapFrom(u => u.User.Id))
-            //.ForMember("UserName", opt => opt.MapFrom(u => u.User.UserName))
-            //.ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
-            //var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
-
-            var result = _mapper.Map<List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
-            return result;
-        }
 
     }
 }

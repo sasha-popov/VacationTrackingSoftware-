@@ -89,10 +89,8 @@ export class CalendarComponent implements OnInit, OnChanges {
     //this.showAllHolidays();
     //this.showUserVacationRequest();
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.HrUser){
-      this.showAllHolidays();
-    } else {
-      this.showAllHolidays();
+    this.showAllHolidays();
+    if (parseInt(localStorage.getItem('rolesUser'), 10) != Roles.HrUser){
       this.showUserVacationRequest();
     }   //this.createEvents();
   }
@@ -100,14 +98,17 @@ export class CalendarComponent implements OnInit, OnChanges {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
       this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => {
         this.userVacationRequests = requests;
-        this.addUserVacationRequestToEvents(this.userVacationRequests);
-
+        if (this.userVacationRequests != null) {
+          this.addUserVacationRequestToEvents(this.userVacationRequests);
+        }
       });
     }
     else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
       this.vacationRequestService.showUserVacationRequest().subscribe(requests => {
         this.userVacationRequests = requests;
-        this.addUserVacationRequestToEvents(this.userVacationRequests);
+        if (this.userVacationRequests != null) {
+          this.addUserVacationRequestToEvents(this.userVacationRequests);
+        }
       });
     }
   }
@@ -127,7 +128,10 @@ export class CalendarComponent implements OnInit, OnChanges {
         },
         draggable: true
       }
-    }).forEach(item => this.events.push(item));
+    }).forEach(item => {
+      this.events.push(item);
+      this.refresh.next();
+      });
   }
   addUserVacationRequestToEvents(userVR: UserVacationRequest[]) {
     userVR.map((element) => {
@@ -161,8 +165,10 @@ export class CalendarComponent implements OnInit, OnChanges {
         },
         draggable: true
       }
-    }).forEach(itemV => this.events.push(itemV));
-    this.refresh.next();
+    }).forEach(item => {
+      this.events.push(item);
+      this.refresh.next();
+    });
   }
     activeDayIsOpen: boolean = true;
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

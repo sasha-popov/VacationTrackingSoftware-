@@ -12,6 +12,7 @@ import { error } from 'protractor';
 import { CreateVacationRequestComponent } from '../create-vacation-request/create-vacation-request.component';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
+import { request } from 'https';
 @Component({
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',

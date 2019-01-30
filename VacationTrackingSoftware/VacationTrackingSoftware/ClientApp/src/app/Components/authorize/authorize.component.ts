@@ -28,7 +28,9 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         this.brandNew = param['brandNew'];
         this.credentials.email = param['email'];   
       });
-    if (localStorage.getItem('auth_token') != null) this.router.navigate(['/home']);
+    if (localStorage.getItem('auth_token') != null) {
+      this.router.navigate(['/home']);
+    };
   }
   ngOnDestroy() {
     // prevent memory leak by unsubscribing
@@ -45,7 +47,8 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
         .subscribe(
           result => {
             if (result) {
-              this.router.navigate(['/home']); 
+              window.location.reload();
+              this.router.navigate(['/home']);
             }
           },
         error => this.errors = error.error.login_failure);

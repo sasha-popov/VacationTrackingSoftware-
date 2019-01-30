@@ -53,6 +53,8 @@ export class AuthorizeService extends BaseService {
   logout() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('userRoles');
+    localStorage.removeItem('id');
+    localStorage.removeItem("name");
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
   }

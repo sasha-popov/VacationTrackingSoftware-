@@ -20,7 +20,7 @@ namespace DAL.Repositories
 
         public List<Team> FindByManager(string idManager)
         {
-            return RepositoryContext.Teams.Include(x => x.Manager).Include(x=>x.TeamUsers).Where(x => x.Manager.Id == idManager).ToList();
+            return RepositoryContext.Teams.Include(x => x.Manager).Include(x=>x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == idManager).ToList();
         }
 
     }

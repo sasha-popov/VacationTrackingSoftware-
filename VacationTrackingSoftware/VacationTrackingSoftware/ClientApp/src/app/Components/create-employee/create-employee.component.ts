@@ -54,8 +54,8 @@ export class CreateEmployeeComponent implements OnInit{
           this.router.navigate(['/']);
         },
           error => {
-            if (error.status = 400) { this.errors = error.error.registration; this.successfully = "" }
-            else if (error.status = 200) { this.successfully = error.error.registration; this.errors = "" }
+            if (error.status == 400) { this.errors = error.error.registration; this.successfully = "" }
+            else if (error.status == 200) { this.successfully = error.error.text; this.errors = "" }
           })
       }
       else {

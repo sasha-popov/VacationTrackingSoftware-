@@ -44,6 +44,8 @@ namespace VacationTrackingSoftware.Controllers
         }
         [HttpGet("[action]")]
         public List<Team> GetListTeamsAndEmployeeForWorker() {
+            //var userId = User.FindFirst("id").Value;
+            //var manager = _userManager.FindByIdAsync(userId).Result;
             string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
             var result= _teamRepository.FindByManager(id);
             return result;

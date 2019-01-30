@@ -55,8 +55,17 @@ namespace VacationTrackingSoftware.Controllers
         public List<UserVacationRequestDTO> ShowUserVacationRequest()
         {
             var userId = User.FindFirst("id").Value;
-            var result = _employeeService.ShowUserVacationRequest(userId);
-            return result;
+            AppUser user = _userManager.FindByIdAsync(userId).Result;
+            var check = _userManager.IsInRoleAsync(user, "Employee");
+            if (check.Result)
+            {
+                var result = _employeeService.ShowUserVacationRequest(userId);
+                return result;
+            }
+
+            return null;
+
+
         }
 
         [HttpGet("[action]")]
@@ -64,10 +73,10 @@ namespace VacationTrackingSoftware.Controllers
         {
             var userId = User.FindFirst("id").Value;
             AppUser user = _userManager.FindByIdAsync(userId).Result;
-            var check = _userManager.IsInRoleAsync(user, "Manager").Result;
-            if (check)
+            var check = _userManager.IsInRoleAsync(user, "Manager");
+            if (check.Result)
             {
-                var result= _employeeService.ShowUserVacationRequestForManager(user);
+                var result = _employeeService.ShowUserVacationRequestForManager(user);
                 return result;
             }
 

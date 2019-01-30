@@ -68,17 +68,18 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
     FlatpickrModule.forRoot(),
     MatTabsModule,
     RouterModule.forRoot([
-      { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent/*, runGuardsAndResolvers: 'always'*/ },
+      { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent, runGuardsAndResolvers: 'always' },
       { path: 'login', component: AuthorizeComponent },
       { path: '', redirectTo: '/login', canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent/*, runGuardsAndResolvers: 'always'*/ },
-      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent/*, runGuardsAndResolvers:'always'*/ },
-      { path: 'holidays', component: HolidaysComponent /*runGuardsAndResolvers: 'always'*/ },
+      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent, runGuardsAndResolvers: 'always'},
+      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers:'always' },
+      { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       {
         path: 'home',
         canActivate: [AuthGuard],
         component: HomeComponent
       },
+      { path: 'yourTeams', component: ScheduleTeamsComponent, canActivate: [AuthGuard]}
     ], {onSameUrlNavigation:'reload'}), 
     BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),

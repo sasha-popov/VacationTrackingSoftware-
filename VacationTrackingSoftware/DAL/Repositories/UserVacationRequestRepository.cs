@@ -14,15 +14,17 @@ namespace DAL.Repositories
     {
         public UserVacationRequestRepository(ProjectContext context) : base(context) { }
 
-        public IEnumerable<UserVacationRequest> FindByConditionWithUser(Expression<Func<UserVacationRequest, bool>> expression)
+        public List<UserVacationRequest> GetForListOfUsers(List<AppUser> users)
         {
-            var result= this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(expression);
+            var allRequest = this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType);
+            var result = allRequest.Where(x => users.Contains(x.User)).ToList();
             return result;
         }
 
         public IEnumerable<UserVacationRequest> FindForUser(string userId)
         {
-            var result = this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(x => x.User.Id == userId);
+            var allRequest = this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType);
+            var result = allRequest.Where(x => x.User.Id == userId);
             return result;
         }
 
@@ -32,11 +34,6 @@ namespace DAL.Repositories
             return this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).ToList();
         }
 
-        public List<UserVacationRequest> GetForListOfUsers(List<AppUser> users)
-        {
-            var result= this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(x => users.Contains(x.User)).ToList();
-            return result;
-        }
 
         public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
         {

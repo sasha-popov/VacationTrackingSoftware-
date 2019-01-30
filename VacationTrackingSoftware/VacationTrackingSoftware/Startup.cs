@@ -50,6 +50,7 @@ namespace VacationTrackingSoftware
             services.AddDbContext<ProjectContext>(options =>
       options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddScoped<IWorkerRepository, WorkerRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
