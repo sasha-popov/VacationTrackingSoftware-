@@ -42,13 +42,13 @@ export class VacationRequestComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    this.showUserVacationRequest();
   }
   ngOnInit() {
     //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
     this.roles = Roles;
     this.dateNowISO;
-    this.showUserVacationRequest();
   }
 
   deleteVacationRequest(userVacationRequest: UserVacationRequest): void {
@@ -60,10 +60,14 @@ export class VacationRequestComponent implements OnInit, OnChanges {
   }
   showUserVacationRequest(): void {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
-      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => this.userVacationRequests = requests);
+      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => {
+        this.userVacationRequests = requests;
+      });
     }
     else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
-      this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests);
+      this.vacationRequestService.showUserVacationRequest().subscribe(requests => {
+        this.userVacationRequests = requests;
+      });
     }
   }
   changeStatus(choose: boolean, id: number, userVacationRequest: UserVacationRequest): void {

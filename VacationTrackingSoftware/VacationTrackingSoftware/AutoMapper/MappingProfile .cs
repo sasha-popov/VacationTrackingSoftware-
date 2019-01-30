@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO;
 using BLL.Models;
+using BLL.Statuses;
 
 namespace VacationTrackingSoftware.AutoMapper
 {
@@ -15,6 +16,12 @@ namespace VacationTrackingSoftware.AutoMapper
             .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name));
             CreateMap<VacationPolicyDTO, VacationPolicy>()
              .ForMember("VacationType", opt => opt.MapFrom(c => new VacationType())); 
-        }       
+
+            CreateMap<UserVacationRequest, UserVacationRequestDTO>()
+            .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
+            .ForMember("UserId", opt => opt.MapFrom(user => user.User.Id))
+            .ForMember("UserName", opt => opt.MapFrom(user => user.User.UserName))
+            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status)));
+        }
     }
 }

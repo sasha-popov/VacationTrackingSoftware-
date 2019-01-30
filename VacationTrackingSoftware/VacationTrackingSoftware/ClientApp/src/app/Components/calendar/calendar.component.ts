@@ -86,10 +86,15 @@ export class CalendarComponent implements OnInit, OnChanges {
   constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService, private calendarService:CalendarService) {
   }
   ngOnInit() {
-    this.showAllHolidays();
-    this.showUserVacationRequest();
+    //this.showAllHolidays();
+    //this.showUserVacationRequest();
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    //this.createEvents();
+    if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.HrUser){
+      this.showAllHolidays();
+    } else {
+      this.showAllHolidays();
+      this.showUserVacationRequest();
+    }   //this.createEvents();
   }
   showUserVacationRequest(): void {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {

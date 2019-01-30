@@ -64,7 +64,8 @@ namespace VacationTrackingSoftware.Controllers
         {
             var userId = User.FindFirst("id").Value;
             AppUser user = _userManager.FindByIdAsync(userId).Result;
-            if (_userManager.IsInRoleAsync(user, "Manager").Result)
+            var check = _userManager.IsInRoleAsync(user, "Manager").Result;
+            if (check)
             {
                 var result= _employeeService.ShowUserVacationRequestForManager(user);
                 return result;

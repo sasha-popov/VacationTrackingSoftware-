@@ -21,6 +21,7 @@ namespace BLL.Services
         private ITeamRepository _teamRepository;
         private UserManager<AppUser> _userManager;
         private ITeamUserRepository _teamUserRepository;
+        private readonly IMapper _mapper;
 
         public EmployeeService(
             IUserVacationRequestRepository userVacationRequestRepository,
@@ -30,7 +31,8 @@ namespace BLL.Services
             IWorkerRepository workerRepository,
             ITeamRepository teamRepository,
             ITeamUserRepository teamUserRepository ,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            IMapper mapper)
         {
             _userVacationRequestRepository = userVacationRequestRepository;
             _vacationTypeRepository = vacationTypeRepository;
@@ -40,6 +42,7 @@ namespace BLL.Services
             _teamRepository = teamRepository;
             _userManager = userManager;
             _teamUserRepository = teamUserRepository;
+            _mapper = mapper;
         }
 
 
@@ -80,14 +83,15 @@ namespace BLL.Services
 
         public List<UserVacationRequestDTO> ShowUserVacationRequest(string id)
         {
-            var userVacationRequests = _userVacationRequestRepository.FindByConditionWithUser(x => x.User.Id == id).ToList();
-            Mapper.Reset();
-            Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
-            .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
-            .ForMember("UserId", opt => opt.MapFrom(user => user.User.Id))
-            .ForMember("UserName", opt => opt.MapFrom(user => user.User.UserName))
-            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
-            var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(userVacationRequests);
+            var userVacationRequests = _userVacationRequestRepository.FindForUser(id).ToList();
+            //Mapper.Reset();
+            //Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
+            //.ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
+            //.ForMember("UserId", opt => opt.MapFrom(user => user.User.Id))
+            //.ForMember("UserName", opt => opt.MapFrom(user => user.User.UserName))
+            //.ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
+            //var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(userVacationRequests);
+            var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequests);
             return result;
         }
 
@@ -198,7 +202,7 @@ namespace BLL.Services
         {
             //in coments it is bad aproach
             //List<Team> TeamsOfManager = _teamRepository.FindByManager(user.Id);
-            List <AppUser> UsersOfManager= _teamUserRepository.FindWithObjects(user.Id).Select(x=>x.User).ToList();
+            List <AppUser> UsersOfManager= _teamUserRepository.FindForManager(user.Id).Select(x=>x.User).ToList();
             //List<AppUser> UsersOfManager = new List<AppUser>();
 
             //foreach (var teamUser in TeamUsers)
@@ -222,15 +226,16 @@ namespace BLL.Services
 
             List<UserVacationRequest> UserVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
 
-            UserVacationRequestsForManager.Where(x => x.Status == (int)RequestStatuses.New);
+            //UserVacationRequestsForManager.Where(x => x.Status == (int)RequestStatuses.New);
+            //Mapper.Reset();
+            //Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
+            //.ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
+            //.ForMember("UserId", opt => opt.MapFrom(u => u.User.Id))
+            //.ForMember("UserName", opt => opt.MapFrom(u => u.User.UserName))
+            //.ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
+            //var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
 
-            Mapper.Reset();
-            Mapper.Initialize(x => x.CreateMap<UserVacationRequest, UserVacationRequestDTO>()
-            .ForMember("VacationType", opt => opt.MapFrom(c => c.VacationType.Name))
-            .ForMember("UserId", opt => opt.MapFrom(u => u.User.Id))
-            .ForMember("UserName", opt => opt.MapFrom(u => u.User.UserName))
-            .ForMember("Status", opt => opt.MapFrom(statuses => Enum.GetName(typeof(RequestStatuses), statuses.Status))));
-            var result = Mapper.Map<List<UserVacationRequest>, List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
+            var result = _mapper.Map<List<UserVacationRequestDTO>>(UserVacationRequestsForManager);
             return result;
         }
 
