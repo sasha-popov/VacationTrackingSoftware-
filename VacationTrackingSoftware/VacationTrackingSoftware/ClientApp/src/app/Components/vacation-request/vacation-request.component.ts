@@ -4,13 +4,14 @@ import { VacationRequestService } from '../../Services/vacation-request.service'
 import { VacationType } from '../../InterfacesAndClasses/VacationType';
 import { VacationPoliciesService } from '../../Services/vacation-policies.service';
 import { DatePipe } from '@angular/common';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 import { Response } from 'selenium-webdriver/http';
-import { StatusesRequest } from '../../StatusesRequest';
+import { StatusesRequest } from '../../Enums/StatusesRequest';
 import { Console } from '@angular/core/src/console';
 import { error } from 'protractor';
 import { CreateVacationRequestComponent } from '../create-vacation-request/create-vacation-request.component';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
+import { Router, NavigationEnd } from '@angular/router';
 @Component({
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',
@@ -27,10 +28,20 @@ export class VacationRequestComponent implements OnInit, OnChanges {
   success: string;
   dateNow: Date = new Date();
   dateNowISO = this.dateNow.toISOString();
-  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService, private dialog: MatDialog) { }
+  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService, private dialog: MatDialog, private router: Router) {
+    this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initialiseInvites();
+      }
+    });
+  }
+
+  initialiseInvites() {
+    this.showUserVacationRequest();
+  }
 
   ngOnChanges() {
-    //this.showUserVacationRequest();
   }
   ngOnInit() {
     //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
@@ -75,7 +86,9 @@ export class VacationRequestComponent implements OnInit, OnChanges {
     dialogConfig.hasBackdrop = true;
     let dialogRef = this.dialog.open(CreateVacationRequestComponent, dialogConfig);
   }
-  clickShowUserVacationRequest(name: string, userVacationRequest: UserVacationRequest) {
+
+
+  clickdeleteVacationRequest(name: string, userVacationRequest: UserVacationRequest) {
     if (confirm("Are you sure to " + name + " this request")) {
       this.deleteVacationRequest(userVacationRequest);
     }
@@ -86,5 +99,7 @@ export class VacationRequestComponent implements OnInit, OnChanges {
       this.changeStatus(choose, id, userVacationRequest);
     }
   }
+
+
 }
 

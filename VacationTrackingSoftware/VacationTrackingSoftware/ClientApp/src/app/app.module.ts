@@ -6,12 +6,10 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AuthorizeComponent } from './Components/authorize/authorize.component';
-import { HrUserComponent } from './Components/hr-user/hr-user.component';
 import { CreateEmployeeComponent } from './Components/create-employee/create-employee.component';
 import { HolidaysComponent } from './Components/holidays/holidays.component';
 import { VacationPoliciesComponent } from './Components/vacation-policies/vacation-policies.component';
 import { VacationRequestComponent } from './Components/vacation-request/vacation-request.component';
-import { EmployeeComponent } from './Components/employee/employee.component';
 import { HomeComponent } from './Components/home/home.component'
 
 import { AuthorizeService } from './Services/authorize.service';
@@ -35,12 +33,10 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './Services/auth-guard';
-import { ManagerComponent } from './Components/manager/manager.component';
 import { AppHeaderComponent } from './Components/app-header/app-header.component';
 import { ScheduleTeamsComponent } from './Components/schedule-teams/schedule-teams.component';
 import { MatDialogModule, MatTabsModule } from '@angular/material';
 //import { MatTabsModule } from '@angular/material/tabs';
-import { TestPopupComponent } from './Components/test-popup/test-popup.component';
 import { CreateVacationPolicyComponent } from './Components/create-vacation-policy/create-vacation-policy.component';
 import { HeaderService } from './Services/HeaderService/header-service.service';
 import { CreateHolidaysComponent } from './Components/create-holidays/create-holidays.component';
@@ -53,12 +49,15 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
     HomeComponent,
     AuthorizeComponent,
     CreateEmployeeComponent,
-    HrUserComponent,
     HolidaysComponent,
     VacationPoliciesComponent,
-    EmployeeComponent,
     VacationRequestComponent,
-    CalendarComponent, ManagerComponent, AppHeaderComponent, ScheduleTeamsComponent, TestPopupComponent, CreateVacationPolicyComponent, CreateHolidaysComponent, CreateVacationRequestComponent
+    CalendarComponent,
+    AppHeaderComponent,
+    ScheduleTeamsComponent,
+    CreateVacationPolicyComponent,
+    CreateHolidaysComponent,
+    CreateVacationRequestComponent
   ],
   imports: [
     NgbModule,
@@ -69,19 +68,18 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
     FlatpickrModule.forRoot(),
     MatTabsModule,
     RouterModule.forRoot([
-      { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent },
+      { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent, runGuardsAndResolvers: 'always' },
       { path: 'login', component: AuthorizeComponent },
       { path: '', redirectTo: '/login', canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent },
-      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent },
-      { path: 'holidays', component: HolidaysComponent },
+      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent, runGuardsAndResolvers: 'always' },
+      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers:'always' },
+      { path: 'holidays', component: HolidaysComponent, runGuardsAndResolvers: 'always' },
       {
         path: 'home',
         canActivate: [AuthGuard],
         component: HomeComponent
       },
-      { path: 'testPopup', component: TestPopupComponent}
-    ]), 
+    ], {onSameUrlNavigation:'reload'}), 
     BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),
     CalendarModule.forRoot({

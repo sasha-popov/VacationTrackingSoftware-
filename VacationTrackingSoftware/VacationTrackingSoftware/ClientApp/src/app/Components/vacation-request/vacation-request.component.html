@@ -1,6 +1,4 @@
 <app-app-header title='Momentz-4-ever'></app-app-header>
-<!--<p *ngIf="roles.Employee===currentRole">View your vacation requests: </p>
-<p *ngIf="roles.Manager===currentRole">View vacation requests of employees: </p>-->
 <ul class="heroes">
   <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
     <div>
@@ -8,7 +6,7 @@
         On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}, with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}
     </a>
     <span *ngIf="roles.Employee===currentRole">
-      <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
+      <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="clickdeleteVacationRequest('delete',userVacationRequest)">
         Delete
       </button>
     </span>

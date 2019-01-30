@@ -6,9 +6,14 @@ button.btn.btn-secondary.btn-lg.float-right {
 }
 nav.mat-tab-nav-bar.mat-primary {
   width: auto;
-  position: fixed;
+  position: relative;
 }
 .jumbotron {
   padding-top: 48px;
   padding-bottom: 52px;
+}
+.logo{
+  padding: 1px 1px;
+  max-width: 100px;
+  margin-top: -40px;
 }

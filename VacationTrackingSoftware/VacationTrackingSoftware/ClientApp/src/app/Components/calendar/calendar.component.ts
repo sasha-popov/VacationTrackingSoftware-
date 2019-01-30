@@ -21,8 +21,9 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { map } from "rxjs/operators";
 import { EventColor } from 'calendar-utils';
 import { CalendarService } from '../../Services/CalendarService';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 import { DatePipe } from '@angular/common';
+import { request } from 'http';
 
 const colors: any = {
   red: {
@@ -75,9 +76,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.holidayService.showAll()
       .subscribe(holidays => {
         this.holidays = holidays;
-        //console.log(this.holidays.length);
-        //console.log(holidays.length);
-        //this.createEvents();
+        this.addHolidayToEvents(this.holidays);
       })
   }
 
@@ -90,73 +89,76 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.showAllHolidays();
     this.showUserVacationRequest();
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    this.createEvents();
-
+    //this.createEvents();
   }
   showUserVacationRequest(): void {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
-      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => this.userVacationRequests = requests);
+      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => {
+        this.userVacationRequests = requests;
+        this.addUserVacationRequestToEvents(this.userVacationRequests);
+
+      });
     }
     else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
-      this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests);
-    }
-  }
-  createEvents(): void {
-    this.events = [];
-    if (this.holidays != undefined) {
-      this.holidays.map((element) => {
-        return {
-          start: new Date(element.date),
-          end: new Date(endOfDay(element.date)),
-          title: element.description,
-          color: colors.yellow,
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true
-          },
-          draggable: true
-        }
-      }).forEach(item => this.events.push(item));
-    }
-    if (this.userVacationRequests != undefined) {
-      var description;
-      this.userVacationRequests.map((element) => {
-        if (this.currentRole == Roles.Employee) {
-          description = element.vacationType;
-        }
-        else if (this.currentRole == Roles.Manager) {
-          description = "Employee: " + element.userName+", vacation type: "+element.vacationType + ", StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate)+".";
-        }
-        var color: EventColor; 
-        if (element.status == "New") {
-          color = colors.blue;
-        }
-        else if (element.status == "Declined") {
-          color = colors.red;
-        }
-        else if (element.status == "Accepted") { 
-          color = colors.green;
-        }
-        return {
-          start: new Date(element.startDate),
-          end: new Date(element.endDate),
-          title: description,
-          color: color,
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true
-          },
-          draggable: true
-        } 
-      }).forEach(itemV => this.events.push(itemV));
-      this.refresh.next();
+      this.vacationRequestService.showUserVacationRequest().subscribe(requests => {
+        this.userVacationRequests = requests;
+        this.addUserVacationRequestToEvents(this.userVacationRequests);
+      });
     }
   }
 
+  addHolidayToEvents(holidays: Holiday[]) {
+    holidays.map((element) => {
+      return {
+        start: new Date(element.date),
+        end: new Date(endOfDay(element.date)),
+        title: element.description,
+        color: colors.yellow,
+        actions: this.actions,
+        allDay: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        },
+        draggable: true
+      }
+    }).forEach(item => this.events.push(item));
+  }
+  addUserVacationRequestToEvents(userVR: UserVacationRequest[]) {
+    userVR.map((element) => {
+      var description;
+      if (this.currentRole == Roles.Employee) {
+        description = element.vacationType;
+      }
+      else if (this.currentRole == Roles.Manager) {
+        description = "Employee: " + element.userName + ", vacation type: " + element.vacationType + ", StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate) + ".";
+      }
+      var color: EventColor;
+      if (element.status == "New") {
+        color = colors.blue;
+      }
+      else if (element.status == "Declined") {
+        color = colors.red;
+      }
+      else if (element.status == "Accepted") {
+        color = colors.green;
+      }
+      return {
+        start: new Date(element.startDate),
+        end: new Date(element.endDate),
+        title: description,
+        color: color,
+        actions: this.actions,
+        allDay: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        },
+        draggable: true
+      }
+    }).forEach(itemV => this.events.push(itemV));
+    this.refresh.next();
+  }
     activeDayIsOpen: boolean = true;
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -203,4 +205,62 @@ export class CalendarComponent implements OnInit, OnChanges {
     });
     this.refresh.next();
   }
+
+
+  //old method
+  //createEvents(): void {
+  //  this.events = [];
+  //  if (this.holidays != undefined) {
+  //    this.holidays.map((element) => {
+  //      return {
+  //        start: new Date(element.date),
+  //        end: new Date(endOfDay(element.date)),
+  //        title: element.description,
+  //        color: colors.yellow,
+  //        actions: this.actions,
+  //        allDay: true,
+  //        resizable: {
+  //          beforeStart: true,
+  //          afterEnd: true
+  //        },
+  //        draggable: true
+  //      }
+  //    }).forEach(item => this.events.push(item));
+  //  }
+  //  if (this.userVacationRequests != undefined) {
+  //    var description;
+  //    this.userVacationRequests.map((element) => {
+  //      if (this.currentRole == Roles.Employee) {
+  //        description = element.vacationType;
+  //      }
+  //      else if (this.currentRole == Roles.Manager) {
+  //        description = "Employee: " + element.userName + ", vacation type: " + element.vacationType + ", StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate) + ".";
+  //      }
+  //      var color: EventColor;
+  //      if (element.status == "New") {
+  //        color = colors.blue;
+  //      }
+  //      else if (element.status == "Declined") {
+  //        color = colors.red;
+  //      }
+  //      else if (element.status == "Accepted") {
+  //        color = colors.green;
+  //      }
+  //      return {
+  //        start: new Date(element.startDate),
+  //        end: new Date(element.endDate),
+  //        title: description,
+  //        color: color,
+  //        actions: this.actions,
+  //        allDay: true,
+  //        resizable: {
+  //          beforeStart: true,
+  //          afterEnd: true
+  //        },
+  //        draggable: true
+  //      }
+  //    }).forEach(itemV => this.events.push(itemV));
+  //    this.refresh.next();
+  //  }
+  //}
 }

@@ -3,7 +3,7 @@ import { HolidayService } from '../../Services/holiday.service';
 import { Holiday } from '../../InterfacesAndClasses/Holiday'
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
-import { Roles } from '../../Roles'
+import { Roles } from '../../Enums/Roles'
 import { CreateHolidaysComponent } from '../create-holidays/create-holidays.component';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 //import { CalendarComponent } from '../../Components/calendar'
@@ -38,6 +38,12 @@ export class HolidaysComponent implements OnInit {
     this.holidayService.deleteHoliday(holiday).subscribe();
     this.holidays.splice(this.holidays.indexOf(holiday),1);
     //this.holidays = this.holidays.filter(h => h !== holiday);
+  }
+
+  clickdeleteHoliday(name: string, holiday: Holiday) {
+    if (confirm("Are you sure to " + name + " this holiday?")) {
+      this.deleteHoliday(holiday);
+    }
   }
 
   fileNameDialogRef: MatDialogRef<CreateHolidaysComponent>;

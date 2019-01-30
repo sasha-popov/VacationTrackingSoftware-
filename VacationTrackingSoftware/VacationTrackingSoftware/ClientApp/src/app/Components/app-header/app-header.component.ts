@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthorizeService } from '../../Services/authorize.service';
 import { Router } from '@angular/router';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { CreateEmployeeComponent } from '../create-employee/create-employee.component';
 import { HeaderService } from '../../Services/HeaderService/header-service.service'

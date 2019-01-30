@@ -1,14 +1,16 @@
 <div class="jumbotron">
-  <img src={{pathImages}}>
-  <nav mat-tab-nav-bar>
+  <img src={{pathImages}} class="logo col-sm-2 flex" routerLink="/home" title="Go to home">
+  <nav mat-tab-nav-bar class="col-sm-6">
     <a mat-tab-link *ngIf="currentRole===roles.HrUser" (click)="openDialog()">Create a new worker</a>
     <a mat-tab-link routerLink="/vacationPolicies" routerLinkActive #vacationPoliciesTab="routerLinkActive" [active]="vacationPoliciesTab.isActive">VacationPolicy</a>
     <a mat-tab-link routerLink="/holidays" routerLinkActive #holidaysTab="routerLinkActive" [active]="holidaysTab.isActive">Holidays</a>
     <a mat-tab-link *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" routerLinkActive #vacationRequestsTab="routerLinkActive" [active]="vacationRequestsTab.isActive">Vacation request</a>
     <a mat-tab-link routerLink="/calendar" routerLinkActive #calendarTab="routerLinkActive" [active]="calendarTab.isActive">Calendar</a>
   </nav>
+  <div>
   <button class="btn btn-secondary btn-lg float-right" type="submit" (click)="logOut()">
     Log out
   </button>
   <span class="float-right">Hello {{userName}}</span>
+</div>
 </div>

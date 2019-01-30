@@ -3,7 +3,7 @@ import { UserVacationRequest } from '../../InterfacesAndClasses/UserVacationRequ
 import { VacationRequestService } from '../../Services/vacation-request.service';
 import { VacationType } from '../../InterfacesAndClasses/VacationType';
 import { VacationPoliciesService } from '../../Services/vacation-policies.service';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
@@ -52,14 +52,18 @@ export class CreateVacationRequestComponent implements OnInit {
     this.vacationRequestService.createVacationRequest(this.userVacationRequest).subscribe(rez => {
       //need to fix that
       //this.userVacationRequest.payment = parseInt(rez);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/vacationRequests']);
       this.dialogRef.close();
     }, error => {
-      if (error.status = 400) { }
+      if (error.status == 200) {
+        this.success = error.error.vacationRequestError; this.errors = "";
+        this.router.navigate(['/vacationRequests']);
+        this.dialogRef.close();
+        }
       else {
-        this.errors = error.error.vacationRequestError; this.success = "";
-        this.router.navigate(['/home']);
-        this.dialogRef.close();}
+        this.errors = error.error.vacationRequestError;
+        this.success = "";
+      }
     });
   } 
 

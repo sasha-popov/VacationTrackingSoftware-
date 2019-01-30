@@ -3,7 +3,7 @@ import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HomeService } from '../../Services/home.service';
 import { AuthorizeService } from '../../Services/authorize.service';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +14,9 @@ export class HomeComponent implements OnInit{
   public constructor(private route: ActivatedRoute, private homeService: HomeService) { 
   }
   currentRole: any;
-  allRoles;
+  roles;
   ngOnInit() {
-    this.allRoles = Roles;
+    this.roles = Roles;
     this.currentRole = parseInt(localStorage.getItem('rolesUser'),10);
   }
 

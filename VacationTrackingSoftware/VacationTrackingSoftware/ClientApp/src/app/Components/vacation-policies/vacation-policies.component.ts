@@ -5,7 +5,7 @@ import { VacationPolicy } from '../../InterfacesAndClasses/VacationPolicy';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { CreateVacationPolicyComponent } from '../create-vacation-policy/create-vacation-policy.component';
-import { Roles } from '../../Roles';
+import { Roles } from '../../Enums/Roles';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { Roles } from '../../Roles';
 })
 export class VacationPoliciesComponent implements OnInit {
   currentRole: any;
-  allRoles;
+  roles;
   vacationPolicies: VacationPolicy[];
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
@@ -29,7 +29,7 @@ export class VacationPoliciesComponent implements OnInit {
     this.showAll();
     this.getVacationTypes(); 
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    this.allRoles = Roles;
+    this.roles = Roles;
   }
   getVacationTypes(): void {
     this.vacationPoliciesService.getVacationTypes()  
@@ -46,11 +46,20 @@ export class VacationPoliciesComponent implements OnInit {
 
   showAll(): void {
     this.vacationPoliciesService.showAll()
-      .subscribe(vp => this.vacationPolicies = vp); 
+      .subscribe(vp => {
+        this.vacationPolicies = vp;
+      }); 
   }
 
   deleteVacationPolicy(vacationPolisy: VacationPolicy): void {
     this.vacationPoliciesService.deleteVacationPolicy(vacationPolisy); 
     this.vacationPolicies = this.vacationPolicies.filter(h => h !== vacationPolisy);   
-  }  
+  }
+
+  clickdeleteVacationRequest(name: string, vacationPolisy: VacationPolicy) {
+    if (confirm("Are you sure to " + name + " this policy?")) {
+      this.deleteVacationPolicy(vacationPolisy);
+    }
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Roles } from './Roles';
+import { Roles } from './Enums/Roles';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { CreateEmployeeComponent } from './Components/create-employee/create-employee.component';
 import { Component, OnInit, Input } from '@angular/core';
