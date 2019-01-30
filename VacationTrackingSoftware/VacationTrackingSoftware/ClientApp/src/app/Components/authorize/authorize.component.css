@@ -4,9 +4,8 @@
 }
 
 body {
-  margin: 0;
   color: #6a6f8c;
-  background: #c8c8c8;
+  background: rgba(40,57,101,.9);
   font: 600 16px/18px 'Open Sans',sans-serif;
 }
 
@@ -32,7 +31,7 @@ a {
 .login-wrap {
   width: 100%;
   margin: auto;
-  max-width: 525px;
+  max-width: 300px;
   min-height: 670px;
   position:fixed;
   box-shadow: 0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
@@ -190,4 +189,11 @@ a {
 
 .foot-lnk {
   text-align: center;
+}
+
+#items {
+  padding:30px 30px;
+  width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }

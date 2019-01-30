@@ -54,12 +54,11 @@ export class CalendarComponent implements OnInit, OnChanges {
   currentRole: any;
   @ViewChild('modalContent')
   modalContent: TemplateRef<any>;
-  @Input() userVacationRequests;
+  userVacationRequests: UserVacationRequest[];
   @Input() holidays;
   pipe = new DatePipe('en-US');
   
   ngOnChanges(changes: SimpleChanges) {
-    this.createEvents();
   }
   view: CalendarView = CalendarView.Month; 
 
@@ -71,33 +70,37 @@ export class CalendarComponent implements OnInit, OnChanges {
     action: string;
     event: CalendarEvent;
   };
+  @Input() events: CalendarEvent[] = [];
+  showAllHolidays(): void {
+    this.holidayService.showAll()
+      .subscribe(holidays => {
+        this.holidays = holidays;
+        //console.log(this.holidays.length);
+        //console.log(holidays.length);
+        //this.createEvents();
+      })
+  }
 
-  actions: CalendarEventAction[] = [
-    //{
-    //  label: '<i class="fa fa-fw fa-pencil"></i>',
-    //  onClick: ({ event }: { event: CalendarEvent }): void => {
-    //    this.handleEvent('Edited', event);
-    //  }
-    //},
-    //{
-    //  label: '<i class="fa fa-fw fa-times"></i>',
-    //  onClick: ({ event }: { event: CalendarEvent }): void => {
-    //    this.events = this.events.filter(iEvent => iEvent !== event);
-    //    this.handleEvent('Deleted', event);
-    //  }
-    //}
-  ];
+  actions: CalendarEventAction[] = [];
   refresh: Subject<any> = new Subject();
 
-
-
   constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService, private calendarService:CalendarService) {
-
   }
   ngOnInit() {
+    this.showAllHolidays();
+    this.showUserVacationRequest();
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
+    this.createEvents();
+
   }
-  events: CalendarEvent[] = [];
+  showUserVacationRequest(): void {
+    if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
+      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => this.userVacationRequests = requests);
+    }
+    else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
+      this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests);
+    }
+  }
   createEvents(): void {
     this.events = [];
     if (this.holidays != undefined) {
@@ -117,7 +120,6 @@ export class CalendarComponent implements OnInit, OnChanges {
         }
       }).forEach(item => this.events.push(item));
     }
-
     if (this.userVacationRequests != undefined) {
       var description;
       this.userVacationRequests.map((element) => {

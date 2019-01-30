@@ -3,6 +3,9 @@ import { VacationPoliciesService } from '../../Services/vacation-policies.servic
 import { VacationType } from '../../InterfacesAndClasses/VacationType';
 import { VacationPolicy } from '../../InterfacesAndClasses/VacationPolicy';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
+import { CreateVacationPolicyComponent } from '../create-vacation-policy/create-vacation-policy.component';
+import { Roles } from '../../Roles';
 
 
 @Component({
@@ -12,48 +15,33 @@ import { ActivatedRoute } from '@angular/router';
   
 })
 export class VacationPoliciesComponent implements OnInit {
-  @Input() isHrUser: string;
-  @Input() isVisible: string;
+  currentRole: any;
+  allRoles;
   vacationPolicies: VacationPolicy[];
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
   date: string;
   errors: string;
   success: string;
-
-  clickShowVacationPolicies(): void {  
-    if (this.isVisible == "yes") {
-      this.isVisible = "";
-    }
-    else {
-      this.isVisible = "yes";
-    }
-  }
-  constructor(private vacationPoliciesService: VacationPoliciesService, private route: ActivatedRoute) { }
+  constructor(private vacationPoliciesService: VacationPoliciesService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.showAll();
     this.getVacationTypes(); 
-
+    this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
+    this.allRoles = Roles;
   }
   getVacationTypes(): void {
     this.vacationPoliciesService.getVacationTypes()  
       .subscribe(types => this.vacationTypes = types);  
   }
 
-  sendVacationPolicy(years: number, vacationType: string, count: number, payments: number): void { 
-    this.vacationPolicy = {
-      id: 0,
-      workingYear: years,
-      vacationType: vacationType,
-      count: count,
-      payments: payments,
-      userId: localStorage.getItem('id')
-    }
-    this.vacationPoliciesService.sendVacationPolicy(this.vacationPolicy).subscribe(vp => this.vacationPolicies.push(this.vacationPolicy),error => {
-      if (error.status != 400) { this.success = error.error.text; this.errors = ""; this.vacationPolicies.push(this.vacationPolicy); }
-      else { this.errors = error.error.vacationPolicyError; this.success = "" }
-    });   
+  fileNameDialogRef: MatDialogRef<CreateVacationPolicyComponent>;
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.hasBackdrop = true;
+    let dialogRef = this.dialog.open(CreateVacationPolicyComponent, dialogConfig);
   }
 
   showAll(): void {

@@ -17,8 +17,17 @@ export class HomeComponent implements OnInit{
   allRoles;
   ngOnInit() {
     this.allRoles = Roles;
-    Roles.Admin;
     this.currentRole = parseInt(localStorage.getItem('rolesUser'),10);
   }
+
+  //fileNameDialogRef: MatDialogRef<CreateEmployeeComponent>;
+  //openDialog() {
+  //  const dialogConfig = new MatDialogConfig();
+  //  dialogConfig.disableClose = true;
+  //  //dialogConfig.autoFocus = true;  
+  //  dialogConfig.hasBackdrop = true;
+  //  //this.dialog.open(CreateEmployeeComponent, dialogConfig);
+  //  let dialogRef = this.dialog.open(CreateEmployeeComponent, dialogConfig);
+  //}
 
 }

@@ -1,28 +1,25 @@
-<p *ngIf="allRoles.Employee===currentRole">View your vacation requests: </p>
-<p *ngIf="allRoles.Manager===currentRole">View vacation requests of employees: </p>
-
-<ul >
+<app-app-header title='Momentz-4-ever'></app-app-header>
+<!--<p *ngIf="roles.Employee===currentRole">View your vacation requests: </p>
+<p *ngIf="roles.Manager===currentRole">View vacation requests of employees: </p>-->
+<ul class="heroes">
   <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
     <div>
     <a>
-      <span>
-        On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}
-        with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}<br>
-      </span>
+        On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}, with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}
     </a>
-    <span *ngIf="allRoles.Employee===currentRole">
+    <span *ngIf="roles.Employee===currentRole">
       <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="deleteVacationRequest(userVacationRequest)">
         Delete
       </button>
     </span>
-    <span *ngIf="allRoles.Manager===currentRole">
+    <span *ngIf="roles.Manager===currentRole">
     <span>
-      <button (click)="changeStatus(true, userVacationRequest.id, userVacationRequest)" class="btn btn-primary btn-sm">
+      <button *ngIf="userVacationRequest.startDate>dateNowISO" (click)="clickMethodchangeStatus('accept',true, userVacationRequest.id, userVacationRequest)" class="btn btn-primary btn-sm">
         Accept
       </button>
     </span>
     <span>
-      <button (click)="changeStatus(false, userVacationRequest.id, userVacationRequest)" class="btn btn-secondary btn-sm">
+      <button *ngIf="userVacationRequest.startDate>dateNowISO" (click)="clickMethodchangeStatus('decline',false, userVacationRequest.id, userVacationRequest)" class="btn btn-secondary btn-sm">
         Decline
       </button>
     </span>
@@ -30,37 +27,6 @@
       </div>
   </li>
 </ul>
-<div *ngIf="allRoles.Employee===currentRole">
-  <p>ADD NEW VACATION REQUEST:</p>
-  <div class="formHoliday">
-    <span class="col-sm-4">
-      Type:
-    </span>
-    <select [(ngModel)]="vacationType" required class="col-sm-8">
-      <option *ngFor="let vacationType of vacationTypes" class="textHolidays" value={{vacationType.name}}>
-        {{vacationType.name}}
-      </option>
-    </select>
-    <label>
-      <span class="col-sm-4">
-        Start date:
-      </span>
-      <input type="date" #startDate class="col-sm-8" />
-    </label>
-    <label>
-      <span class="col-sm-4">
-        End date:
-      </span>
-      <input type="date" #endDate class="col-sm-8" />
-    </label>
-    <button (click)="createVacationRequest(vacationType, startDate.value, endDate.value)" class="btn btn-primary btn-sm">
-      add
-    </button><br>
-    <div *ngIf="errors" class="alert alert-danger" role="alert">
-      <strong>Oops!</strong> {{errors}}
-    </div>
-    <div *ngIf="success" class="alert alert-success" role="alert">
-      {{success}}
-    </div>
-  </div>
-</div>
+<button *ngIf="currentRole===roles.Employee" type="button" class="btn btn-primary btn-lg" (click)="openDialog()">
+  Create a new vacation request
+</button>

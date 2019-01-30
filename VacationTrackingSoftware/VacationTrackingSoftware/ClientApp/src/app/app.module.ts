@@ -38,9 +38,13 @@ import { AuthGuard } from './Services/auth-guard';
 import { ManagerComponent } from './Components/manager/manager.component';
 import { AppHeaderComponent } from './Components/app-header/app-header.component';
 import { ScheduleTeamsComponent } from './Components/schedule-teams/schedule-teams.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatTabsModule } from '@angular/material';
+//import { MatTabsModule } from '@angular/material/tabs';
 import { TestPopupComponent } from './Components/test-popup/test-popup.component';
-
+import { CreateVacationPolicyComponent } from './Components/create-vacation-policy/create-vacation-policy.component';
+import { HeaderService } from './Services/HeaderService/header-service.service';
+import { CreateHolidaysComponent } from './Components/create-holidays/create-holidays.component';
+import { CreateVacationRequestComponent } from './Components/create-vacation-request/create-vacation-request.component';
   
 
 @NgModule({
@@ -54,7 +58,7 @@ import { TestPopupComponent } from './Components/test-popup/test-popup.component
     VacationPoliciesComponent,
     EmployeeComponent,
     VacationRequestComponent,
-    CalendarComponent, ManagerComponent, AppHeaderComponent, ScheduleTeamsComponent, TestPopupComponent
+    CalendarComponent, ManagerComponent, AppHeaderComponent, ScheduleTeamsComponent, TestPopupComponent, CreateVacationPolicyComponent, CreateHolidaysComponent, CreateVacationRequestComponent
   ],
   imports: [
     NgbModule,
@@ -63,13 +67,14 @@ import { TestPopupComponent } from './Components/test-popup/test-popup.component
     HttpClientModule,
     FormsModule,
     FlatpickrModule.forRoot(),
+    MatTabsModule,
     RouterModule.forRoot([
-      { path: 'hrUser', component: HrUserComponent },
-      { path: 'createUser', component: CreateEmployeeComponent },
-      { path: 'employee', component: EmployeeComponent },
-      { path: 'calendar', component: CalendarComponent },
+      { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent },
       { path: 'login', component: AuthorizeComponent },
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: '', redirectTo: '/login', canActivate: [AuthGuard], pathMatch: 'full' },
+      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent },
+      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent },
+      { path: 'holidays', component: HolidaysComponent },
       {
         path: 'home',
         canActivate: [AuthGuard],
@@ -95,11 +100,16 @@ import { TestPopupComponent } from './Components/test-popup/test-popup.component
     ConfigService,
     AuthGuard,
     CalendarService,
-    TeamService
+    TeamService,
+    HeaderService
   ],
 
   bootstrap: [AppComponent],
   //exports: [CalendarComponent]
-  entryComponents: [CreateEmployeeComponent]
+  entryComponents: [CreateEmployeeComponent,
+    CreateVacationPolicyComponent,
+    CreateHolidaysComponent,
+    CreateVacationRequestComponent
+  ]
 })
 export class AppModule { }  

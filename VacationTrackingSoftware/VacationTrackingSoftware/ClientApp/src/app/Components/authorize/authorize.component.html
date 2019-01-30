@@ -1,6 +1,7 @@
-<div class="imgBack">
-<div class="login-wrap">
+
+
   <div class="login-html">
+    <div id="items">
     <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
     <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
     <form #f="ngForm" novalidate (ngSubmit)="login(f)">
@@ -23,9 +24,8 @@
       <div *ngIf="errors" class="alert alert-danger" role="alert">
         <strong>Oops!</strong> {{errors}}
       </div>
-
     </form>
+      </div>
   </div>
-  </div>
-</div>
+
 

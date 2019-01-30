@@ -8,12 +8,12 @@
     position: relative;
     cursor: pointer;
     background-color: #EEE;
-    margin: .5em;
     padding: .3em 0;
     height: 3.1em;
     border-radius: 4px;
-    font-size: 73%;
-    width: 88%;
+    width: 40%;
+    text-align: center;
+    margin: 2px auto;
   }
 
     .heroes li:hover {
@@ -79,4 +79,7 @@ button {
 }
 .main {
   margin-top: 5pt;
+}
+button.btn.btn-primary.btn-lg {
+  margin: 10px 40%;
 }

@@ -32,7 +32,8 @@ namespace VacationTrackingSoftware.Controllers
         [HttpGet("[action]")]
         public List<CompanyHoliday> GetForCurrentYear()
         {
-            return _companyHolidayRepository.FindByCondition(x => x.Date.Year == 2019).ToList();
+            var result= _companyHolidayRepository.FindByCondition(x => x.Date.Year == 2019).ToList();
+            return result;
         }
 
         [HttpDelete("[action]/{name}/{date}")]

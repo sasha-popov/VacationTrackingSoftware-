@@ -42,7 +42,6 @@ C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Identity.Core.xml
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Identity.Stores.xml
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\bin\Debug\netcoreapp2.1\Newtonsoft.Json.xml
-C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.csprojAssemblyReference.cache
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.csproj.CoreCompileInputs.cache
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.AssemblyInfoInputs.cache
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.AssemblyInfo.cs

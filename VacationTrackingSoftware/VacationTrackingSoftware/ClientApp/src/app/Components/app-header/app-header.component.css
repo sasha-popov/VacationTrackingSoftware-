@@ -1,3 +1,14 @@
 span.float-right.username {
   margin-right: 2%;
 }
+button.btn.btn-secondary.btn-lg.float-right {
+  margin-left: 2%;
+}
+nav.mat-tab-nav-bar.mat-primary {
+  width: auto;
+  position: fixed;
+}
+.jumbotron {
+  padding-top: 48px;
+  padding-bottom: 52px;
+}

@@ -1,57 +1,16 @@
-<!--<a (click)="clickShowVacationPolicies()">View vacation policies</a><br>-->
-<button type="button" (click)="clickShowVacationPolicies()" class="btn btn-primary btn-lg btn-block main">View vacation policies</button>
-<ul class="heroes col-sm-12" *ngIf="isVisible">
+<app-app-header title='Momentz-4-ever'></app-app-header>
+<ul class="heroes col-sm-12" >
   <li *ngFor="let vacationPolicy of vacationPolicies">
-    <span class="col-sm-10">
+    <span class="col-sm-11">
       To {{vacationPolicy.workingYear}} year, type: {{vacationPolicy.vacationType}}
       count: {{vacationPolicy.count}}, payments: {{vacationPolicy.payments}}
     </span>
-    <button *ngIf="isHrUser" title="delete holiday" (click)="deleteVacationPolicy(vacationPolicy)" class="btn btn-secondary btn-sm pos">
+    <button *ngIf="currentRole===allRoles.HrUser" title="delete holiday" (click)="deleteVacationPolicy(vacationPolicy)" class="btn btn-secondary btn-sm pos">
       x
     </button>
   </li>
 </ul>
-<div *ngIf="isHrUser">
-  <p>ADD NEW VACATION POLICY:</p>
-  <div class="formVacation">
-    <label>
-      <span class="col-sm-4">
-        Years:
-      </span>
-      <input #years class="col-sm-8" />
-    </label>
-    <label>
-      <span class="col-sm-4">
-        Types:
-      </span>
-      <select [(ngModel)]="vacationType" required class="col-sm-8">
-        <option *ngFor="let vacationType of vacationTypes" class="textHolidays" value={{vacationType.name}}>
-          {{vacationType.name}}
-        </option>
-      </select>
-    </label>
-    <label>
-      <span class="col-sm-4">
-        Count:
-      </span>
-      <input #count class="col-sm-8 " />
-    </label>
-    <label>
-      <span class="col-sm-4">
-        Payments:
-      </span>
-      <input #payments class="col-sm-8" />
-    </label><br>
-    <button (click)="sendVacationPolicy(years.value, vacationType, count.value, payments.value)" class="btn btn-primary btn-sm">
-      add
-    </button><br>
-    <div *ngIf="errors" class="alert alert-danger" role="alert">
-      <strong>Oops!</strong> {{errors}}
-    </div>
-    <div *ngIf="success" class="alert alert-success" role="alert">
-      {{success}}
-    </div>
-
-  </div>
-</div>
+<button *ngIf="currentRole===allRoles.HrUser" type="button" class="btn btn-primary btn-lg" (click)="openDialog()">
+  Create a new Vacation Policy
+</button>
 

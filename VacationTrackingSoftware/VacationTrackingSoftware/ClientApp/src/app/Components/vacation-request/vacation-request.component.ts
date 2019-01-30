@@ -9,6 +9,8 @@ import { Response } from 'selenium-webdriver/http';
 import { StatusesRequest } from '../../StatusesRequest';
 import { Console } from '@angular/core/src/console';
 import { error } from 'protractor';
+import { CreateVacationRequestComponent } from '../create-vacation-request/create-vacation-request.component';
+import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 @Component({
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',
@@ -20,47 +22,23 @@ export class VacationRequestComponent implements OnInit, OnChanges {
   @Input() userVacationRequests;
   date: string;
   currentRole: any;
-  allRoles;
+  roles;
   errors: string;
   success: string;
   dateNow: Date = new Date();
   dateNowISO = this.dateNow.toISOString();
-  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService) { }
-  vacationTypes: VacationType[];
+  constructor(private vacationRequestService: VacationRequestService, private vacationPoliciesService: VacationPoliciesService, private dialog: MatDialog) { }
+
   ngOnChanges() {
     //this.showUserVacationRequest();
   }
   ngOnInit() {
     //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    this.getVacationTypes();
-    this.allRoles = Roles;
+    this.roles = Roles;
     this.dateNowISO;
+    this.showUserVacationRequest();
   }
-  getVacationTypes(): void {
-    this.vacationPoliciesService.getVacationTypes()
-      .subscribe(types => this.vacationTypes = types);
-  }
-  createVacationRequest(vacationType: string, startDate: Date, endDate: Date): void {  
-    this.userVacationRequest = {
-      id: 0,
-      startDate: startDate,
-      endDate: endDate,
-      userId: localStorage.getItem('id'),
-      userName: localStorage.getItem('name'),
-      vacationType: vacationType,    
-      status: "new",
-      payment: 0
-    } 
-    this.vacationRequestService.createVacationRequest(this.userVacationRequest).subscribe(rez => {
-      //need to fix that
-      //this.userVacationRequest.payment = parseInt(rez);
-      this.errors = ""; this.userVacationRequests.push(rez);
-    }, error => {
-      if (error.status = 400) { }
-      else { this.errors = error.error.vacationRequestError; this.success=""}
-    });  
-  } 
 
   deleteVacationRequest(userVacationRequest: UserVacationRequest): void {
     this.vacationRequestService.deleteUserVacationRequest(userVacationRequest).subscribe(rez => {
@@ -69,7 +47,14 @@ export class VacationRequestComponent implements OnInit, OnChanges {
     }); 
 
   }
-
+  showUserVacationRequest(): void {
+    if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
+      this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => this.userVacationRequests = requests);
+    }
+    else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
+      this.vacationRequestService.showUserVacationRequest().subscribe(requests => this.userVacationRequests = requests);
+    }
+  }
   changeStatus(choose: boolean, id: number, userVacationRequest: UserVacationRequest): void {
     this.vacationRequestService.changeStatus(choose, id).subscribe(res => {
       if (res != null) {
@@ -82,7 +67,24 @@ export class VacationRequestComponent implements OnInit, OnChanges {
         this.userVacationRequests.push(userVacationRequest);
       }
     });
+  }
+  fileNameDialogRef: MatDialogRef<CreateVacationRequestComponent>;
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.hasBackdrop = true;
+    let dialogRef = this.dialog.open(CreateVacationRequestComponent, dialogConfig);
+  }
+  clickShowUserVacationRequest(name: string, userVacationRequest: UserVacationRequest) {
+    if (confirm("Are you sure to " + name + " this request")) {
+      this.deleteVacationRequest(userVacationRequest);
+    }
+  }
 
+  clickMethodchangeStatus(name: string, choose: boolean, id: number, userVacationRequest: UserVacationRequest) {
+    if (confirm("Are you sure to " + name + " this request")) {
+      this.changeStatus(choose, id, userVacationRequest);
+    }
   }
 }
 

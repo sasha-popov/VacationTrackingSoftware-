@@ -1,0 +1,24 @@
+<p>ADD NEW HOLIDAY:</p>
+<div class="formHoliday">
+  <label>
+    <span class="col-sm-4">
+      Date:
+    </span>
+    <input type="date" #dateHoliday class="col-sm-8" />
+  </label>
+  <label>
+    <span class="col-sm-4">
+      Name:
+    </span>
+    <input #nameHoliday class="col-sm-8" />
+  </label><br>
+  <button (click)="add(dateHoliday.value, nameHoliday.value)" class="btn btn-primary btn-sm">
+    add
+  </button>
+  <button class="btn btn-secondary btn-sm" (click)="close()">
+    Close
+  </button>
+  <div *ngIf="errors" class="alert alert-danger" role="alert">
+    <strong>Oops!</strong> {{errors}}
+  </div>
+</div>
