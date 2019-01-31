@@ -22,4 +22,8 @@ export class HolidayService {
     return this.http.post<Holiday>("api/Holiday/AddHoliday", holiday);  
   }
 
+  updateHoliday(holiday: Holiday) {
+    return this.http.post<Holiday>("api/Holiday/UpdateHoliday", holiday);
+  }
+
 }

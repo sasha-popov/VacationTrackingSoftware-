@@ -18,6 +18,9 @@ export class VacationPoliciesService {
     return this.http.post<VacationPolicy>("api/VacationPolicies/SendVacationPolicy", vacationPolicy);
   }
 
+  updateVacationPolicy(vacationPolicy: VacationPolicy): Observable<VacationPolicy> {
+    return this.http.post<VacationPolicy>("api/VacationPolicies/UpdateVacationPolicy", vacationPolicy);
+  }
   showAll(): Observable<VacationPolicy[]> {
     return this.http.get<VacationPolicy[]>("api/VacationPolicies/GetVacationPolicies");
   }

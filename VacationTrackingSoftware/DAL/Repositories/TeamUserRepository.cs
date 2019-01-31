@@ -17,5 +17,7 @@ namespace DAL.Repositories
         {
             return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).Where(x=>x.Team.Manager.Id==idManager).ToList();
         }
+
+
     }
 }

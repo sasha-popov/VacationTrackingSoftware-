@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\Images\" />
+    <Folder Include="ClientApp\src\app\Pipes\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

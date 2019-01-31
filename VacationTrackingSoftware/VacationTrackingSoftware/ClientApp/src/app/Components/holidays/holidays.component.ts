@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import { Roles } from '../../Enums/Roles'
 import { CreateHolidaysComponent } from '../create-holidays/create-holidays.component';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
+import { UpdateHolidayComponent } from '../update-holiday/update-holiday.component';
+import { NavigationEnd, Router } from '@angular/router';
 //import { CalendarComponent } from '../../Components/calendar'
 
 @Component({
@@ -20,8 +22,18 @@ export class HolidaysComponent implements OnInit {
   holiday: Holiday;
   date: string;
   errors: string;
-  constructor(private holidayService: HolidayService,private dialog: MatDialog) { }
+  constructor(private holidayService: HolidayService, private dialog: MatDialog, private router: Router) {
+    this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initialiseInvites();
+      }
+    });
+  }
 
+  initialiseInvites() {
+    this.showAll();
+  }
   ngOnInit() {
     //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.roles = Roles;
@@ -53,5 +65,11 @@ export class HolidaysComponent implements OnInit {
     dialogConfig.hasBackdrop = true;
     let dialogRef = this.dialog.open(CreateHolidaysComponent, dialogConfig);
   }
-    //this.holidays.push(this.holiday);
+  update(holiday: Holiday) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.hasBackdrop = true;
+    dialogConfig.data = holiday;
+    let dialogRef = this.dialog.open(UpdateHolidayComponent, dialogConfig);
+  }
   }

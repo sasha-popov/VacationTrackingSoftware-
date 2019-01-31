@@ -59,7 +59,7 @@ export class CreateVacationRequestComponent implements OnInit {
         this.success = error.error.vacationRequestError; this.errors = "";
         this.router.navigate(['/vacationRequests']);
         this.dialogRef.close();
-        }
+      }
       else {
         this.errors = error.error.vacationRequestError;
         this.success = "";

@@ -59,7 +59,7 @@ namespace DAL.Repositories
 
         public IEnumerable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
         {
-            return this.RepositoryContext.Set<TEntity>().Where(expression);
+            return this.RepositoryContext.Set<TEntity>().Where(expression).AsNoTracking();
         }
 
 

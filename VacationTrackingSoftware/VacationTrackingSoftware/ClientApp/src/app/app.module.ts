@@ -41,6 +41,9 @@ import { CreateVacationPolicyComponent } from './Components/create-vacation-poli
 import { HeaderService } from './Services/HeaderService/header-service.service';
 import { CreateHolidaysComponent } from './Components/create-holidays/create-holidays.component';
 import { CreateVacationRequestComponent } from './Components/create-vacation-request/create-vacation-request.component';
+import { UpdateVacationPolicyComponent } from './Components/update-vacation-policy/update-vacation-policy.component';
+import { UpdateHolidayComponent } from './Components/update-holiday/update-holiday.component';
+import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
   
 
 @NgModule({
@@ -57,7 +60,10 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
     ScheduleTeamsComponent,
     CreateVacationPolicyComponent,
     CreateHolidaysComponent,
-    CreateVacationRequestComponent
+    CreateVacationRequestComponent,
+    UpdateVacationPolicyComponent,
+    UpdateHolidayComponent,
+    FilterVacationRequestPipe
   ],
   imports: [
     NgbModule,
@@ -108,7 +114,9 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
   entryComponents: [CreateEmployeeComponent,
     CreateVacationPolicyComponent,
     CreateHolidaysComponent,
-    CreateVacationRequestComponent
+    CreateVacationRequestComponent,
+    UpdateVacationPolicyComponent,
+    UpdateHolidayComponent
   ]
 })
 export class AppModule { }  

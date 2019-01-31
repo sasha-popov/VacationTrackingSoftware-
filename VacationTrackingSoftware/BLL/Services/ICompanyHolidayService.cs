@@ -8,5 +8,6 @@ namespace BLL.Services
     public interface ICompanyHolidayService
     {
         CompanyHoliday AddHoliday(CompanyHoliday newHoliday);
+        CompanyHoliday UpdateHoliday(CompanyHoliday holiday);
     }
 }

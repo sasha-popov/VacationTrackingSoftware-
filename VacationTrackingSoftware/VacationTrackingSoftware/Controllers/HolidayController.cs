@@ -67,6 +67,27 @@ namespace VacationTrackingSoftware.Controllers
             }
         }
 
+        [HttpPost("[action]")]
+        public IActionResult UpdateHoliday(CompanyHoliday companyHoliday) {
+            if (ModelState.IsValid)
+            {
+                var result = _companyHolidayService.UpdateHoliday(companyHoliday);
+                //result == null? response = BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState)): response= new OkObjectResult("Holidays create");
+                if (result == null)
+                {
+                    return BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState));
+                }
+                else
+                {
+                    return new OkObjectResult("Holidays update");
+                }
+            }
+            else
+            {
+                return BadRequest(Errors.AddErrorToModelState("holidayError", "Invalid dates", ModelState));
+            }
+        }
+
 
     }
 }

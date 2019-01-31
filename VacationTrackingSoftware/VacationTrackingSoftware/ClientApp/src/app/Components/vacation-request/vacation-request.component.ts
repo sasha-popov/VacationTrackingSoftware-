@@ -13,6 +13,7 @@ import { CreateVacationRequestComponent } from '../create-vacation-request/creat
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
 import { request } from 'https';
+import { FilterVacationRequestPipe } from '../../Pipes/filter-vacationrequest.pipe';
 @Component({
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',

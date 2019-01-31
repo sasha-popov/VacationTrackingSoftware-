@@ -1,8 +1,8 @@
 span.float-right.username {
   margin-right: 2%;
 }
-button.btn.btn-secondary.btn-lg.float-right {
-  margin-left: 2%;
+button.btn {
+  margin: 1px;
 }
 nav.mat-tab-nav-bar.mat-primary {
   width: auto;

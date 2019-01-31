@@ -24,13 +24,16 @@ namespace VacationTrackingSoftware.Controllers
         private readonly UserManager<AppUser> _userManager;
         private IWorkerRepository _workerRepository;
         private ITeamRepository _teamRepository;
-        public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository)
+        private ITeamUserRepository _teamUserRepository;
+        public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository,
+            UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository,ITeamUserRepository teamUserRepository)
         {
             _employeeService = employeeService;
             _userVacationRequestRepository = userVacationRequestRepository;
             _userManager = userManager;
             _workerRepository = workerRepository;
             _teamRepository = teamRepository;
+            _teamUserRepository = teamUserRepository;
         }
         [HttpPost("[action]")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel) {
@@ -43,14 +46,12 @@ namespace VacationTrackingSoftware.Controllers
             return uservacationRequest;
         }
         [HttpGet("[action]")]
-        public List<Team> GetListTeamsAndEmployeeForWorker() {
+        public List<Team> GetTeamsForManager() {
             //var userId = User.FindFirst("id").Value;
             //var manager = _userManager.FindByIdAsync(userId).Result;
             string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
-            var result= _teamRepository.FindByManager(id);
+            var result = _teamRepository.FindTeamsByManager(id);
             return result;
         }
-
-
     }
 }

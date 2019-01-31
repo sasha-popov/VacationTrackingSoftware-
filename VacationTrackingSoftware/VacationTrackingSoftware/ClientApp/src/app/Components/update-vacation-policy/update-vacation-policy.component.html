@@ -1,0 +1,45 @@
+<p>ADD NEW VACATION POLICY:</p>
+<div class="formVacation">
+  <label>
+    <span class="col-sm-4">
+      Years:
+    </span>
+    <input #years class="col-sm-8" value="{{data.workingYear}}" />
+  </label><br>
+  <label>
+    <span class="col-sm-4">
+      Types<br>
+      (Current {{data.vacationType}})
+    </span>
+    <select [(ngModel)]="vacationType" required class="col-sm-8">
+      <option *ngFor="let vacationType of vacationTypes" class="textHolidays" [ngValue]=data.vacationType value={{vacationType.name}}>
+        {{vacationType.name}}
+      </option>
+    </select>
+  </label><br>
+  <label>
+    <span class="col-sm-4">
+      Count:
+    </span>
+    <input #count class="col-sm-8 " value="{{data.count}}"/>
+  </label><br>
+  <label>
+    <span class="col-sm-4">
+      Payments:
+    </span>
+    <input #payments class="col-sm-8" value="{{data.payments}}"/>
+  </label><br>
+  <button (click)="updateVacationPolicy(data.id,years.value, vacationType, count.value, payments.value)" class="btn btn-primary btn-sm">
+    Update
+  </button>
+  <button class="btn btn-secondary btn-sm" (click)="close()">
+    Close
+  </button>
+  <div *ngIf="errors" class="alert alert-danger" role="alert">
+    <strong>Oops!</strong> {{errors}}
+  </div>
+  <div *ngIf="success" class="alert alert-success" role="alert">
+    {{success}}
+  </div>
+
+</div>

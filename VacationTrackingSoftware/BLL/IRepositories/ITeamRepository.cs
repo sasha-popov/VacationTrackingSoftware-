@@ -9,5 +9,7 @@ namespace BLL.IRepositories
     {
         List<Team> FindByManager(string idManager);
         List<Team> FindByListIdTeam(int[] teamsId);
+
+        List<Team> FindTeamsByManager(string managerId);
     }
 }

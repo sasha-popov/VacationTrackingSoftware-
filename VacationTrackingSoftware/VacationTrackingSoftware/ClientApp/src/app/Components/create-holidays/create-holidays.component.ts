@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Holiday } from '../../InterfacesAndClasses/Holiday';
 import { HolidayService } from '../../Services/holiday.service';
 import { MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-holidays',
@@ -10,7 +11,8 @@ import { MatDialogRef } from '@angular/material';
 })
 export class CreateHolidaysComponent implements OnInit {
   holiday: Holiday;
-  constructor(private holidayService: HolidayService, private dialogRef: MatDialogRef<CreateHolidaysComponent>) { }
+  success: string;
+  constructor(private holidayService: HolidayService, private dialogRef: MatDialogRef<CreateHolidaysComponent>, private router: Router) { }
   errors: string;
   ngOnInit() {
   }
@@ -28,7 +30,10 @@ export class CreateHolidaysComponent implements OnInit {
       //  this.holidays.push(this.holiday);
     },
       error => {
-        if (error.error.text == "Holiday created") {/*code for alert*/ }
+        if (error.status == 200) {
+          this.success = error.error.text;
+          this.router.navigate(['/holidays'])
+        }
         else { this.errors = error.error.holidayError; }
       })
   };

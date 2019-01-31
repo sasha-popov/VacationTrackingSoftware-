@@ -1,10 +1,14 @@
 <app-app-header title='Momentz-4-ever'></app-app-header>
+<form id="filter" *ngIf="currentRole===roles.Manager">
+  <label>Filter by usernames:</label>
+  <input type="text" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
+  </form><br>
 <ul class="heroes">
-  <li *ngFor="let userVacationRequest of userVacationRequests" class="textHolidays">
+  <li *ngFor="let userVacationRequest of userVacationRequests| filterVacationrequest:term" class="textHolidays">
     <div>
-    <a>
+      <a>
         On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}, with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}
-    </a>
+      </a>
     <span *ngIf="roles.Employee===currentRole">
       <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="clickdeleteVacationRequest('delete',userVacationRequest)">
         Delete

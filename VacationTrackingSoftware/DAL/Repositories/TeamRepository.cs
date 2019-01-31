@@ -22,6 +22,18 @@ namespace DAL.Repositories
         {
             return RepositoryContext.Teams.Include(x => x.Manager).Include(x=>x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == idManager).ToList();
         }
-
+        public List<Team> FindTeamsByManager(string managerId)
+        {
+            //it need to change
+            var getTeamssOfManager = RepositoryContext.Teams.Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
+            foreach (var team in getTeamssOfManager)
+            {
+                foreach (var teamsUser in team.TeamUsers)
+                {
+                    teamsUser.Team = null;
+                }
+            }
+            return getTeamssOfManager;
+        }
     }
 }

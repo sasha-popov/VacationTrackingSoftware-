@@ -95,8 +95,7 @@ namespace BLL.Services
             
             List<UserVacationRequest> userVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
             //optional
-            var actualRequests = userVacationRequestsForManager.Where(x => x.StartDate > DateTime.Now);
-             var result = _mapper.Map<List<UserVacationRequestDTO>>(actualRequests);
+             var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequestsForManager);
             return result;
         }
 

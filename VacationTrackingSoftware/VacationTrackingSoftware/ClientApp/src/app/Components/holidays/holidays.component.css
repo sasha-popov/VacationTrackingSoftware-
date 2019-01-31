@@ -86,3 +86,7 @@ button {
 button.btn.btn-primary.btn-lg {
   margin: 10px 40%;
 }
+
+button.btn.btn-secondary.btn-sm.pos {
+margin:1px;
+}

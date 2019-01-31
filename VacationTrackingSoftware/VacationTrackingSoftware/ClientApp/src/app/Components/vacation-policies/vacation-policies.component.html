@@ -1,12 +1,15 @@
 <app-app-header title='Momentz-4-ever'></app-app-header>
 <ul class="heroes col-sm-12">
   <li *ngFor="let vacationPolicy of vacationPolicies">
-    <span class="col-sm-11">
+    <span class="col-sm-9">
       To {{vacationPolicy.workingYear}} year, type: {{vacationPolicy.vacationType}}
       count: {{vacationPolicy.count}}, payments: {{vacationPolicy.payments}}
     </span>
     <button *ngIf="currentRole===roles.HrUser" title="delete holiday" (click)="clickdeleteVacationRequest('delete',vacationPolicy)" class="btn btn-secondary btn-sm pos">
       x
+    </button>
+    <button *ngIf="currentRole===roles.HrUser" title="update holiday" (click)="update(vacationPolicy)" class="btn btn-secondary btn-sm pos">
+      &#9744;
     </button>
   </li>
 </ul>
