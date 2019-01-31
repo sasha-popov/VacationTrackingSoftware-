@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VacationTrackingSoftware.Helpers;
+using VacationTrackingSoftware.ViewModels;
 
 namespace VacationTrackingSoftware.Controllers
 {
@@ -50,7 +51,7 @@ namespace VacationTrackingSoftware.Controllers
 
         //POST api/accounts
         [HttpPost("[action]")]
-        public async Task<IActionResult> PostCreate([FromBody]RegistrationViewModel model)
+        public async Task<IActionResult> PostCreateEmployee([FromBody]RegistrationViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -65,11 +66,13 @@ namespace VacationTrackingSoftware.Controllers
             else {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
                 _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId, model.Role);
+                //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
                 return new OkObjectResult("Account created");
             }
+            
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> PostCreate1([FromBody]RegistrationManagerViewModel model)
+        public async Task<IActionResult> PostCreateManager([FromBody]RegistrationManagerViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -85,6 +88,7 @@ namespace VacationTrackingSoftware.Controllers
             {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
                 _accountService.CreateWorkerAndUpdateTeams(userIdentity, model.TeamsId);
+                //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
                 return new OkObjectResult("Account created");
             }
         }
@@ -118,41 +122,5 @@ namespace VacationTrackingSoftware.Controllers
             return _teamRepository.GetAll().ToList();
         }
 
-    }
-    public class RegistrationViewModel
-    {
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        //public string Location { get; set; }
-        [Phone]
-        public string PhoneNumber { get; set; }
-        [Required]
-        public string Role { get; set; }
-        public int TeamId { get; set; }
-    }
-
-    public class RegistrationManagerViewModel
-    {
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
-        [Range(6,50)]
-        public string Password { get; set; }
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        //public string Location { get; set; }
-        [Phone]
-        public string PhoneNumber { get; set; }
-        [Required]
-        public string Role { get; set; }
-        public int[] TeamsId { get; set; }
     }
 }

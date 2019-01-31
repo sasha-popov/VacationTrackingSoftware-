@@ -9,9 +9,9 @@ export class EmployeeService {
   test = "ttt";
   constructor(private http: HttpRequestService) { }
   createEmployee(employee: UserRegistration){
-    return this.http.post<UserRegistration>("api/Account/PostCreate", employee); 
+    return this.http.post<UserRegistration>("api/Account/PostCreateEmployee", employee); 
   }
   createManager(personalData: ManagerRegistration) {
-    return this.http.post("api/Account/PostCreate1", personalData);
+    return this.http.post("api/Account/PostCreateManager", personalData);
   }
 }

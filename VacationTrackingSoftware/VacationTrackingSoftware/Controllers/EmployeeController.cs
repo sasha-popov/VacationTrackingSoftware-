@@ -45,10 +45,7 @@ namespace VacationTrackingSoftware.Controllers
                 //string count=vacationRequest.Payment.ToString();
                 return new OkObjectResult(vacationRequest);
             }
-            else {
                 return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "You do not have so many vacation days, or invalid DateTime.Please check the data and try again", ModelState));
-            }
-
         }
 
         [HttpGet("[action]")]
@@ -62,13 +59,11 @@ namespace VacationTrackingSoftware.Controllers
                 var result = _employeeService.ShowUserVacationRequest(userId);
                 return result;
             }
-
             return null;
-
-
         }
 
         [HttpGet("[action]")]
+        //[Authorize(Roles="Manager")]
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager()
         {
             var userId = User.FindFirst("id").Value;
