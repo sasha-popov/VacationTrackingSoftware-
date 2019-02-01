@@ -19,7 +19,7 @@ namespace VacationTrackingSoftware.Helpers
                 auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
                 expires_in = (int)jwtOptions.ValidFor.TotalSeconds,
                 rolesUser = roles,
-                name=userName
+                name=userName,
             };
 
             return JsonConvert.SerializeObject(response, serializerSettings);

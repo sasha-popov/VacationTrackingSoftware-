@@ -23,6 +23,7 @@ using VacationTrackingSoftware.Helpers;
 using VacationTrackingSoftware.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace VacationTrackingSoftware
 {
@@ -108,9 +109,11 @@ namespace VacationTrackingSoftware
             });
             IMapper mapper = mappingConfig.CreateMapper();
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
+            var keyAsBytes = Encoding.ASCII.GetBytes("mysuperdupersecret");
 
+            var tokenValidationParameters = new TokenValidationParameters
+            {        
+                
                 ValidateIssuer = true,
                 ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
@@ -147,7 +150,7 @@ namespace VacationTrackingSoftware
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
