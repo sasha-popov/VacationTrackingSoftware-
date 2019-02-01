@@ -11,7 +11,6 @@ namespace BLL.IRepositories
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetById(int id);
-        IEnumerable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression);
         void Create(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);

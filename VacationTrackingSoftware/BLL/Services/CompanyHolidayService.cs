@@ -18,7 +18,7 @@ namespace BLL.Services
         public CompanyHoliday AddHoliday(CompanyHoliday newHoliday)
         {
             CompanyHoliday result;
-            var checkDublicate = _companyHolidayRepository.FindByCondition(x => x.Date == newHoliday.Date);
+            var checkDublicate = _companyHolidayRepository.FindByDate(newHoliday.Date);
             if (checkDublicate.Count() == 0 && newHoliday.Date.DayOfWeek.ToString() != "Saturday" && newHoliday.Date.DayOfWeek.ToString() != "Sunday")
             {
                 _companyHolidayRepository.Create(newHoliday);
@@ -33,7 +33,7 @@ namespace BLL.Services
         public CompanyHoliday UpdateHoliday(CompanyHoliday holiday)
         {
             CompanyHoliday result;
-            var checkDublicate = _companyHolidayRepository.FindByCondition(x => x.Date == holiday.Date).ToList();
+            var checkDublicate = _companyHolidayRepository.FindByDate(holiday.Date);
             checkDublicate = checkDublicate.Where(x => x.Id != holiday.Id).ToList(); ;
             if (checkDublicate.Count() == 0 && holiday.Date.DayOfWeek.ToString() != "Saturday" && holiday.Date.DayOfWeek.ToString() != "Sunday")
             {

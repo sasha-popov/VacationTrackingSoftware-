@@ -80,7 +80,7 @@ namespace VacationTrackingSoftware.Controllers
             if (ModelState.IsValid && vacationPolicy.Count >= vacationPolicy.Payments)
             {
                 VacationPolicy result = _mapper.Map<VacationPolicy>(vacationPolicy);
-                result.VacationType = _vacationTypeRepository.FindByCondition(y => y.Name == vacationPolicy.VacationType).First();
+                result.VacationType = _vacationTypeRepository.FindByName(vacationPolicy.VacationType);
                 _vacationPolicyRepository.Update(result);
                 _vacationPolicyRepository.Save();
                 return new OkObjectResult("Vacation policy have updated");

@@ -58,9 +58,7 @@ namespace VacationTrackingSoftware.Controllers
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates. Please try again", ModelState));
             }
 
-            Worker worker = new Worker { DateRecruitment = DateTime.Now };
             AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName};
-            _workerRepository.Save();
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration",result.Errors.First().Description, ModelState));
             else {

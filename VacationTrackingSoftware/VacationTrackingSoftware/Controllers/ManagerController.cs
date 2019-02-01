@@ -16,7 +16,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ManagerController : ControllerBase
     {
         private IEmployeeService _employeeService;
@@ -46,11 +46,12 @@ namespace VacationTrackingSoftware.Controllers
             return uservacationRequest;
         }
         [HttpGet("[action]")]
+        [Authorize(Roles ="Manager")]
         public List<Team> GetTeamsForManager() {
-            //var userId = User.FindFirst("id").Value;
-            //var manager = _userManager.FindByIdAsync(userId).Result;
-            string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
-            var result = _teamRepository.FindTeamsByManager(id);
+            var userId = User.FindFirst("id").Value;
+           // var manager = _userManager.FindByIdAsync(userId).Result;
+            //string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
+            var result = _teamRepository.FindTeamsByManager(userId);
             return result;
         }
     }

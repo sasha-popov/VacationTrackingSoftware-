@@ -57,10 +57,6 @@ namespace DAL.Repositories
             RepositoryContext.SaveChanges();
         }
 
-        public IEnumerable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression)
-        {
-            return this.RepositoryContext.Set<TEntity>().Where(expression).AsNoTracking();
-        }
 
 
     }

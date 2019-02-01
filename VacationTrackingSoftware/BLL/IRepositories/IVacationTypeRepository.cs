@@ -7,5 +7,6 @@ namespace BLL.IRepositories
 {
     public interface IVacationTypeRepository : IGenericRepository<VacationType>
     {
+        VacationType FindByName(string name);
     }
 }

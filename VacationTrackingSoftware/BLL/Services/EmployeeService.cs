@@ -51,7 +51,7 @@ namespace BLL.Services
             UserVacationRequestDTO response;
             Mapper.Reset();
             Mapper.Initialize(x => x.CreateMap<UserVacationRequestDTO, UserVacationRequest>()
-            .ForMember("VacationType", opt => opt.MapFrom(c => _vacationTypeRepository.FindByCondition(y => y.Name == userVacationRequestDTO.VacationType).First()))
+            .ForMember("VacationType", opt => opt.MapFrom(c => _vacationTypeRepository.FindByName(userVacationRequestDTO.VacationType)))
             .ForMember("User", opt => opt.MapFrom(user => _userManager.FindByIdAsync(userVacationRequestDTO.UserId).Result))
             .ForMember("Status", opt => opt.MapFrom(statuses => 1))
             );
@@ -123,7 +123,6 @@ namespace BLL.Services
         {
             //check it
             var allvacations = _userVacationRequestRepository.FindForUser(newrequest.User.Id).Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
-            var allHolidays = _companyHolidayRepository.FindByCondition(x => x.Date.Year == DateTime.Now.Year);
             List<DateTime> allDatesPrev = new List<DateTime>();
 
             if (allvacations.Count != 0)
@@ -183,7 +182,7 @@ namespace BLL.Services
 
         private List<DateTime> GetListDaysWithoutCompanyHolidays(List<DateTime> allDateTimes)
         {
-            var allHolidays = _companyHolidayRepository.FindByCondition(x => x.Date.Year == DateTime.Now.Year);
+            var allHolidays = _companyHolidayRepository.GetAllHolidaysForCurrentYear();
             List<DateTime> result= new List<DateTime>();
             foreach (var checkHoliday in allHolidays)
             {

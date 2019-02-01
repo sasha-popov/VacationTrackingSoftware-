@@ -38,7 +38,7 @@ namespace BLL.Services
             //var hrUser =_userManager.FindByIdAsync(newVacationPolicy.UserId).Result;
             //result.HrUser=hrUser;
             //add validation
-            result.VacationType = _vacationTypeRepository.FindByCondition(y => y.Name == newVacationPolicy.VacationType).First();
+            result.VacationType = _vacationTypeRepository.FindByName(newVacationPolicy.VacationType);
             _vacationPolicyRepository.Create(result);
             _vacationPolicyRepository.Save();
             return true;

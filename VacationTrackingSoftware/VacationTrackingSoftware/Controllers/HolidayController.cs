@@ -32,13 +32,13 @@ namespace VacationTrackingSoftware.Controllers
         [HttpGet("[action]")]
         public List<CompanyHoliday> GetForCurrentYear()
         {
-            var result= _companyHolidayRepository.FindByCondition(x => x.Date.Year == 2019).ToList();
+            var result= _companyHolidayRepository.GetAllHolidaysForCurrentYear().ToList();
             return result;
         }
 
         [HttpDelete("[action]/{name}/{date}")]
         public void DeleteHoliday(string name,DateTime date) {
-            var currentHoliday = _companyHolidayRepository.FindByCondition(x=>x.Description==name && x.Date==date).FirstOrDefault();
+            var currentHoliday = _companyHolidayRepository.FindByDateAndDescription(name, date);
             if (currentHoliday != null)
             {
                 _companyHolidayRepository.Delete(currentHoliday);
