@@ -16,7 +16,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
@@ -27,7 +27,7 @@ namespace VacationTrackingSoftware.Controllers
             _companyHolidayRepository = companyHolidayRepository;
             _companyHolidayService = companyHolidayService;
         }
-        [Authorize]
+        //[Authorize]
         //[Authorize(Policy = "ApiUser")]
         [HttpGet("[action]")]
         public List<CompanyHoliday> GetForCurrentYear()

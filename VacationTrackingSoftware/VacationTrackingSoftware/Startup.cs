@@ -21,6 +21,8 @@ using VacationTrackingSoftware.AutoMapper;
 using VacationTrackingSoftware.Token;
 using VacationTrackingSoftware.Helpers;
 using VacationTrackingSoftware.Auth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace VacationTrackingSoftware
 {
@@ -39,7 +41,7 @@ namespace VacationTrackingSoftware
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+           
             //disable automatic validation
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -64,7 +66,7 @@ namespace VacationTrackingSoftware
             services.AddScoped<IVacationPoliciesService, VacationPoliciesService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICompanyHolidayService, CompanyHolidayService>();
-
+            services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
             // add identity
             var builder = services.AddIdentityCore<AppUser>(o =>
@@ -108,6 +110,7 @@ namespace VacationTrackingSoftware
 
             var tokenValidationParameters = new TokenValidationParameters
             {
+
                 ValidateIssuer = true,
                 ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
 
