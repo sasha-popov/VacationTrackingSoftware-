@@ -1,0 +1,58 @@
+<div class="wrap-contact2" id="formRegistration">
+  <span class="contact2-form-title">
+    Form for update
+  </span>
+  <mat-dialog-content>
+    <form class="contact2-form validate-form">
+      <h3>Current worker</h3>
+      <span>
+        He
+      </span>
+      <br>
+      <div *ngIf="selectedRole==='Employee'" class="ChooseTeam">
+        <span class="col-sm-4 teamText">
+          TEAM:
+        </span>
+        <select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" required class="col-sm-8">
+          <option *ngFor="let team of teams" value={{team.id}}>
+            {{team.name}}
+          </option>
+          <option value=0>without team</option>
+        </select>
+      </div>
+      <br>
+      <div *ngIf="selectedRole==='Manager'">
+        <span class="col-sm-4 teamText">
+          TEAMS:
+        </span>
+        <div class="col-sm-8">
+          <ng-multiselect-dropdown [placeholder]="'Choose teams'"
+                                   [data]="teams"
+                                   [(ngModel)]="selectedItems" [ngModelOptions]="{standalone: true}"
+                                   [settings]="dropdownSettings"
+                                   (onSelect)="onItemSelect($event)"
+                                   (onSelectAll)="onSelectAll($event)">
+          </ng-multiselect-dropdown>
+        </div>
+      </div><br>
+    </form>
+    <mat-dialog-actions>
+      <div class="buttons">
+        <button class="btn btn-primary btn-lg" (click)="createUser(employeeName.value, employeeSurname.value,employeePhone.value, email.value, password.value, roleType.value)">
+          Update
+        </button>
+        <button class="btn btn-secondary btn-lg" (click)="close()">
+          Close
+        </button>
+      </div><br>
+    </mat-dialog-actions>
+    <div *ngIf="errors" class="alert alert-danger" role="alert">
+      <strong>Oops!</strong> {{errors}}
+    </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+      {{success}}
+    </div>
+  </mat-dialog-content>
+</div>
+
+

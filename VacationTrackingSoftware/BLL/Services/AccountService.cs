@@ -41,10 +41,15 @@ namespace BLL.Services
             Team team = _teamRepository.GetById(teamId);
             if (team != null)
             {
-                    TeamUser teamUser = new TeamUser { Team = team, User = user };
-                    _teamUserRepository.Create(teamUser);
-                    _teamUserRepository.Save();
+                TeamUser teamUser = new TeamUser { Team = team, User = user };
+                _teamUserRepository.Create(teamUser);
             }
+            else {
+                TeamUser teamUser = new TeamUser { Team = null, User = user };
+                _teamUserRepository.Create(teamUser);
+                
+            }
+            _teamUserRepository.Save();
         }
 
         public void CreateWorkerAndUpdateTeams (AppUser user, int[] teamsId)

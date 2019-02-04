@@ -9,5 +9,7 @@ namespace BLL.IRepositories
     {
         List<TeamUser> FindForManager(string idManager);
 
+        List<TeamUser> GetAllWithDetails();
+
     }
 }

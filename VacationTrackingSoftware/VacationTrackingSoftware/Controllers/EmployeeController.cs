@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VacationTrackingSoftware.Helpers;
+using VacationTrackingSoftware.ViewModels;
 
 namespace VacationTrackingSoftware.Controllers
 {
@@ -24,12 +25,19 @@ namespace VacationTrackingSoftware.Controllers
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private readonly UserManager<AppUser> _userManager;
         private IWorkerRepository _workerRepository;
-        public EmployeeController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository)
+        private ITeamUserRepository _teamUserRepository;
+        private ITeamRepository _teamRepository;
+        public EmployeeController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository,
+            ITeamUserRepository teamUserRepository,
+            ITeamRepository teamRepository
+            )
         {
             _employeeService = employeeService;
             _userVacationRequestRepository = userVacationRequestRepository;
             _userManager = userManager;
             _workerRepository = workerRepository;
+            _teamUserRepository = teamUserRepository;
+            _teamRepository = teamRepository;
         }
 
         [HttpPost("[action]")]
@@ -91,6 +99,37 @@ namespace VacationTrackingSoftware.Controllers
             }
 
         }
+        [HttpGet("[action]")]
+        public List<WorkersViewModel> GetALLWorkersForHrUser()
+        {
+            var allEmployee = _teamUserRepository.GetAllWithDetails();
+            List<WorkersViewModel> workersViewModel = new List<WorkersViewModel>();
+            allEmployee.ForEach(x =>
+            {
+                if (x.Team != null) x.Team.TeamUsers = null;
+                workersViewModel.Add(new WorkersViewModel() { FirstName = x.User.FirstName, LastName = x.User.LastName, Id = x.User.Id, Team = x.Team, Role = (int)Roles.Employee });
+            });
+            
+            List<AppUser> allManagers = _userManager.GetUsersInRoleAsync("Manager").Result.ToList();
+            allManagers.ForEach(manager =>
+            {
+                workersViewModel.Add(new WorkersViewModel() { FirstName = manager.FirstName, Id = manager.Id, LastName = manager.LastName, Role = (int)Roles.Manager, Teams = new List<Team>() });
+            });
+
+            List<Team> teams = _teamRepository.AllTeamsWithManager().ToList();
+            teams.ForEach(team =>
+            {
+                if (team.Manager != null) {
+                    var result = workersViewModel.FirstOrDefault(x => x.Id == team.Manager.Id);
+                    result.Teams.Add(team);
+                }
+            });
+
+            return workersViewModel;
+        }
+
 
     }
+
+
 }

@@ -1,4 +1,5 @@
-﻿using BLL.Models;
+﻿using System.Collections.Generic;
+using BLL.Models;
 using Microsoft.AspNetCore.Identity;
 
 public class AppUser : IdentityUser
@@ -9,4 +10,6 @@ public class AppUser : IdentityUser
     public long? FacebookId { get; set; }
     public string PictureUrl { get; set; }
     //public Worker Worker { get; set; }
+    //for the managers
+    public ICollection<Team> Teams { get; set; }
 }

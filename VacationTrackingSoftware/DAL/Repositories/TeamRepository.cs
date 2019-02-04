@@ -13,6 +13,11 @@ namespace DAL.Repositories
     {
         public TeamRepository(ProjectContext context) : base(context) { }
 
+        public List<Team> AllTeamsWithManager()
+        {
+            return RepositoryContext.Teams.Include(x => x.Manager).ToList();
+        }
+
         public List<Team> FindByListIdTeam(int[] teamsId)
         {
             return RepositoryContext.Teams.Where(x => teamsId.Contains(x.Id)).ToList();

@@ -10,6 +10,7 @@
         "dependencies": {
           "AutoMapper": "8.0.0",
           "Microsoft.EntityFrameworkCore": "2.1.1",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.1.1.0",
           "Microsoft.Extensions.Identity.Core": "2.1.1.0",
           "Microsoft.Extensions.Identity.Stores": "2.1.1.0",
           "Newtonsoft.Json": "11.0.0.0"
@@ -373,6 +374,14 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore/2.1.1.0": {
+        "runtime": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
+            "assemblyVersion": "2.1.1.0",
+            "fileVersion": "2.1.1.18157"
+          }
+        }
+      },
       "Microsoft.Extensions.Identity.Core/2.1.1.0": {
         "runtime": {
           "Microsoft.Extensions.Identity.Core.dll": {
@@ -712,6 +721,11 @@
       "sha512": "sha512-LbSxKEdOUhVe8BezB/9uOGGppt+nZf6e1VFyw6v3DN6lqitm0OSn2uXMOdtP0M3W4iMcqcivm2J6UgqiwwnXiA==",
       "path": "system.threading.tasks/4.3.0",
       "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore/2.1.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     },
     "Microsoft.Extensions.Identity.Core/2.1.1.0": {
       "type": "reference",

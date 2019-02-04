@@ -11,5 +11,7 @@ namespace BLL.IRepositories
         List<Team> FindByListIdTeam(int[] teamsId);
 
         List<Team> FindTeamsByManager(string managerId);
+
+        List<Team> AllTeamsWithManager();
     }
 }

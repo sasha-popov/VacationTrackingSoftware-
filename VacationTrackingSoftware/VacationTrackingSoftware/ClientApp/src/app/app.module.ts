@@ -28,6 +28,7 @@ import { HttpRequestService } from './Services/httpRequest.service';
 import { ConfigService } from './Services/ConfigService';
 import { CalendarService } from './Services/CalendarService';
 import { TeamService } from './Services/team.service';
+import { allWorkerService } from "./Services/allWorkerService";
 
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -44,6 +45,8 @@ import { CreateVacationRequestComponent } from './Components/create-vacation-req
 import { UpdateVacationPolicyComponent } from './Components/update-vacation-policy/update-vacation-policy.component';
 import { UpdateHolidayComponent } from './Components/update-holiday/update-holiday.component';
 import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
+import { ViewAllWorkersComponent } from './Components/view-all-workers/view-all-workers.component';
+import { UpdateWorkerComponent } from './Components/update-worker/update-worker.component';
   
 
 @NgModule({
@@ -63,7 +66,9 @@ import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
     CreateVacationRequestComponent,
     UpdateVacationPolicyComponent,
     UpdateHolidayComponent,
-    FilterVacationRequestPipe
+    FilterVacationRequestPipe,
+    ViewAllWorkersComponent,
+    UpdateWorkerComponent
   ],
   imports: [
     NgbModule,
@@ -80,6 +85,7 @@ import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
       { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent, runGuardsAndResolvers: 'always'},
       { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers:'always' },
       { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
+      { path: 'allWorkers', component: ViewAllWorkersComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       {
         path: 'home',
         canActivate: [AuthGuard],
@@ -106,7 +112,8 @@ import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
     AuthGuard,
     CalendarService,
     TeamService,
-    HeaderService
+    HeaderService,
+    allWorkerService
   ],
 
   bootstrap: [AppComponent],
@@ -116,7 +123,8 @@ import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
     CreateHolidaysComponent,
     CreateVacationRequestComponent,
     UpdateVacationPolicyComponent,
-    UpdateHolidayComponent
+    UpdateHolidayComponent,
+    UpdateWorkerComponent
   ]
 })
 export class AppModule { }  

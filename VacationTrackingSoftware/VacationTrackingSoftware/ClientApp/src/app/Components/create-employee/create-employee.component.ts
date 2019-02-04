@@ -27,7 +27,7 @@ export class CreateEmployeeComponent implements OnInit{
   teamsId = [];
   selectedItem: number;
   errors: string;
-  successfully: string;
+  success: string;
   constructor(private employeeService: EmployeeService, private location: Location, private teamService: TeamService, private router: Router, private dialogRef: MatDialogRef<CreateEmployeeComponent>) {
 
   }
@@ -54,8 +54,8 @@ export class CreateEmployeeComponent implements OnInit{
           this.router.navigate(['/']);
         },
           error => {
-            if (error.status == 400) { this.errors = error.error.registration; this.successfully = "" }
-            else if (error.status == 200) { this.successfully = error.error.text; this.errors = "" }
+            if (error.status == 400) { this.errors = error.error.registration; this.success = "" }
+            else if (error.status == 200) { this.success = error.error.text; this.errors = "" }
           })
       }
       else {
@@ -77,8 +77,8 @@ export class CreateEmployeeComponent implements OnInit{
           this.router.navigate(['/']);
         },
           error => {
-            if (error.status = 400) { this.errors = error.error.registration; this.successfully = "" }
-            else if (error.status = 200) { this.successfully = error.error.registration; this.errors = "" }
+            if (error.status = 400) { this.errors = error.error.registration; this.success = "" }
+            else if (error.status = 200) { this.success = error.error.registration; this.errors = "" }
           })
       }
     }
