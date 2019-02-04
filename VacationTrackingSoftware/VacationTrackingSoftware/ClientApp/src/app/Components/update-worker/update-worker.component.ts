@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { forEach } from '@angular/router/src/utils/collection';
 import { error } from '@angular/compiler/src/util';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogConfig } from "@angular/material";
+import { Roles } from "../../Enums/Roles"
 
 @Component({
   selector: 'app-update-worker',
@@ -16,6 +17,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogConfig } from "@angular/materia
   styleUrls: ['./update-worker.component.css']
 })
 export class UpdateWorkerComponent implements OnInit {
+  roles;
   employee: UserRegistration;
   manager: ManagerRegistration;
   selectedRole: string;
@@ -29,11 +31,32 @@ export class UpdateWorkerComponent implements OnInit {
   errors: string;
   success: string;
   constructor(private route: ActivatedRoute, private dialogRef: MatDialogRef<UpdateWorkerComponent>, private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private teamService: TeamService) { }
 
   ngOnInit() {
+    this.getAllTeams();
   }
   close() {
     this.dialogRef.close();
+  }
+
+  getAllTeams() {
+    this.teamService.getAllTeams().subscribe(result => {
+      this.teams = result
+      if (this.data.role = Roles.Manager) {
+        this.selectedItems = this.data.teams;
+      }
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'name',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
+      this.selectedRole = this.data.role;
+      this.roles = Roles;
+    });
   }
 }

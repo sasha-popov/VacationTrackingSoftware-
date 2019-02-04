@@ -34,11 +34,11 @@ export class ViewAllWorkersComponent implements OnInit {
     })
   }
 
-  update() {
+  update(worker:any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.hasBackdrop = true;
-    //dialogConfig.data = holiday;
+    dialogConfig.data = worker;
     let dialogRef = this.dialog.open(UpdateWorkerComponent, dialogConfig);
   }
 

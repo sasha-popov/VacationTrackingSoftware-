@@ -6,7 +6,7 @@
 <div class="col-sm-8">
   <h1>List of Workers:</h1>
   <div class="list-group">
-    <button (click)="update()"  *ngFor="let worker of workers" class="list-group-item list-group-item-action" title="click for update">
+    <button  *ngFor="let worker of workers" (click)="update(worker)" class="list-group-item list-group-item-action" title="click for update">
       <h3>{{worker.firstName}} {{worker.lastName}}</h3>
       <span *ngIf="worker.role===roles.Employee">
         This worker have role Employee.

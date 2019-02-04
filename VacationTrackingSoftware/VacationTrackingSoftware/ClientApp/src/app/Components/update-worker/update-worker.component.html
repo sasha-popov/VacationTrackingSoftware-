@@ -9,8 +9,8 @@
         He
       </span>
       <br>
-      <div *ngIf="selectedRole==='Employee'" class="ChooseTeam">
-        <span class="col-sm-4 teamText">
+      <div *ngIf="selectedRole===roles.Employee" class="ChooseTeam">
+        <span class="col-sm-2 teamText">
           TEAM:
         </span>
         <select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" required class="col-sm-8">
@@ -21,7 +21,7 @@
         </select>
       </div>
       <br>
-      <div *ngIf="selectedRole==='Manager'">
+      <div *ngIf="selectedRole===roles.Manager">
         <span class="col-sm-4 teamText">
           TEAMS:
         </span>
