@@ -21,7 +21,6 @@ import { FilterVacationRequestPipe } from '../../Pipes/filter-vacationrequest.pi
 })
 export class VacationRequestComponent implements OnInit, OnChanges {
   userVacationRequest: UserVacationRequest;
-  //userVacationRequests: UserVacationRequest[];
   @Input() userVacationRequests;
   date: string;
   currentRole: any;
@@ -47,7 +46,6 @@ export class VacationRequestComponent implements OnInit, OnChanges {
     this.showUserVacationRequest();
   }
   ngOnInit() {
-    //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
     this.roles = Roles;
     this.dateNowISO;

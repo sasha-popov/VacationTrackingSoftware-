@@ -15,7 +15,6 @@ export class CreateVacationPolicyComponent implements OnInit {
   vacationPolicies: VacationPolicy[];
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
-  date: string;
   errors: string;
   success: string;
   constructor(private vacationPoliciesService: VacationPoliciesService, private route: ActivatedRoute, private dialogRef: MatDialogRef<CreateEmployeeComponent>, private router: Router) { }

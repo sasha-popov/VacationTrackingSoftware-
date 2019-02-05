@@ -13,7 +13,6 @@ import { MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./update-vacation-policy.component.css']
 })
 export class UpdateVacationPolicyComponent implements OnInit {
-  //vacationPolicies: VacationPolicy[];
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
   errors: string;

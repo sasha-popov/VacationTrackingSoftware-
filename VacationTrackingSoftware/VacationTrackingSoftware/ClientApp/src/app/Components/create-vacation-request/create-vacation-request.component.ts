@@ -15,9 +15,7 @@ import { Router } from '@angular/router';
 export class CreateVacationRequestComponent implements OnInit {
   vacationTypes: VacationType[];
   currentRole: any;
-  userVacationRequests: UserVacationRequest[];
   userVacationRequest: UserVacationRequest;
-  user
   date: string;
   roles;
   errors: string;

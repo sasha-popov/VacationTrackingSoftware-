@@ -18,8 +18,6 @@ import { Roles } from "../../Enums/Roles"
 })
 export class UpdateWorkerComponent implements OnInit {
   roles;
-  employee: UserRegistration;
-  manager: ManagerRegistration;
   selectedRole: string;
   teams: Team[];
   check: boolean;

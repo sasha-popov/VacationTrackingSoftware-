@@ -25,7 +25,6 @@ export class VacationPoliciesComponent implements OnInit {
   vacationPolicies: VacationPolicy[];
   vacationPolicy: VacationPolicy;
   vacationTypes: VacationType[];
-  date: string;
   errors: string;
   success: string;
 

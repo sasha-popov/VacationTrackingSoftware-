@@ -18,7 +18,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 export class CreateEmployeeComponent implements OnInit{
   employee: UserRegistration;
   manager: ManagerRegistration;
-  selectedRole: string;
   teams: Team[];
   check: boolean;
   dropdownList = [];
