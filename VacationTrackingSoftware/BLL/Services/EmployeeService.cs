@@ -80,7 +80,6 @@ namespace BLL.Services
             return response;
 
         }
-
         public List<UserVacationRequestDTO> ShowUserVacationRequest(string id)
         {
             var userVacationRequests = _userVacationRequestRepository.FindForUser(id).ToList();
@@ -89,10 +88,8 @@ namespace BLL.Services
         }
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
         {
-            //in coments it is bad aproach
-            List<AppUser> UsersOfManager = _teamUserRepository.FindForManager(user.Id).Select(x => x.User).ToList();
-
-            
+            //in comments it is bad aproach
+            List<AppUser> UsersOfManager = _teamUserRepository.FindForManager(user.Id).Select(x => x.User).ToList();         
             List<UserVacationRequest> userVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
             //optional
              var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequestsForManager);
@@ -105,7 +102,7 @@ namespace BLL.Services
             var currentRequests = _userVacationRequestRepository.FindForUser(newRequest.User.Id).ToList();
 
             List<bool> checkOverlaps = new List<bool>();
-            if (currentRequests.Count == 0)
+            if (!currentRequests.Any())
             {
                 checkOverlaps.Add(false);
             }
@@ -125,7 +122,7 @@ namespace BLL.Services
             var allvacations = _userVacationRequestRepository.FindForUser(newrequest.User.Id).Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
             List<DateTime> allDatesPrev = new List<DateTime>();
 
-            if (allvacations.Count != 0)
+            if (allvacations.Any())
             {
                 //count prev days without sat and sun
                 foreach (var vacation in allvacations)

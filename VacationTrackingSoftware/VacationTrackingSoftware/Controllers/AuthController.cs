@@ -19,12 +19,14 @@ namespace VacationTrackingSoftware.Controllers
     public class AuthController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        RoleManager<IdentityRole> _roleManager;
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
 
         public AuthController(UserManager<AppUser> userManager
-            ,IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+            ,IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions, RoleManager<IdentityRole> roleManager)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _jwtFactory = jwtFactory;
             _jwtOptions = jwtOptions.Value;
@@ -44,7 +46,7 @@ namespace VacationTrackingSoftware.Controllers
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
             }
             var user = _userManager.FindByNameAsync(credentials.UserName).Result;
-
+            
             //if to be more roles for one user, than need change this code
             IList<string> currentRoles = await _userManager.GetRolesAsync(user);
             string currentRole = currentRoles.First();
@@ -53,8 +55,25 @@ namespace VacationTrackingSoftware.Controllers
             if (currentRole == "HrUser") RoleEnum = (int)Roles.HrUser;
             if (currentRole == "Manager") RoleEnum = (int)Roles.Manager;
             if (currentRole == "Admin") RoleEnum = (int)Roles.Admin;
+            var claims = new List<Claim>();
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(userClaims);
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
 
-            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, credentials.UserName, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, RoleEnum);
+            var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, user, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, RoleEnum, claims);
             return new OkObjectResult(jwt);
         }
 

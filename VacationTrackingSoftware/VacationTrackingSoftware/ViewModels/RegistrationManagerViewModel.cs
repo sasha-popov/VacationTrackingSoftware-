@@ -22,6 +22,6 @@ namespace VacationTrackingSoftware.ViewModels
         public string PhoneNumber { get; set; }
         [Required]
         public string Role { get; set; }
-        public int[] TeamsId { get; set; }
+        public List<int> TeamsId { get; set; }
     }
 }

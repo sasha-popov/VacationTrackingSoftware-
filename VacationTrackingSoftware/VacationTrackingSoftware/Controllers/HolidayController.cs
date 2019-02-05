@@ -16,7 +16,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
@@ -37,6 +37,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpDelete("[action]/{name}/{date}")]
+        [Authorize(Roles = "HrUser")]
         public void DeleteHoliday(string name,DateTime date) {
             var currentHoliday = _companyHolidayRepository.FindByDateAndDescription(name, date);
             if (currentHoliday != null)
@@ -47,6 +48,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "HrUser")]
         public IActionResult AddHoliday(CompanyHoliday newHoliday)
         {
             //var response;
@@ -68,6 +70,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "HrUser")]
         public IActionResult UpdateHoliday(CompanyHoliday companyHoliday) {
             if (ModelState.IsValid)
             {

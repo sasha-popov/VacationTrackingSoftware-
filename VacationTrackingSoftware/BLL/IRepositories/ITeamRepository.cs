@@ -8,7 +8,7 @@ namespace BLL.IRepositories
     public interface ITeamRepository: IGenericRepository<Team>
     {
         List<Team> FindByManager(string idManager);
-        List<Team> FindByListIdTeam(int[] teamsId);
+        List<Team> FindByListIdTeam(List<int> teamsId);
 
         List<Team> FindTeamsByManager(string managerId);
 

@@ -22,7 +22,6 @@ namespace VacationTrackingSoftware.Controllers
     {
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
-        private IEmployeeService _employeeService;
         private readonly IMapper _mapper;
         private IVacationPoliciesService _vacationPoliciesService;
 
@@ -30,22 +29,22 @@ namespace VacationTrackingSoftware.Controllers
         public VacationPoliciesController(IMapper mapper,
                                          IVacationTypeRepository vacationTypeRepository, 
                                          IVacationPolicyRepository vacationPolicyRepository, 
-                                         IEmployeeService employeeService,
                                          IVacationPoliciesService vacationPoliciesService)
         {
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
-            _employeeService = employeeService;
             _mapper = mapper;
             _vacationPoliciesService = vacationPoliciesService;
         }
         [HttpGet("[action]")]
+        [Authorize(Roles = "HrUser")]
         public List<VacationType> GetTypesOfVacation()
         {
             return _vacationTypeRepository.GetAll().ToList();
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "HrUser")]
         public IActionResult SendVacationPolicy(VacationPolicyDTO newVacationPolicy)
         {
             bool result;
@@ -70,12 +69,14 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpDelete("[action]/{years}/{vacationType}/{payments}")]
+        [Authorize(Roles = "HrUser")]
         public void DeleteVacationPolicy(int years, string vacationType, int payments)
         {
             _vacationPoliciesService.DeleteVacationPolicy(years, vacationType, payments);
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "HrUser")]
         public IActionResult UpdateVacationPolicy(VacationPolicyDTO vacationPolicy) {
             if (ModelState.IsValid && vacationPolicy.Count >= vacationPolicy.Payments)
             {

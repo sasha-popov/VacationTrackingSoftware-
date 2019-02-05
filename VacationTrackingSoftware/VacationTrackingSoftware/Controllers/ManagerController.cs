@@ -36,6 +36,7 @@ namespace VacationTrackingSoftware.Controllers
             _teamUserRepository = teamUserRepository;
         }
         [HttpPost("[action]")]
+        [Authorize(Roles = "Manager")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel) {
             var uservacationRequest=_userVacationRequestRepository.GetById(changeStatusViewModel.Id);
             //choose == true ? uservacationRequest.Status = (int)StatusesRequest.Accepted : uservacationRequest.Status= (int)StatusesRequest.Declined;

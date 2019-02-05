@@ -18,7 +18,7 @@ namespace DAL.Repositories
             return RepositoryContext.Teams.Include(x => x.Manager).ToList();
         }
 
-        public List<Team> FindByListIdTeam(int[] teamsId)
+        public List<Team> FindByListIdTeam(List<int> teamsId)
         {
             return RepositoryContext.Teams.Where(x => teamsId.Contains(x.Id)).ToList();
         }

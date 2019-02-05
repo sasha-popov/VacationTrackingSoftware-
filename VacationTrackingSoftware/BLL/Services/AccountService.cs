@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using BLL.IRepositories;
 using BLL.Models;
@@ -8,62 +9,41 @@ namespace BLL.Services
 {
    public class AccountService:IAccountService 
     {
-        private IUserVacationRequestRepository _userVacationRequestRepository;
-        private IVacationTypeRepository _vacationTypeRepository;
-        private IVacationPolicyRepository _vacationPolicyRepository;
-        private ICompanyHolidayRepository _companyHolidayRepository;
         private IWorkerRepository _workerRepository;
         private ITeamRepository _teamRepository;
         private ITeamUserRepository _teamUserRepository;
         public AccountService(
-            IUserVacationRequestRepository userVacationRequestRepository,
-            IVacationTypeRepository vacationTypeRepository,
-            IVacationPolicyRepository vacationPolicyRepository,
-            ICompanyHolidayRepository companyHolidayRepository,
             IWorkerRepository workerRepository,
             ITeamRepository teamRepository,
             ITeamUserRepository teamUserRepository)
         {
-            _userVacationRequestRepository = userVacationRequestRepository;
-            _vacationTypeRepository = vacationTypeRepository;
-            _vacationPolicyRepository = vacationPolicyRepository;
-            _companyHolidayRepository = companyHolidayRepository;
             _workerRepository = workerRepository;
             _teamRepository = teamRepository;
             _teamUserRepository = teamUserRepository;
         }
 
-        public void CreateWorkerAndTeamUser(AppUser user, int teamId, string role)
+        public void CreateWorkerAndTeamUser(AppUser user, int teamId)
         {
             _workerRepository.Create(new Worker { DateRecruitment = DateTime.Now, User = user });
-            _workerRepository.Save();
-            Worker worker = _workerRepository.GetWithUser(user.Id);
-            Team team = _teamRepository.GetById(teamId);
-            if (team != null)
+
+            _teamUserRepository.Create(new TeamUser
             {
-                TeamUser teamUser = new TeamUser { Team = team, User = user };
-                _teamUserRepository.Create(teamUser);
-            }
-            else {
-                TeamUser teamUser = new TeamUser { Team = null, User = user };
-                _teamUserRepository.Create(teamUser);
-                
-            }
+                Team = _teamRepository.GetById(teamId),
+                User = user
+            });
+
             _teamUserRepository.Save();
         }
 
-        public void CreateWorkerAndUpdateTeams (AppUser user, int[] teamsId)
+        public void CreateWorkerAndUpdateTeams (AppUser user, List<int> teamsId)
         {
             List<Team> teams = _teamRepository.FindByListIdTeam(teamsId);
-            if (teams.Count != 0)
-            {
                 foreach (var team in teams)
                 {
                     team.Manager = user;
                     _teamRepository.Update(team);
                 }
                 _teamRepository.Save();
-            }
         }
 
         internal string GetRandomString(int stringLength)
@@ -76,6 +56,11 @@ namespace BLL.Services
             }
 
             return sb.ToString(0, stringLength);
+        }
+
+        public List<Team> GetAllTeams()
+        {
+            return _teamRepository.GetAll().ToList();
         }
     }
 }

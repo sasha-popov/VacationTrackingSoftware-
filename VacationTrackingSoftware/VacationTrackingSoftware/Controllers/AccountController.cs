@@ -30,24 +30,19 @@ namespace VacationTrackingSoftware.Controllers
         private IAccountService _accountService;
         private IWorkerRepository _workerRepository;
         private ProjectContext _appDbContext;
-        private ITeamRepository _teamRepository;
 
         public AccountController(
             UserManager<AppUser> userManager, 
             IMapper mapper,
             IAccountService accountService,
             IWorkerRepository workerRepository,
-            ProjectContext appDbContext,
-            ITeamRepository teamRepository
-            )
+            ProjectContext appDbContext)
         {
             _userManager = userManager;
             _mapper = mapper;
             _accountService = accountService;
             _workerRepository = workerRepository;
-            _appDbContext = appDbContext;
-            _teamRepository = teamRepository;
-        }
+            _appDbContext = appDbContext; }
 
         //POST api/accounts
         [HttpPost("[action]")]
@@ -63,7 +58,7 @@ namespace VacationTrackingSoftware.Controllers
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration",result.Errors.First().Description, ModelState));
             else {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
-                _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId, model.Role);
+                _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId);
                 //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
                 return new OkObjectResult("Account created");
             }
@@ -117,7 +112,7 @@ namespace VacationTrackingSoftware.Controllers
         }
         [HttpGet("[action]")]
         public List<Team> GetAllTeams() {
-            return _teamRepository.GetAll().ToList();
+            return _accountService.GetAllTeams();
         }
 
     }

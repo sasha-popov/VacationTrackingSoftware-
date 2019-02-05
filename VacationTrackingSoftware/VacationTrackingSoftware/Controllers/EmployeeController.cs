@@ -18,7 +18,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private IEmployeeService _employeeService;
@@ -41,6 +41,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize(Roles = "Employee")]
         public IActionResult CreateVacationRequest(UserVacationRequestDTO newVacationRequest)
         {
             if (!ModelState.IsValid || newVacationRequest.StartDate<DateTime.Now)
@@ -57,6 +58,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Roles = "Employee")]
         public List<UserVacationRequestDTO> ShowUserVacationRequest()
         {
             var userId = User.FindFirst("id").Value;
@@ -71,7 +73,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpGet("[action]")]
-        //[Authorize(Roles="Manager")]
+        [Authorize(Roles="Manager")]
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager()
         {
             var userId = User.FindFirst("id").Value;
@@ -87,6 +89,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpDelete("[action]/{startDate}/{endDate}")]
+        [Authorize(Roles = "Employee")]
         public void deleteUserVacationRequest(DateTime startDate, DateTime endDate)
         {
             //change this
@@ -100,6 +103,7 @@ namespace VacationTrackingSoftware.Controllers
 
         }
         [HttpGet("[action]")]
+        [Authorize(Roles = "HrUser")]
         public List<WorkersViewModel> GetALLWorkersForHrUser()
         {
             var allEmployee = _teamUserRepository.GetAllWithDetails();

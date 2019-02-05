@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using VacationTrackingSoftware.Token;
 
@@ -16,20 +17,28 @@ namespace VacationTrackingSoftware.Auth
 
         public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions)
         {
+            
             _jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(_jwtOptions);
         }
 
-        public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
+        public async Task<string> GenerateEncodedToken(AppUser user, ClaimsIdentity identity, List<Claim> claims)
         {
-            var claims = new[]
-         {
-                 new Claim(JwtRegisteredClaimNames.Sub, userName),
-                 new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
-                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-                 identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
-                 identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
-             };
+            //   var claims = new List<Claim>
+            //{
+            //        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            //        new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
+            //        new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+            //        identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol),
+            //        identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id)
+            //    };
+            //   claims.AddRange(userClaims);
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64));
+            claims.Add(identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol));
+            claims.Add(identity.FindFirst(Helpers.Constants.Strings.JwtClaimIdentifiers.Id));
+
 
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(

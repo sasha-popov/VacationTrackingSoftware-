@@ -11,15 +11,15 @@ namespace VacationTrackingSoftware.Helpers
 {
     public class Tokens
     {
-        public static async Task<string> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory, string userName, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings, int roles)
+        public static async Task<string> GenerateJwt(ClaimsIdentity identity, IJwtFactory jwtFactory, AppUser user, JwtIssuerOptions jwtOptions, JsonSerializerSettings serializerSettings, int roles,  List<Claim> claims)
         {
             var response = new
             {
                 id = identity.Claims.Single(c => c.Type == "id").Value,
-                auth_token = await jwtFactory.GenerateEncodedToken(userName, identity),
+                auth_token = await jwtFactory.GenerateEncodedToken(user, identity, claims),
                 expires_in = (int)jwtOptions.ValidFor.TotalSeconds,
                 rolesUser = roles,
-                name=userName,
+                name=user.UserName,
             };
 
             return JsonConvert.SerializeObject(response, serializerSettings);

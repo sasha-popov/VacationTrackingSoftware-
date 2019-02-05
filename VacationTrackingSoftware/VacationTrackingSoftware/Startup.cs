@@ -70,7 +70,7 @@ namespace VacationTrackingSoftware
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
             // add identity
-            var builder = services.AddIdentityCore<AppUser>(o =>
+            var builder = services.AddIdentity<AppUser, IdentityRole>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;
@@ -95,7 +95,7 @@ namespace VacationTrackingSoftware
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
+                //options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             });
 
             // In production, the Angular files will be served from this directory

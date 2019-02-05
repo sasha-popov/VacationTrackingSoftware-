@@ -79,10 +79,10 @@ export class VacationPoliciesComponent implements OnInit {
       .subscribe(vp => {
         this.vacationPolicies = vp;
       }, error => {
-        if (error.status = 401) {
-          this.auth.logout();
-          this.router.navigate(['/']);
-        }
+        //if (error.status = 401) {
+        //  this.auth.logout();
+        //  this.router.navigate(['/']);
+        //}
       });
   }
 
