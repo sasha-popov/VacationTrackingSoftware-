@@ -115,5 +115,13 @@ namespace VacationTrackingSoftware.Controllers
             return _accountService.GetAllTeams();
         }
 
+        [HttpPost("[action]")]
+        public IActionResult UpdateUserTeam(UpdateUserTeam updateUserTeam) {
+            AppUser userForUpdate= _userManager.FindByIdAsync(updateUserTeam.UserId).Result;
+            var role=_userManager.GetRolesAsync(userForUpdate).Result.FirstOrDefault();
+            _accountService.UpdateUserTeam(userForUpdate,role, updateUserTeam.TeamId, updateUserTeam.TeamsId);
+            return BadRequest();
+        }
+
     }
 }

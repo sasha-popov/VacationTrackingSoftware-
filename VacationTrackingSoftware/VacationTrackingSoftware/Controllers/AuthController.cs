@@ -23,8 +23,11 @@ namespace VacationTrackingSoftware.Controllers
         private readonly IJwtFactory _jwtFactory;
         private readonly JwtIssuerOptions _jwtOptions;
 
-        public AuthController(UserManager<AppUser> userManager
-            ,IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions, RoleManager<IdentityRole> roleManager)
+        public AuthController(
+            UserManager<AppUser> userManager,
+            IJwtFactory jwtFactory,
+            IOptions<JwtIssuerOptions> jwtOptions,
+            RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -46,11 +49,11 @@ namespace VacationTrackingSoftware.Controllers
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
             }
             var user = _userManager.FindByNameAsync(credentials.UserName).Result;
-            
+
             //if to be more roles for one user, than need change this code
             IList<string> currentRoles = await _userManager.GetRolesAsync(user);
             string currentRole = currentRoles.First();
-            int RoleEnum=0;
+            int RoleEnum = 0;
             if (currentRole == "Employee") RoleEnum = (int)Roles.Employee;
             if (currentRole == "HrUser") RoleEnum = (int)Roles.HrUser;
             if (currentRole == "Manager") RoleEnum = (int)Roles.Manager;

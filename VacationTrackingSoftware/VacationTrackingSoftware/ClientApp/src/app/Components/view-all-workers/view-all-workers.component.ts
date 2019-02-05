@@ -2,7 +2,7 @@ import { Component, OnChanges, Input, OnInit, SimpleChange } from '@angular/core
 import { Roles } from '../../Enums/Roles';
 import {allWorkerService } from "../../Services/allWorkerService"
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { UpdateWorkerComponent } from '../update-worker/update-worker.component';
 
 @Component({
@@ -19,7 +19,17 @@ export class ViewAllWorkersComponent implements OnInit {
   dateNow: Date = new Date();
   dateNowISO = this.dateNow.toISOString();
   workers:{ };
-  constructor(private allWorker: allWorkerService,private dialog: MatDialog, private router: Router) { }
+  constructor(private allWorker: allWorkerService, private dialog: MatDialog, private router: Router) {
+    this.router.events.subscribe((e: any) => {
+      // If it is a NavigationEnd event re-initalise the component
+      if (e instanceof NavigationEnd) {
+        this.initialiseInvites();
+      }
+    });
+  }
+  initialiseInvites() {
+    this.showAll();
+  }
 
   ngOnInit() {
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);

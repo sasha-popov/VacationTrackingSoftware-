@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, Inject } from '@angular/core';
 import { UserRegistration, ManagerRegistration } from '../../InterfacesAndClasses/UserRegistration'
 import { EmployeeService } from '../../Services/employee.service'
-import { Location } from '@angular/common';
 import { Team } from '../../InterfacesAndClasses/Team';
 import { TeamService } from '../../Services/team.service'
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -28,33 +27,40 @@ export class UpdateWorkerComponent implements OnInit {
   selectedItem: number;
   errors: string;
   success: string;
+  userName: string;
   constructor(private route: ActivatedRoute, private dialogRef: MatDialogRef<UpdateWorkerComponent>, private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any, private teamService: TeamService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private teamService: TeamService, private employeeService: EmployeeService) { }
 
   ngOnInit() {
+    this.selectedRole = this.data.role;
+    this.roles = Roles;
     this.getAllTeams();
+    this.userName = this.data.firstName + " " + this.data.lastName;
   }
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close();  
   }
 
   getAllTeams() {
     this.teamService.getAllTeams().subscribe(result => {
       this.teams = result
-      if (this.data.role = Roles.Manager) {
+      if (this.data.role == Roles.Manager) {
         this.selectedItems = this.data.teams;
+        this.dropdownSettings = {
+          singleSelection: false,
+          idField: 'id',
+          textField: 'name',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 3,
+          allowSearchFilter: true
+        }
+      } else if (this.data.role == Roles.Employee) {
+        this.selectedItem = this.data.team.id;
       }
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'name',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
-      this.selectedRole = this.data.role;
-      this.roles = Roles;
     });
+  }
+  updateUser(userId: string) {
+    this.employeeService.updateUser(userId, this.selectedItem, this.selectedItems).subscribe();
   }
 }

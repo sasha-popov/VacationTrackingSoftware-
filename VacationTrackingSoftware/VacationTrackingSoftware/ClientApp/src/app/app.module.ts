@@ -47,6 +47,7 @@ import { UpdateHolidayComponent } from './Components/update-holiday/update-holid
 import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
 import { ViewAllWorkersComponent } from './Components/view-all-workers/view-all-workers.component';
 import { UpdateWorkerComponent } from './Components/update-worker/update-worker.component';
+import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
   
 
 @NgModule({
@@ -68,7 +69,8 @@ import { UpdateWorkerComponent } from './Components/update-worker/update-worker.
     UpdateHolidayComponent,
     FilterVacationRequestPipe,
     ViewAllWorkersComponent,
-    UpdateWorkerComponent
+    UpdateWorkerComponent,
+    FilterListOfUsersPipe
   ],
   imports: [
     NgbModule,

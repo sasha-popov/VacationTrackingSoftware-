@@ -11,5 +11,7 @@ namespace BLL.IRepositories
 
         List<TeamUser> GetAllWithDetails();
 
+        TeamUser FindByUser(string userId);
+
     }
 }
