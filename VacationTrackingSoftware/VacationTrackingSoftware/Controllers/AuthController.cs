@@ -55,6 +55,8 @@ namespace VacationTrackingSoftware.Controllers
             if (currentRole == "HrUser") RoleEnum = (int)Roles.HrUser;
             if (currentRole == "Manager") RoleEnum = (int)Roles.Manager;
             if (currentRole == "Admin") RoleEnum = (int)Roles.Admin;
+
+            //create claims for token 
             var claims = new List<Claim>();
             var userClaims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);

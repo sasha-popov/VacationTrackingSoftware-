@@ -37,7 +37,7 @@ namespace VacationTrackingSoftware.Controllers
             _vacationPoliciesService = vacationPoliciesService;
         }
         [HttpGet("[action]")]
-        [Authorize(Roles = "HrUser")]
+        [Authorize(Roles = "Employee")]
         public List<VacationType> GetTypesOfVacation()
         {
             return _vacationTypeRepository.GetAll().ToList();

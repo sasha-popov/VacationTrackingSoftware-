@@ -17,8 +17,6 @@ namespace BLL.Services
         private IVacationTypeRepository _vacationTypeRepository;
         private IVacationPolicyRepository _vacationPolicyRepository;
         private ICompanyHolidayRepository _companyHolidayRepository;
-        private IWorkerRepository _workerRepository;
-        private ITeamRepository _teamRepository;
         private UserManager<AppUser> _userManager;
         private ITeamUserRepository _teamUserRepository;
         private readonly IMapper _mapper;
@@ -28,9 +26,7 @@ namespace BLL.Services
             IVacationTypeRepository vacationTypeRepository,
             IVacationPolicyRepository vacationPolicyRepository,
             ICompanyHolidayRepository companyHolidayRepository,
-            IWorkerRepository workerRepository,
-            ITeamRepository teamRepository,
-            ITeamUserRepository teamUserRepository ,
+            ITeamUserRepository teamUserRepository,
             UserManager<AppUser> userManager,
             IMapper mapper)
         {
@@ -38,8 +34,6 @@ namespace BLL.Services
             _vacationTypeRepository = vacationTypeRepository;
             _vacationPolicyRepository = vacationPolicyRepository;
             _companyHolidayRepository = companyHolidayRepository;
-            _workerRepository = workerRepository;
-            _teamRepository = teamRepository;
             _userManager = userManager;
             _teamUserRepository = teamUserRepository;
             _mapper = mapper;
@@ -89,10 +83,10 @@ namespace BLL.Services
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager(AppUser user)
         {
             //in comments it is bad aproach
-            List<AppUser> UsersOfManager = _teamUserRepository.FindForManager(user.Id).Select(x => x.User).ToList();         
+            List<AppUser> UsersOfManager = _teamUserRepository.FindForManager(user.Id).Select(x => x.User).ToList();
             List<UserVacationRequest> userVacationRequestsForManager = _userVacationRequestRepository.GetForListOfUsers(UsersOfManager);
             //optional
-             var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequestsForManager);
+            var result = _mapper.Map<List<UserVacationRequestDTO>>(userVacationRequestsForManager);
             return result;
         }
 
@@ -119,7 +113,8 @@ namespace BLL.Services
         private CountOfVacationDTO CheckVacationPolicies(UserVacationRequest newrequest)
         {
             //check it
-            var allvacations = _userVacationRequestRepository.FindForUser(newrequest.User.Id).Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
+            var allvacations = _userVacationRequestRepository.FindForUser(newrequest.User.Id)
+                    .Where(x => (x.StartDate.Year == 2019) && (x.VacationType.Name == newrequest.VacationType.Name)).ToList();
             List<DateTime> allDatesPrev = new List<DateTime>();
 
             if (allvacations.Any())
@@ -180,7 +175,7 @@ namespace BLL.Services
         private List<DateTime> GetListDaysWithoutCompanyHolidays(List<DateTime> allDateTimes)
         {
             var allHolidays = _companyHolidayRepository.GetAllHolidaysForCurrentYear();
-            List<DateTime> result= new List<DateTime>();
+            List<DateTime> result = new List<DateTime>();
             foreach (var checkHoliday in allHolidays)
             {
                 var item = allDateTimes.SingleOrDefault(x => x.DayOfYear == checkHoliday.Date.DayOfYear);

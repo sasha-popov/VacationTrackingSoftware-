@@ -51,7 +51,6 @@ namespace VacationTrackingSoftware.Controllers
             var vacationRequest= _employeeService.CreateVacationRequest(newVacationRequest);
             if (vacationRequest != null)
             {
-                //string count=vacationRequest.Payment.ToString();
                 return new OkObjectResult(vacationRequest);
             }
                 return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "You do not have so many vacation days, or invalid DateTime.Please check the data and try again", ModelState));
