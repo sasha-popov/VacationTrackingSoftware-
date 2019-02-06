@@ -13,7 +13,7 @@
       <br>
       <div *ngIf="selectedRole===roles.Employee" class="ChooseTeam">
         <span class="col-sm-4 teamText">
-          TEAM(current "{{data.team.name}}"):
+          TEAM:
         </span>
         <select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}" class="col-sm-6">
           <option *ngFor="let team of teams" value="{{team.id}}">

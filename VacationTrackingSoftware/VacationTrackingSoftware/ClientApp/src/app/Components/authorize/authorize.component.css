@@ -192,8 +192,8 @@ a {
 }
 
 #items {
-  padding:30px 30px;
-  width: 400px;
+  padding: 30px 30px;
+  max-width: 400px;
   margin: 0 auto;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }

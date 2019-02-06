@@ -31,6 +31,7 @@ namespace DAL.Repositories
         {
             //it need to change
             var getTeamssOfManager = RepositoryContext.Teams.Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
+            //this need because in json it is a cycle
             foreach (var team in getTeamssOfManager)
             {
                 foreach (var teamsUser in team.TeamUsers)
@@ -38,6 +39,12 @@ namespace DAL.Repositories
                     teamsUser.Team = null;
                 }
             }
+            return getTeamssOfManager;
+        }
+
+        public List<Team> FindTeamsByManagerForUpdate(string managerId)
+        {
+            var getTeamssOfManager = RepositoryContext.Teams.Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
             return getTeamssOfManager;
         }
     }

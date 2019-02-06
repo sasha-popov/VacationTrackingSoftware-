@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
+using BLL.Result;
 using BLL.Services;
 using DAL.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -26,23 +30,17 @@ namespace VacationTrackingSoftware.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
         private IAccountService _accountService;
         private IWorkerRepository _workerRepository;
-        private ProjectContext _appDbContext;
 
         public AccountController(
             UserManager<AppUser> userManager, 
-            IMapper mapper,
             IAccountService accountService,
-            IWorkerRepository workerRepository,
-            ProjectContext appDbContext)
+            IWorkerRepository workerRepository)
         {
             _userManager = userManager;
-            _mapper = mapper;
             _accountService = accountService;
-            _workerRepository = workerRepository;
-            _appDbContext = appDbContext; }
+            _workerRepository = workerRepository;}
 
         //POST api/accounts
         [HttpPost("[action]")]
@@ -51,7 +49,9 @@ namespace VacationTrackingSoftware.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates. Please try again", ModelState));
-            }
+            }            
+            var response = SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
+            if (response.Result==false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
 
             AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName};
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
@@ -59,7 +59,6 @@ namespace VacationTrackingSoftware.Controllers
             else {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
                 _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId);
-                //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
                 return new OkObjectResult("Account created");
             }
             
@@ -71,7 +70,8 @@ namespace VacationTrackingSoftware.Controllers
             {
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState));
             }
-
+            var response = SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
+            if (response.Result == false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
             Worker worker = new Worker { DateRecruitment = DateTime.Now };
             AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName };
             _workerRepository.Save();
@@ -81,34 +81,36 @@ namespace VacationTrackingSoftware.Controllers
             {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
                 _accountService.CreateWorkerAndUpdateTeams(userIdentity, model.TeamsId);
-                //SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
+                SendDataToWorker(userIdentity.Email, userIdentity.UserName, model.Password);
                 return new OkObjectResult("Account created");
             }
         }
-        private void SendDataToWorker(string email, string nickName, string password) {
-            var fromAddress = new MailAddress("sashapopov24051996@gmail.com", "Company");
-            var toAddress = new MailAddress(email, "Worker");
-            string fromPassword = "Control1996";
-            string subject = "Login and password";
-            string body = "Your nickName:"+nickName+", and your password:"+password;
+        private ResponseForRequest SendDataToWorker(string email, string nickName, string password) {
+            try {              
+                var smtpClient = new SmtpClient
+                {
+                    Host = "smtp.gmail.com", 
+                    Port = 587, 
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential("tansked2000@gmail.com", "control1996")
+                };
 
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-            };
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                Body = body
+                using (var message = new MailMessage("tansked2000@gmail.com", email)
+                {
+                    Subject = "Login and password",
+                    Body = "Your nickName:" + nickName + ", and your password:" + password
             })
-            {
-                smtp.Send(message);
+                {
+                     smtpClient.Send(message);
+                }
             }
+            catch (Exception ex)
+            {
+                return new ResponseForRequest() { Result = false, Errors = new List<string>() { "Incorrecr email. Please try again!" } };
+            }
+
+            return new ResponseForRequest() { Result=true};
+
         }
         [HttpGet("[action]")]
         public List<Team> GetAllTeams() {
@@ -116,12 +118,10 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult UpdateUserTeam(UpdateUserTeam updateUserTeam) {
+        public ResponseForRequest UpdateUserTeam(UpdateUserTeam updateUserTeam) {
             AppUser userForUpdate= _userManager.FindByIdAsync(updateUserTeam.UserId).Result;
             var role=_userManager.GetRolesAsync(userForUpdate).Result.FirstOrDefault();
-            _accountService.UpdateUserTeam(userForUpdate,role, updateUserTeam.TeamId, updateUserTeam.TeamsId);
-            return BadRequest();
+            return _accountService.UpdateUserTeam(userForUpdate,role, updateUserTeam.TeamId, updateUserTeam.TeamsId);
         }
-
     }
 }

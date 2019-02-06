@@ -39,7 +39,6 @@ namespace VacationTrackingSoftware.Controllers
         [Authorize(Roles = "Manager")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel) {
             var uservacationRequest=_userVacationRequestRepository.GetById(changeStatusViewModel.Id);
-            //choose == true ? uservacationRequest.Status = (int)StatusesRequest.Accepted : uservacationRequest.Status= (int)StatusesRequest.Declined;
             if (changeStatusViewModel.Choose == true) uservacationRequest.Status = (int)StatusesRequest.Accepted;
             if (changeStatusViewModel.Choose == false) uservacationRequest.Status = (int)StatusesRequest.Declined;
             _userVacationRequestRepository.Update(uservacationRequest);
@@ -50,8 +49,6 @@ namespace VacationTrackingSoftware.Controllers
         [Authorize(Roles ="Manager")]
         public List<Team> GetTeamsForManager() {
             var userId = User.FindFirst("id").Value;
-           // var manager = _userManager.FindByIdAsync(userId).Result;
-            //string id = "cc3d67a3-b4df-4182-a1bc-702de876ac8c";
             var result = _teamRepository.FindTeamsByManager(userId);
             return result;
         }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserRegistration, ManagerRegistration } from '../InterfacesAndClasses/UserRegistration'
 import { HttpRequestService } from '.././Services/httpRequest.service'
-import { Observable } from 'rxjs';
+import { Observable, observable } from 'rxjs';
 import { Roles } from '../Enums/Roles'
 
 
@@ -16,7 +16,8 @@ export class EmployeeService {
     return this.http.post("api/Account/PostCreateManager", personalData);
   }
 
-  updateUser(userId: string, teamId?: number, teamsId?: number[]) {
+  updateUser(userId: string, teamId?: number, teamsId?: number[]): Observable<any> {
+
     return this.http.post("api/Account/UpdateUserTeam", { userId: userId, teamId: teamId,teamsId:teamsId });
   }
 }

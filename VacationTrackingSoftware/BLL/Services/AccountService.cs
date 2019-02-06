@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BLL.IRepositories;
 using BLL.Models;
+using BLL.Result;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -65,46 +66,46 @@ namespace BLL.Services
             return _teamRepository.GetAll().ToList();
         }
 
-        public bool UpdateUserTeam(AppUser user, string role, int teamId = 0, List<int> teamsId = null)
+        public ResponseForRequest UpdateUserTeam(AppUser user, string role, int teamId = 0, List<int> teamsId = null)
         {
             if (role == "Employee") return UpdateEmployee(user, teamId);
-            //if (role == "Manager") { };
-            return false;
+            if (role == "Manager")  return UpdateManager(user,teamsId);
+            return new ResponseForRequest() { Result = false, Errors=new List<string>() {"You cant do this operation"} }; ;
         }
 
-        private bool UpdateEmployee(AppUser user, int teamId = 0)
+        private ResponseForRequest UpdateEmployee(AppUser user, int teamId = 0)
         {
-            if (teamId != 0)
-            {
-                Team team = _teamRepository.GetById(teamId);
-                TeamUser teamUser = _teamUserRepository.FindByUser(user.Id);
-                if (teamUser == null)
-                {
-                    _teamUserRepository.Create(new TeamUser() { Team = team, User = user });
-                }
-                else {
-                    teamUser.Team = team;
-                    _teamUserRepository.Update(teamUser);
-                }
-                _teamUserRepository.Save();
-                return true;
-            }
-            return false;
-        }
+            Team team = _teamRepository.GetById(teamId);
+            TeamUser teamUser = _teamUserRepository.FindByUser(user.Id);
 
-        private void UpdateManager(AppUser user, List<int> teamsId = null) {
-            if (teamsId.Any())
+            if (teamUser == null)
             {
-                List<Team> teams = _teamRepository.FindByListIdTeam(teamsId);
-                teams.ForEach(team =>
-                {
-                    team.Manager = user;
-                    _teamRepository.Update(team);
-                });
+                _teamUserRepository.Create(new TeamUser() { Team = team, User = user });
             }
             else {
-
+                teamUser.Team = team;
+                _teamUserRepository.Update(teamUser);
             }
+            _teamUserRepository.Save();
+            return new ResponseForRequest() { Result=true};
+        }
+
+        private ResponseForRequest UpdateManager(AppUser user, List<int> teamsId = null) {
+                List<Team> oldTeams = _teamRepository.FindTeamsByManagerForUpdate(user.Id);
+                oldTeams.ForEach(x =>
+                {
+                    x.Manager = null;
+                    _teamRepository.Update(x);
+                });
+                _teamRepository.Save();
+                List<Team> newTeams = _teamRepository.FindByListIdTeam(teamsId);
+                newTeams.ForEach(x =>
+                {
+                    x.Manager = user;
+                    _teamRepository.Update(x);
+                });
+                _teamRepository.Save();
+            return new ResponseForRequest() { Result = true };
         }
     }
 }

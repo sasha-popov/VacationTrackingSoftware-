@@ -1,7 +1,7 @@
 <app-app-header title='Momentz-4-ever'></app-app-header>
 <form id="filter" *ngIf="currentRole===roles.Manager">
   <label>Filter by usernames:</label>
-  <input type="text" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
+  <input class="col-sm-6" type="text" [(ngModel)]="term" [ngModelOptions]="{standalone: true}">
   </form><br>
 <ul class="heroes">
   <li *ngFor="let userVacationRequest of userVacationRequests| filterVacationrequest:term" class="textHolidays">

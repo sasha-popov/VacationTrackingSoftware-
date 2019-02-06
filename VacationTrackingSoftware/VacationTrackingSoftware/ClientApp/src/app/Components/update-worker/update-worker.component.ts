@@ -45,7 +45,7 @@ export class UpdateWorkerComponent implements OnInit {
     this.teamService.getAllTeams().subscribe(result => {
       this.teams = result
       if (this.data.role == Roles.Manager) {
-        this.selectedItems = this.data.teams;
+        if (this.data.teams.length !== 0) this.selectedItems = this.data.teams;
         this.dropdownSettings = {
           singleSelection: false,
           idField: 'id',
@@ -56,11 +56,32 @@ export class UpdateWorkerComponent implements OnInit {
           allowSearchFilter: true
         }
       } else if (this.data.role == Roles.Employee) {
-        this.selectedItem = this.data.team.id;
+        if (this.data.team !== null) this.selectedItem = this.data.team.id;
+        else this.selectedItem = 0;
       }
     });
   }
   updateUser(userId: string) {
-    this.employeeService.updateUser(userId, this.selectedItem, this.selectedItems).subscribe();
+    this.teamsId = [];
+    this.selectedItems.forEach(item => {
+      this.teamsId.push(item.id)
+    })
+    this.employeeService.updateUser(userId, this.selectedItem, this.teamsId).subscribe(result => {
+      if (result.result === true) {
+        this.success = "Data have changed already!";
+        this.router.navigate(['/allWorkers']);
+      }
+      else this.errors = "Data did not change.Please try later!";
+      
+    }),
+      error => {
+        this.errors = "Data did not change.Please try later!";
+      }
+  };
+  onItemSelect(item: any) {
+    console.log(item);
   }
-}
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+  }
