@@ -24,10 +24,9 @@ namespace VacationTrackingSoftware.Controllers
         private IEmployeeService _employeeService;
         private IUserVacationRequestRepository _userVacationRequestRepository;
         private readonly UserManager<AppUser> _userManager;
-        private IWorkerRepository _workerRepository;
         private ITeamUserRepository _teamUserRepository;
         private ITeamRepository _teamRepository;
-        public EmployeeController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager, IWorkerRepository workerRepository,
+        public EmployeeController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository, UserManager<AppUser> userManager,
             ITeamUserRepository teamUserRepository,
             ITeamRepository teamRepository
             )
@@ -35,7 +34,6 @@ namespace VacationTrackingSoftware.Controllers
             _employeeService = employeeService;
             _userVacationRequestRepository = userVacationRequestRepository;
             _userManager = userManager;
-            _workerRepository = workerRepository;
             _teamUserRepository = teamUserRepository;
             _teamRepository = teamRepository;
         }
@@ -44,16 +42,16 @@ namespace VacationTrackingSoftware.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult CreateVacationRequest(UserVacationRequestDTO newVacationRequest)
         {
-            if (!ModelState.IsValid || newVacationRequest.StartDate<DateTime.Now)
+            if (!ModelState.IsValid || newVacationRequest.StartDate < DateTime.Now)
             {
                 return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "Invalid data, please try again", ModelState));
             }
-            var vacationRequest= _employeeService.CreateVacationRequest(newVacationRequest);
+            var vacationRequest = _employeeService.CreateVacationRequest(newVacationRequest);
             if (vacationRequest != null)
             {
                 return new OkObjectResult(vacationRequest);
             }
-                return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "You do not have so many vacation days, or invalid DateTime.Please check the data and try again", ModelState));
+            return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "You do not have so many vacation days, or invalid DateTime.Please check the data and try again", ModelState));
         }
 
         [HttpGet("[action]")]
@@ -72,7 +70,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpGet("[action]")]
-        [Authorize(Roles="Manager")]
+        [Authorize(Roles = "Manager")]
         public List<UserVacationRequestDTO> ShowUserVacationRequestForManager()
         {
             var userId = User.FindFirst("id").Value;
@@ -94,7 +92,7 @@ namespace VacationTrackingSoftware.Controllers
             //change this
             var userId = User.FindFirst("id").Value;
             var currentVacationRequest = _userVacationRequestRepository.GetWithWorker(startDate, endDate, userId);
-            if (currentVacationRequest != null && startDate>DateTime.Now)
+            if (currentVacationRequest != null && startDate > DateTime.Now)
             {
                 _userVacationRequestRepository.Delete(currentVacationRequest);
                 _userVacationRequestRepository.Save();
@@ -112,7 +110,7 @@ namespace VacationTrackingSoftware.Controllers
                 if (x.Team != null) x.Team.TeamUsers = null;
                 workersViewModel.Add(new WorkersViewModel() { FirstName = x.User.FirstName, LastName = x.User.LastName, Id = x.User.Id, Team = x.Team, Role = (int)Roles.Employee });
             });
-            
+
             List<AppUser> allManagers = _userManager.GetUsersInRoleAsync("Manager").Result.ToList();
             allManagers.ForEach(manager =>
             {
@@ -122,7 +120,8 @@ namespace VacationTrackingSoftware.Controllers
             List<Team> teams = _teamRepository.AllTeamsWithManager().ToList();
             teams.ForEach(team =>
             {
-                if (team.Manager != null) {
+                if (team.Manager != null)
+                {
                     var result = workersViewModel.FirstOrDefault(x => x.Id == team.Manager.Id);
                     result.Teams.Add(team);
                 }

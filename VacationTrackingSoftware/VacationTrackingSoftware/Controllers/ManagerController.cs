@@ -17,6 +17,7 @@ namespace VacationTrackingSoftware.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Authorize]
     public class ManagerController : ControllerBase
     {
         private IEmployeeService _employeeService;
@@ -26,7 +27,7 @@ namespace VacationTrackingSoftware.Controllers
         private ITeamRepository _teamRepository;
         private ITeamUserRepository _teamUserRepository;
         public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository,
-            UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository,ITeamUserRepository teamUserRepository)
+            UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository, ITeamUserRepository teamUserRepository)
         {
             _employeeService = employeeService;
             _userVacationRequestRepository = userVacationRequestRepository;
@@ -37,8 +38,9 @@ namespace VacationTrackingSoftware.Controllers
         }
         [HttpPost("[action]")]
         [Authorize(Roles = "Manager")]
-        public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel) {
-            var uservacationRequest=_userVacationRequestRepository.GetById(changeStatusViewModel.Id);
+        public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel)
+        {
+            var uservacationRequest = _userVacationRequestRepository.GetById(changeStatusViewModel.Id);
             if (changeStatusViewModel.Choose == true) uservacationRequest.Status = (int)StatusesRequest.Accepted;
             if (changeStatusViewModel.Choose == false) uservacationRequest.Status = (int)StatusesRequest.Declined;
             _userVacationRequestRepository.Update(uservacationRequest);
@@ -46,9 +48,11 @@ namespace VacationTrackingSoftware.Controllers
             return uservacationRequest;
         }
         [HttpGet("[action]")]
-        [Authorize(Roles ="Manager")]
-        public List<Team> GetTeamsForManager() {
+        [Authorize(Roles = "Manager")]
+        public List<Team> GetTeamsForManager()
+        {
             var userId = User.FindFirst("id").Value;
+
             var result = _teamRepository.FindTeamsByManager(userId);
             return result;
         }

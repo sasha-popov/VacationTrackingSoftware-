@@ -34,13 +34,14 @@ namespace VacationTrackingSoftware.Controllers
         private IWorkerRepository _workerRepository;
 
         public AccountController(
-            UserManager<AppUser> userManager, 
+            UserManager<AppUser> userManager,
             IAccountService accountService,
             IWorkerRepository workerRepository)
         {
             _userManager = userManager;
             _accountService = accountService;
-            _workerRepository = workerRepository;}
+            _workerRepository = workerRepository;
+        }
 
         //POST api/accounts
         [HttpPost("[action]")]
@@ -49,19 +50,20 @@ namespace VacationTrackingSoftware.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates. Please try again", ModelState));
-            }            
+            }
             var response = SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
-            if (response.Result==false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
+            if (response.Result == false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
 
-            AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName};
+            AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName };
             var result = await _userManager.CreateAsync(userIdentity, model.Password);
-            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration",result.Errors.First().Description, ModelState));
-            else {
+            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", result.Errors.First().Description, ModelState));
+            else
+            {
                 await _userManager.AddToRoleAsync(userIdentity, model.Role);
                 _accountService.CreateWorkerAndTeamUser(userIdentity, model.TeamId);
                 return new OkObjectResult("Account created");
             }
-            
+
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> PostCreateManager([FromBody]RegistrationManagerViewModel model)
@@ -85,12 +87,14 @@ namespace VacationTrackingSoftware.Controllers
                 return new OkObjectResult("Account created");
             }
         }
-        private ResponseForRequest SendDataToWorker(string email, string nickName, string password) {
-            try {              
+        private ResponseForRequest SendDataToWorker(string email, string nickName, string password)
+        {
+            try
+            {
                 var smtpClient = new SmtpClient
                 {
-                    Host = "smtp.gmail.com", 
-                    Port = 587, 
+                    Host = "smtp.gmail.com",
+                    Port = 587,
                     EnableSsl = true,
                     Credentials = new NetworkCredential("tansked2000@gmail.com", "control1996")
                 };
@@ -99,9 +103,9 @@ namespace VacationTrackingSoftware.Controllers
                 {
                     Subject = "Login and password",
                     Body = "Your nickName:" + nickName + ", and your password:" + password
-            })
+                })
                 {
-                     smtpClient.Send(message);
+                    smtpClient.Send(message);
                 }
             }
             catch (Exception ex)
@@ -109,19 +113,21 @@ namespace VacationTrackingSoftware.Controllers
                 return new ResponseForRequest() { Result = false, Errors = new List<string>() { "Incorrecr email. Please try again!" } };
             }
 
-            return new ResponseForRequest() { Result=true};
+            return new ResponseForRequest() { Result = true };
 
         }
         [HttpGet("[action]")]
-        public List<Team> GetAllTeams() {
+        public List<Team> GetAllTeams()
+        {
             return _accountService.GetAllTeams();
         }
 
         [HttpPost("[action]")]
-        public ResponseForRequest UpdateUserTeam(UpdateUserTeam updateUserTeam) {
-            AppUser userForUpdate= _userManager.FindByIdAsync(updateUserTeam.UserId).Result;
-            var role=_userManager.GetRolesAsync(userForUpdate).Result.FirstOrDefault();
-            return _accountService.UpdateUserTeam(userForUpdate,role, updateUserTeam.TeamId, updateUserTeam.TeamsId);
+        public ResponseForRequest UpdateUserTeam(UpdateUserTeam updateUserTeam)
+        {
+            AppUser userForUpdate = _userManager.FindByIdAsync(updateUserTeam.UserId).Result;
+            var role = _userManager.GetRolesAsync(userForUpdate).Result.FirstOrDefault();
+            return _accountService.UpdateUserTeam(userForUpdate, role, updateUserTeam.TeamId, updateUserTeam.TeamsId);
         }
     }
 }
