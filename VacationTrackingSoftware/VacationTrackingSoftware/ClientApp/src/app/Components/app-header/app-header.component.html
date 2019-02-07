@@ -1,21 +1,32 @@
-<div class="jumbotron">
-  <img src={{pathImages}} class="logo col-sm-2 flex" routerLink="/home" title="Go to home">
-  <nav mat-tab-nav-bar class="col-sm-7">
-    <!--<a mat-tab-link *ngIf="currentRole===roles.HrUser" (click)="openDialog()">Create a new worker</a>-->
-    <a mat-tab-link routerLink="/vacationPolicies" routerLinkActive #vacationPoliciesTab="routerLinkActive" [active]="vacationPoliciesTab.isActive">VacationPolicy</a>
-    <a mat-tab-link routerLink="/holidays" routerLinkActive #holidaysTab="routerLinkActive" [active]="holidaysTab.isActive">Holidays</a>
-    <a mat-tab-link *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" routerLinkActive #vacationRequestsTab="routerLinkActive" [active]="vacationRequestsTab.isActive">Vacation request</a>
-    <a mat-tab-link routerLink="/calendar" routerLinkActive #calendarTab="routerLinkActive" [active]="calendarTab.isActive">Calendar</a>
-    <a mat-tab-link *ngIf="currentRole===roles.Manager" routerLink="/yourTeams" routerLinkActive #teamsTab="routerLinkActive" [active]="teamsTab.isActive">Teams</a>
-    <a mat-tab-link *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers" routerLinkActive #vacationRequestsTab="routerLinkActive" [active]="vacationRequestsTab.isActive">Workers</a>
-  </nav>
-  <div>
-    <button class="btn btn-secondary btn-lg float-right" type="submit" (click)="logOut()">
-      Log out
-    </button>
-    <button *ngIf="currentRole===roles.HrUser" class="btn btn-primary btn-lg float-right" (click)="openDialog()" type="submit">
+<nav class="navbar navbar-expand-lg navbar-light">
+  <img src={{pathImages}} class="logo" routerLink="/home" title="Go to home">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <span class="float-right userName">Hello {{userName}}</span>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/vacationPolicies">VacationPolicy</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" routerLinkActive #vacationRequestsTab="routerLinkActive" active="vacationRequestsTab.isActive">Vacation request</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/calendar" routerLinkActive #calendarTab="routerLinkActive" active="calendarTab.isActive">Calendar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="currentRole===roles.Manager" routerLink="/yourTeams" routerLinkActive #teamsTab="routerLinkActive" active="teamsTab.isActive">Teams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers" routerLinkActive #vacationRequestsTab="routerLinkActive" active="vacationRequestsTab.isActive">Workers</a>
+      </li>
+    </ul>
+    <button *ngIf="currentRole===roles.HrUser" class="btn btn-primary btn-lg float-right nav-item" (click)="openDialog()" type="submit">
       Create a new worker
     </button>
-    <span class="float-right">Hello {{userName}}</span>
+    <button class="btn btn-secondary btn-lg float-right nav-item" type="submit" (click)="logOut()">
+      Log out
+    </button>
   </div>
-</div>
+</nav>

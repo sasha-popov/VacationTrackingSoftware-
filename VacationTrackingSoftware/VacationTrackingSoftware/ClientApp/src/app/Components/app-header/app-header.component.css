@@ -12,8 +12,21 @@ nav.mat-tab-nav-bar.mat-primary {
   padding-top: 48px;
   padding-bottom: 52px;
 }
-.logo{
-  padding: 1px 1px;
-  max-width: 100px;
-  margin-top: -40px;
+
+.logo[_ngcontent-c2] {
+  padding: 1px 1px; 
+  max-width: 60px;
+  margin-top: -3px;
 }
+span.float-right.userName {
+  color: #4A4A4A;
+  margin: 0px 10px;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+nav.navbar.navbar-expand-lg.navbar-light {
+  background-color: #EEEEEE;
+}
+
+a.nav-link:active {
+  color: #4B4A45; /* Цвет активной ссылки */
+} 
