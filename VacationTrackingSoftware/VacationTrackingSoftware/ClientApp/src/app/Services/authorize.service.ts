@@ -24,21 +24,15 @@ export class AuthorizeService extends BaseService {
     super();
     this.loggedIn = !!localStorage.getItem('auth_token');  
 
-    // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
-    // header component resulting in authed user nav links disappearing despite the fact user is still logged in
     this._authNavStatusSource.next(this.loggedIn);
     this.baseUrl = configService.getApiURI(); 
   }
 
-  login(userName, password){
-    //let headers = new Headers();
-    //headers.append('Content-Type', 'application/json');    
+  login(userName, password){  
     return this.http
       .postToken(this.baseUrl + '/Auth/login',
       JSON.stringify({ userName, password })
       ).pipe(map(res => {
-        //need fix it
-        console.log(res);
         localStorage.setItem('auth_token', res["auth_token"]); 
         localStorage.setItem('rolesUser', res["rolesUser"]);
         localStorage.setItem('id', res["id"]);
@@ -62,21 +56,4 @@ export class AuthorizeService extends BaseService {
   isLoggedIn() {
     return this.loggedIn;
   }
-
-  //facebookLogin(accessToken: string) {
-  //  let headers = new Headers();
-  //  headers.append('Content-Type', 'application/json');
-  //  let body = JSON.stringify({ accessToken });
-  //  return this.http
-  //    .post(
-  //      this.baseUrl + '/externalauth/facebook', body)
-  //    .map(res => res.json())
-  //    .map(res => {
-  //      localStorage.setItem('auth_token', res.auth_token);
-  //      this.loggedIn = true;
-  //      this._authNavStatusSource.next(true);
-  //      return true;
-  //    })
-  //    .catch(this.handleError);
-  //}
 }

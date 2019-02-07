@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
 import { ActivatedRoute, Router } from "@angular/router";
-import { HomeService } from '../../Services/home.service';
 import { AuthorizeService } from '../../Services/authorize.service';
 import { Roles } from '../../Enums/Roles';
 
@@ -11,7 +10,7 @@ import { Roles } from '../../Enums/Roles';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit{
-  public constructor(private route: ActivatedRoute, private homeService: HomeService) { 
+  public constructor(private route: ActivatedRoute) { 
   }
   currentRole: any;
   roles;

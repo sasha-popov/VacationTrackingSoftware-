@@ -7,7 +7,6 @@ import {tap } from 'rxjs/operators';
 
 @Injectable()
 export class HolidayService {
-  public holiday: Holiday;
   constructor(private http: HttpRequestService) { }
   showAll(): Observable<Holiday[]> {
     return this.http.get<Holiday[]>("api/Holiday/GetForCurrentYear");

@@ -7,7 +7,6 @@ import { Roles } from '../Enums/Roles'
 
 @Injectable()
 export class EmployeeService {
-  test = "ttt";
   constructor(private http: HttpRequestService) { }
   createEmployee(employee: UserRegistration){
     return this.http.post<UserRegistration>("api/Account/PostCreateEmployee", employee); 

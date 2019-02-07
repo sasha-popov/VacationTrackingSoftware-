@@ -19,15 +19,12 @@ export class CreateHolidaysComponent implements OnInit {
 
   add(date: Date, name: string): void {
     name = name.trim();
-    //if (!name || !date) { return; }
     this.holiday = {
       id: 0,
       date: date,
       description: name
     }
     this.holidayService.addHoliday(this.holiday).subscribe(result => {
-      //if (result != null)
-      //  this.holidays.push(this.holiday);
     },
       error => {
         if (error.status == 200) {

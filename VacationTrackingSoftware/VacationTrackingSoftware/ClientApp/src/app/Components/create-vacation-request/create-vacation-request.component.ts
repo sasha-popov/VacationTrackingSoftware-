@@ -48,8 +48,6 @@ export class CreateVacationRequestComponent implements OnInit {
       payment: 0
     }
     this.vacationRequestService.createVacationRequest(this.userVacationRequest).subscribe(rez => {
-      //need to fix that
-      //this.userVacationRequest.payment = parseInt(rez);
       this.router.navigate(['/vacationRequests']);
       this.dialogRef.close();
     }, error => {

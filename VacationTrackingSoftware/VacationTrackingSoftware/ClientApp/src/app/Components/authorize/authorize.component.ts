@@ -4,7 +4,6 @@ import { AuthorizeService } from '../../Services/authorize.service'
 import { Observable, Subscription } from 'rxjs';
 import { UserRole, Role, User } from '../../InterfacesAndClasses/UserRole';
 import { Router, NavigationExtras, ActivatedRoute } from "@angular/router";
-import { HomeService } from '../../Services/home.service';
 import { Credentials } from '../../InterfacesAndClasses/Credentials'
 
 @Component({
@@ -19,7 +18,7 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
   isRequesting: boolean;
   submitted: boolean = false;
   credentials: Credentials = { email: '', password: '' };
-  constructor(private authorizeService: AuthorizeService, private router: Router, private homeService: HomeService, private activatedRoute: ActivatedRoute) { }
+  constructor(private authorizeService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     // subscribe to router event
@@ -43,7 +42,6 @@ export class AuthorizeComponent implements OnInit, OnDestroy {
     this.errors = '';
     if (valid) {
       this.authorizeService.login(value.email, value.password)
-        //.finally(() => this.isRequesting = false)
         .subscribe(
           result => {
             if (result) {

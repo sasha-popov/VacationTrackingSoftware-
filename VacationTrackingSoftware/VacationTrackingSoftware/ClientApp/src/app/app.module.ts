@@ -17,8 +17,6 @@ import { EmployeeService } from './Services/employee.service';
 import { HolidayService } from './Services/holiday.service';
 import { VacationPoliciesService } from './Services/vacation-policies.service';
 import { VacationRequestService } from './Services/vacation-request.service';
-import { BaseService } from './Services/BaseService';
-import { HomeService } from './Services/home.service';
  
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -26,7 +24,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarComponent } from './Components/calendar/calendar.component';
 import { HttpRequestService } from './Services/httpRequest.service';
 import { ConfigService } from './Services/ConfigService';
-import { CalendarService } from './Services/CalendarService';
 import { TeamService } from './Services/team.service';
 import { allWorkerService } from "./Services/allWorkerService";
 
@@ -109,10 +106,8 @@ import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
     VacationPoliciesService,
     VacationRequestService,
     HttpRequestService,
-    HomeService,
     ConfigService,
     AuthGuard,
-    CalendarService,
     TeamService,
     HeaderService,
     allWorkerService

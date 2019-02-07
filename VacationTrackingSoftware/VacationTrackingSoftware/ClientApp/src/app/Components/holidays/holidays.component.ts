@@ -35,7 +35,6 @@ export class HolidaysComponent implements OnInit {
     this.showAll();
   }
   ngOnInit() {
-    //this.date = this.datePipe.transform(new Date(), 'dd-MM-yy');
     this.roles = Roles;
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
     this.showAll();  
@@ -43,13 +42,11 @@ export class HolidaysComponent implements OnInit {
 
   showAll(): void {
     this.holidayService.showAll()
-      .subscribe(holidays => this.holidays = holidays);
-    //console.log(this.holidays.length);    
+      .subscribe(holidays => this.holidays = holidays);   
   }
   deleteHoliday(holiday: Holiday): void {
     this.holidayService.deleteHoliday(holiday).subscribe();
     this.holidays.splice(this.holidays.indexOf(holiday),1);
-    //this.holidays = this.holidays.filter(h => h !== holiday);
   }
 
   clickdeleteHoliday(name: string, holiday: Holiday) {

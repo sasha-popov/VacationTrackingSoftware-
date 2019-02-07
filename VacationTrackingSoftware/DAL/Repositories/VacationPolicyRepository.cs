@@ -21,7 +21,9 @@ namespace DAL.Repositories
         {
 
             int workingYears = DateTime.Now.Year - RepositoryContext.Workers.Include(x=>x.User).First(x=>x.User.Id==userVacationRequest.User.Id).DateRecruitment.Year;
-            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.VacationType.Id == userVacationRequest.VacationType.Id).Where(x => x.WorkingYear >= workingYears).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;
+
+            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.VacationType.Id == userVacationRequest.VacationType.Id)
+                                    .Where(x => x.WorkingYear >= workingYears).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;
         }
 
         public VacationPolicy FindForDelete(int years, string vacationType, int payments)
