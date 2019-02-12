@@ -3,8 +3,6 @@ using System.Text;
 using AutoMapper;
 using BLL.IRepositories;
 using BLL.Services;
-using DAL.Data;
-using DAL.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +23,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using BLL.Services.Interfaces;
 using BLL.Services.Classes;
+using DAL.Repositories;
+using DAL.Data;
 
 namespace VacationTrackingSoftware
 {
