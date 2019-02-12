@@ -81,9 +81,11 @@ import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
       { path: 'calendar', canActivate: [AuthGuard], component: CalendarComponent, runGuardsAndResolvers: 'always' },
       { path: 'login', component: AuthorizeComponent },
       { path: '', redirectTo: '/login', canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent, runGuardsAndResolvers: 'always'},
-      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers:'always' },
+      { path: 'vacationPolicies', canActivate: [AuthGuard], component: VacationPoliciesComponent, runGuardsAndResolvers: 'always' },
+      { path: 'vacationPolicies/:id', canActivate: [AuthGuard], component: UpdateVacationPolicyComponent, runGuardsAndResolvers: 'always' },
+      { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers: 'always' },
       { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
+      { path: 'holidays/:id', component: UpdateHolidayComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       { path: 'allWorkers', component: ViewAllWorkersComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       {
         path: 'home',

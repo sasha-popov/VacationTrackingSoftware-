@@ -7,8 +7,8 @@ namespace BLL.IRepositories
 {
     public interface ICompanyHolidayRepository: IGenericRepository<CompanyHoliday>
     {
-        IEnumerable<CompanyHoliday> GetAllHolidaysForCurrentYear();
+        List<CompanyHoliday> GetAllHolidaysForCurrentYear();
         CompanyHoliday FindByDateAndDescription(string description, DateTime date);
-        IEnumerable<CompanyHoliday> FindByDate(DateTime date);
+        List<CompanyHoliday> FindByDate(DateTime date);
     }
 }

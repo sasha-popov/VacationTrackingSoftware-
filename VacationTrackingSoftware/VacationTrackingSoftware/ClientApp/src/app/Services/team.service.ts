@@ -10,6 +10,6 @@ export class TeamService {
   constructor(private http: HttpRequestService) { }
 
   getAllTeams(): Observable<Team[]>{
-    return this.http.get<Team[]>('api/Account/GetAllTeams');
+    return this.http.get<Team[]>('api/Teams/GetAllTeams');
   }
 }

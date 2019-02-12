@@ -3,20 +3,20 @@ import { UserRegistration, ManagerRegistration } from '../InterfacesAndClasses/U
 import { HttpRequestService } from '.././Services/httpRequest.service'
 import { Observable, observable } from 'rxjs';
 import { Roles } from '../Enums/Roles'
+import { Role } from '../InterfacesAndClasses/UserRole';
 
 
 @Injectable()
 export class EmployeeService {
   constructor(private http: HttpRequestService) { }
   createEmployee(employee: UserRegistration){
-    return this.http.post<UserRegistration>("api/Account/PostCreateEmployee", employee); 
+    return this.http.post<UserRegistration>("api/Worker/Create", employee); 
   }
   createManager(personalData: ManagerRegistration) {
-    return this.http.post("api/Account/PostCreateManager", personalData);
+    return this.http.post("api/Manager/Create", personalData);
   }
 
-  updateUser(userId: string, teamId?: number, teamsId?: number[]): Observable<any> {
-
-    return this.http.post("api/Account/UpdateUserTeam", { userId: userId, teamId: teamId,teamsId:teamsId });
-  }
+  updateUser(user: any, teamId?: number, teamIds?: number[]): Observable<any> {
+    return this.http.put("api/Teams/UpdateUserTeam", { userId: user.id, teamId: teamId, teamIds: teamIds, role: user.role });
+    }
 }

@@ -9,6 +9,6 @@ export class ScheduleTeamsService {
 
   constructor(private http: HttpRequestService) { }
   showAll(): Observable<any[]> {
-    return this.http.get<any[]>("api/Manager/GetTeamsForManager");
+    return this.http.get<any[]>("api/Teams/GetTeamsForManager");
   }
 }

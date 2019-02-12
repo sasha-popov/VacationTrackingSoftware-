@@ -13,6 +13,6 @@ namespace BLL.IRepositories
         List<UserVacationRequest> GetAllWithTypeHolidays();
 
         List<UserVacationRequest> GetForListOfUsers(List<AppUser> users);
-        IEnumerable<UserVacationRequest> FindForUser(string userId);
+        List<UserVacationRequest> FindForUser(string userId);
     }
 }

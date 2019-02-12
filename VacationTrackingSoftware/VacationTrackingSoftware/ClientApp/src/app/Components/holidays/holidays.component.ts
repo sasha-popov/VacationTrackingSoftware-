@@ -1,7 +1,7 @@
 import { Component, OnChanges, Input, OnInit } from '@angular/core';
 import { HolidayService } from '../../Services/holiday.service';
 import { Holiday } from '../../InterfacesAndClasses/Holiday'
-import { map } from 'rxjs/operators';
+import { map, window } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { Roles } from '../../Enums/Roles'
 import { CreateHolidaysComponent } from '../create-holidays/create-holidays.component';
@@ -45,7 +45,11 @@ export class HolidaysComponent implements OnInit {
       .subscribe(holidays => this.holidays = holidays);   
   }
   deleteHoliday(holiday: Holiday): void {
-    this.holidayService.deleteHoliday(holiday).subscribe();
+    this.holidayService.deleteHoliday(holiday.id).subscribe(result => {
+      if (result.successful == false) {
+        this.refresh(result.errors[0]);
+      }
+    });
     this.holidays.splice(this.holidays.indexOf(holiday),1);
   }
 
@@ -55,6 +59,10 @@ export class HolidaysComponent implements OnInit {
     }
   }
 
+  refresh(describe: string) {
+    if (confirm(describe + " Just refresh page.")) {
+    }
+  }
   fileNameDialogRef: MatDialogRef<CreateHolidaysComponent>;
   openDialog() {
     const dialogConfig = new MatDialogConfig();

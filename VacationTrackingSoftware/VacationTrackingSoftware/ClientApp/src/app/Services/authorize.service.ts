@@ -51,6 +51,7 @@ export class AuthorizeService extends BaseService {
     localStorage.removeItem("name");
     this.loggedIn = false;
     this._authNavStatusSource.next(false);
+    window.location.reload();
   }
 
   isLoggedIn() {

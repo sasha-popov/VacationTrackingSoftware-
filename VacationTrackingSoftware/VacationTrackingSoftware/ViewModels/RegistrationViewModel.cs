@@ -17,7 +17,6 @@ namespace VacationTrackingSoftware.ViewModels
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        //public string Location { get; set; }
         [Phone]
         public string PhoneNumber { get; set; }
         [Required]

@@ -12,17 +12,17 @@ export class HolidayService {
     return this.http.get<Holiday[]>("api/Holiday/GetForCurrentYear");
   }
 
-  deleteHoliday(holiday: Holiday){
-    return this.http.delete<Holiday>("api/Holiday/DeleteHoliday/" + holiday.description + "/" + holiday.date);
+  deleteHoliday(holidayId: number) {
+    return this.http.delete<any>("api/Holiday/DeleteHoliday/" + holidayId);
   }
 
 
   addHoliday(holiday: Holiday) {
-    return this.http.post<Holiday>("api/Holiday/AddHoliday", holiday);  
+    return this.http.post<any>("api/Holiday/AddHoliday", holiday);  
   }
 
   updateHoliday(holiday: Holiday) {
-    return this.http.post<Holiday>("api/Holiday/UpdateHoliday", holiday);
+    return this.http.put<any>("api/Holiday/UpdateHoliday", holiday);
   }
 
 }

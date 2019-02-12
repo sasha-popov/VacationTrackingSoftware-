@@ -7,7 +7,7 @@ namespace BLL.IRepositories
 {
     public interface ITeamUserRepository: IGenericRepository<TeamUser>
     {
-        List<TeamUser> FindForManager(string idManager);
+        List<AppUser> FindForManager(string managerId);
 
         List<TeamUser> GetAllWithDetails();
 

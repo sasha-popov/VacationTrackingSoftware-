@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-//using Microsoft.AspNetCore.WebSockets.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +23,8 @@ using VacationTrackingSoftware.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using BLL.Services.Interfaces;
+using BLL.Services.Classes;
 
 namespace VacationTrackingSoftware
 {
@@ -48,8 +49,6 @@ namespace VacationTrackingSoftware
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-            //services.AddDbContext<ProjectContext>(option =>
-            //    option.UseSqlServer(Configuration.GetConnectionString("Defaultconnection")));
             services.AddDbContext<ProjectContext>(options =>
       options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -63,10 +62,12 @@ namespace VacationTrackingSoftware
             services.AddScoped<IVacationTypeRepository, VacationTypeRepository>();
             services.AddScoped<ICompanyHolidayRepository, CompanyHolidayRepository > ();
 
-            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IVacationRequestService, VacationRequestService>();
             services.AddScoped<IVacationPoliciesService, VacationPoliciesService>();
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IWorkerService, WorkerService>();
             services.AddScoped<ICompanyHolidayService, CompanyHolidayService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<ITeamService, TeamService>();
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
             // add identity
@@ -171,6 +172,10 @@ namespace VacationTrackingSoftware
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseCors(builder => {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
             });
 
             app.UseSpa(spa =>

@@ -25,6 +25,16 @@ export class CreateHolidaysComponent implements OnInit {
       description: name
     }
     this.holidayService.addHoliday(this.holiday).subscribe(result => {
+      if (result.successful == true) {
+        this.success = "Congratulation!";
+        this.errors = "";
+        this.router.navigate(['/holidays']);
+      }
+      else {
+        this.errors = result.errors[0];
+        this.success = "";
+      }
+
     },
       error => {
         if (error.status == 200) {

@@ -16,25 +16,37 @@ export class UpdateHolidayComponent implements OnInit {
   errors: string;
   success: string;
   ngOnInit() {
+    this.data;
   }
 
   updateHoliday(date: Date, description: string): void {
-    //if (!name || !date) { return; }
     this.holiday = {
       id: this.data.id,
       date: date,
       description: description
     }
     this.holidayService.updateHoliday(this.holiday).subscribe(result => {
-      //if (result != null)
-      //  this.holidays.push(this.holiday);
+      if (result.successful == true) {
+        this.success = "Congratulation!";
+        this.errors = "";
+        this.router.navigate(['/holidays']);
+      }
+      else {
+        this.errors = result.errors[0];
+        this.success = "";
+      }
+        
     },
       error => {
         if (error.status == 200) {
-        this.success = error.error.text;
+          this.success = error.error.text;
+          this.errors = "";
           this.router.navigate(['/holidays']);
         }
-        else { this.errors = error.error.holidayError; }
+        else {
+          this.errors = error.error.holidayError;
+          this.success = "";
+        }
       })
   };
   close() {

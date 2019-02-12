@@ -11,6 +11,7 @@ import { AuthorizeService } from '../../Services/authorize.service'
 import { AuthorizeComponent } from '../authorize/authorize.component';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { UpdateVacationPolicyComponent } from '../update-vacation-policy/update-vacation-policy.component';
+import { window } from 'rxjs/operators';
 
 
 @Component({
@@ -85,9 +86,17 @@ export class VacationPoliciesComponent implements OnInit {
       });
   }
 
-  deleteVacationPolicy(vacationPolisy: VacationPolicy): void {
-    this.vacationPoliciesService.deleteVacationPolicy(vacationPolisy);
+  deleteVacationPolicy(vacationPolisy: VacationPolicy) {
+    this.vacationPoliciesService.deleteVacationPolicy(vacationPolisy).subscribe(result => {
+      if (result.successful == false) {
+        this.refresh(result.errors[0]);
+      }
+    });
     this.vacationPolicies = this.vacationPolicies.filter(h => h !== vacationPolisy);
+  }
+  refresh(describe: string) {
+    if (confirm(describe + " Just refresh page.")) {
+    }
   }
 
   clickdeleteVacationRequest(name: string, vacationPolisy: VacationPolicy) {

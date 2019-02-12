@@ -13,7 +13,7 @@ nav.mat-tab-nav-bar.mat-primary {
   padding-bottom: 52px;
 }
 
-.logo[_ngcontent-c2] {
+.logo {
   padding: 1px 1px; 
   max-width: 60px;
   margin-top: -3px;
@@ -29,4 +29,4 @@ nav.navbar.navbar-expand-lg.navbar-light {
 
 a.nav-link:active {
   color: #4B4A45; /* Цвет активной ссылки */
-} 
+}

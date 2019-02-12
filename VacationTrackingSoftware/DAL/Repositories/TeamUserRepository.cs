@@ -15,12 +15,12 @@ namespace DAL.Repositories
 
         public TeamUser FindByUser(string userId)
         {
-            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).Where(x => x.User.Id == userId).FirstOrDefault();
+            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).FirstOrDefault(x => x.User.Id == userId);
         }
 
-        public List<TeamUser> FindForManager(string idManager)
+        public List<AppUser> FindForManager(string managerId)
         {
-            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).Where(x=>x.Team.Manager.Id==idManager).ToList();
+            return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).Where(x=>x.Team.Manager.Id== managerId).Select(x => x.User).ToList();
         }
 
         public List<TeamUser> GetAllWithDetails()

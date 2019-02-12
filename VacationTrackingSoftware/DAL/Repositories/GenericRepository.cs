@@ -31,9 +31,9 @@ namespace DAL.Repositories
             RepositoryContext.Set<TEntity>().Remove(entity);          
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public List<TEntity> GetAll()
         {
-            return RepositoryContext.Set<TEntity>();
+            return RepositoryContext.Set<TEntity>().ToList();
         }
 
         public TEntity GetById(int id)

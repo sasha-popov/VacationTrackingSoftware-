@@ -53,8 +53,12 @@ export class CreateEmployeeComponent implements OnInit{
           this.router.navigate(['/']);
         },
           error => {
-            if (error.status == 400) { this.errors = error.error.registration; this.success = "" }
-            else if (error.status == 200) { this.success = error.error.text; this.errors = "" }
+            if (error.status == 400) {
+              this.errors = error.error.registration; this.success = ""
+            }
+            else if (error.status == 200) {
+              this.success = error.error.text; this.errors = ""
+            }
           })
       }
       else {
@@ -76,8 +80,12 @@ export class CreateEmployeeComponent implements OnInit{
           this.router.navigate(['/']);
         },
           error => {
-            if (error.status = 400) { this.errors = error.error.registration; this.success = "" }
-            else if (error.status = 200) { this.success = error.error.registration; this.errors = "" }
+            if (error.status = 400) {
+              this.errors = error.error.registration; this.success = ""
+            }
+            else if (error.status = 200) {
+              this.success = error.error.text; this.errors = ""
+            }
           })
       }
     }

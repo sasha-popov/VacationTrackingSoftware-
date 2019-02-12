@@ -7,10 +7,10 @@ using BLL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using BLL.Statuses;
 using BLL.Models;
 using VacationTrackingSoftware.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using VacationTrackingSoftware.Helpers;
 
 namespace VacationTrackingSoftware.Controllers
 {
@@ -20,41 +20,41 @@ namespace VacationTrackingSoftware.Controllers
     [Authorize]
     public class ManagerController : ControllerBase
     {
-        private IEmployeeService _employeeService;
-        private IUserVacationRequestRepository _userVacationRequestRepository;
         private readonly UserManager<AppUser> _userManager;
-        private IWorkerRepository _workerRepository;
-        private ITeamRepository _teamRepository;
-        private ITeamUserRepository _teamUserRepository;
-        public ManagerController(IEmployeeService employeeService, IUserVacationRequestRepository userVacationRequestRepository,
-            UserManager<AppUser> userManager, IWorkerRepository workerRepository, ITeamRepository teamRepository, ITeamUserRepository teamUserRepository)
+        private IManagerService _managerService;
+        private IWorkerService _workerService;
+        public ManagerController(
+            UserManager<AppUser> userManager,
+           IManagerService managerService,
+            IWorkerService workerService)
         {
-            _employeeService = employeeService;
-            _userVacationRequestRepository = userVacationRequestRepository;
-            _userManager = userManager;
-            _workerRepository = workerRepository;
-            _teamRepository = teamRepository;
-            _teamUserRepository = teamUserRepository;
+            _userManager = userManager;       
+            _managerService = managerService;
+            _workerService = workerService;
         }
-        [HttpPost("[action]")]
-        [Authorize(Roles = "Manager")]
-        public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel)
-        {
-            var uservacationRequest = _userVacationRequestRepository.GetById(changeStatusViewModel.Id);
-            if (changeStatusViewModel.Choose == true) uservacationRequest.Status = (int)StatusesRequest.Accepted;
-            if (changeStatusViewModel.Choose == false) uservacationRequest.Status = (int)StatusesRequest.Declined;
-            _userVacationRequestRepository.Update(uservacationRequest);
-            _userVacationRequestRepository.Save();
-            return uservacationRequest;
-        }
-        [HttpGet("[action]")]
-        [Authorize(Roles = "Manager")]
-        public List<Team> GetTeamsForManager()
-        {
-            var userId = User.FindFirst("id").Value;
 
-            var result = _teamRepository.FindTeamsByManager(userId);
-            return result;
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Create([FromBody]RegistrationManagerViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState));
+            }
+            try {
+                var response = _workerService.SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
+                if (response.Successful == false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
+                AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName };
+                var result = await _userManager.CreateAsync(userIdentity, model.Password);
+                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+                else
+                {
+                    await _userManager.AddToRoleAsync(userIdentity, model.Role);
+                    _managerService.CreateWorkerAndUpdateTeams(userIdentity, model.TeamsId);
+                    return new OkObjectResult("Account created");
+                }
+            }
+            catch { return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState)); }
+            
         }
     }
 }

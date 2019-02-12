@@ -52,11 +52,18 @@ export class VacationRequestComponent implements OnInit, OnChanges {
   }
 
   deleteVacationRequest(userVacationRequest: UserVacationRequest): void {
-    this.vacationRequestService.deleteUserVacationRequest(userVacationRequest).subscribe(rez => {
+    this.vacationRequestService.deleteUserVacationRequest(userVacationRequest).subscribe(result => {
+      if (result.successful == false) {
+        this.refresh(result.errors[0]);
+      }
       var index = this.userVacationRequests.indexOf(userVacationRequest);
       this.userVacationRequests.splice(index, 1);
-    }); 
+    });
+    }
 
+  refresh(describe: string) {
+    if (confirm(describe + " Just refresh page.")) {
+    }
   }
   showUserVacationRequest(): void {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {

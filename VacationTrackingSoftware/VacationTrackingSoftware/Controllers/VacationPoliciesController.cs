@@ -7,6 +7,7 @@ using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
+using BLL.Result;
 using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -49,14 +50,17 @@ namespace VacationTrackingSoftware.Controllers
             bool result;
             if (ModelState.IsValid && newVacationPolicy.Count>=newVacationPolicy.Payments)
             {
-                result=_vacationPoliciesService.SendVacationPolicy(newVacationPolicy);
-                if (result == false)
+                try
                 {
-                    return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "This fields is not available", ModelState));
+                    result = _vacationPoliciesService.SendVacationPolicy(newVacationPolicy);
+                    if (result != false)
+                    {
+                        return new OkObjectResult("Vacation policy create");
+                    }
                 }
-                else {
-                    return new OkObjectResult("Vacation policy create");
-                } 
+                catch {
+                    return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "Please, try later.", ModelState));
+                }                 
             }
             return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "This fields is not available", ModelState));
         }
@@ -67,27 +71,40 @@ namespace VacationTrackingSoftware.Controllers
             return _vacationPoliciesService.GetVacationPolicies();
         }
 
-        [HttpDelete("[action]/{years}/{vacationType}/{payments}")]
+        [HttpDelete("[action]/{vacationPolicyId}")]
         [Authorize(Roles = "HrUser")]
-        public void DeleteVacationPolicy(int years, string vacationType, int payments)
+        public ResponseForRequest DeleteVacationPolicy(int vacationPolicyId)
         {
-            _vacationPoliciesService.DeleteVacationPolicy(years, vacationType, payments);
+            try
+            {
+                _vacationPoliciesService.DeleteVacationPolicy(vacationPolicyId);
+                return new ResponseForRequest() { Successful = true };
+            }
+            catch
+            {
+                return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
+            }
         }
 
-        [HttpPost("[action]")]
+        [HttpPut("[action]")]
         [Authorize(Roles = "HrUser")]
         public IActionResult UpdateVacationPolicy(VacationPolicyDTO vacationPolicy) {
             if (ModelState.IsValid && vacationPolicy.Count >= vacationPolicy.Payments)
             {
-                VacationPolicy result = _mapper.Map<VacationPolicy>(vacationPolicy);
-                result.VacationType = _vacationTypeRepository.FindByName(vacationPolicy.VacationType);
-                _vacationPolicyRepository.Update(result);
-                _vacationPolicyRepository.Save();
-                return new OkObjectResult("Vacation policy have updated");
+                try
+                {
+                    VacationPolicy result = _mapper.Map<VacationPolicy>(vacationPolicy);
+                    result.VacationType = _vacationTypeRepository.FindByName(vacationPolicy.VacationType);
+                    _vacationPolicyRepository.Update(result);
+                    _vacationPolicyRepository.Save();
+                    return new OkObjectResult("Vacation policy have updated");
+                }
+                catch {
+                    return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "Please, try later.", ModelState));
+                }
+
             }
-            else {
                 return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "This fields is not available", ModelState));
-            }
         }
 
 

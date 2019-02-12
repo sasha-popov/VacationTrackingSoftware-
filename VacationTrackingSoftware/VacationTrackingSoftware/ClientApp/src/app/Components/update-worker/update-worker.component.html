@@ -38,16 +38,16 @@
         </div>
       </div>
     </form>
-    <mat-dialog-actions><br>
+
       <div class="buttons">
-        <button class="btn btn-primary btn-lg" (click)="updateUser(data.id)">
+        <button class="btn btn-primary btn-lg" (click)="updateUser(data)">
           Update
         </button>
         <button class="btn btn-secondary btn-lg" (click)="close()">
           Close
         </button>
       </div><br>
-    </mat-dialog-actions>
+
     <div *ngIf="errors" class="alert alert-danger" role="alert">
       <strong>Oops!</strong> {{errors}}
     </div>

@@ -20,7 +20,7 @@ namespace DAL.Repositories
 
         public Worker GetWithUser(string userId)
         {
-            return RepositoryContext.Workers.Include(x => x.User).Where(x => x.User.Id == userId).FirstOrDefault();
+            return RepositoryContext.Workers.Include(x => x.User).FirstOrDefault(x => x.User.Id == userId);
         }
     }
 }

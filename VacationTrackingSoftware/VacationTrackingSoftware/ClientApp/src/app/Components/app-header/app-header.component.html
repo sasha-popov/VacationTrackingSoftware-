@@ -6,20 +6,23 @@
   <span class="float-right userName">Hello {{userName}}</span>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link" routerLink="/vacationPolicies">VacationPolicy</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" routerLinkActive #vacationRequestsTab="routerLinkActive" active="vacationRequestsTab.isActive">Vacation request</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" routerLink="/holidays" >Holidays</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/calendar" routerLinkActive #calendarTab="routerLinkActive" active="calendarTab.isActive">Calendar</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" >Vacation request</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" *ngIf="currentRole===roles.Manager" routerLink="/yourTeams" routerLinkActive #teamsTab="routerLinkActive" active="teamsTab.isActive">Teams</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" routerLink="/calendar">Calendar</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers" routerLinkActive #vacationRequestsTab="routerLinkActive" active="vacationRequestsTab.isActive">Workers</a>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" *ngIf="currentRole===roles.Manager" routerLink="/yourTeams" >Teams</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers" >Workers</a>
       </li>
     </ul>
     <button *ngIf="currentRole===roles.HrUser" class="btn btn-primary btn-lg float-right nav-item" (click)="openDialog()" type="submit">

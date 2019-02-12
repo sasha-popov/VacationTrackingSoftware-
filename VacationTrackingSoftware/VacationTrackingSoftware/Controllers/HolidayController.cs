@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
+using BLL.Result;
 using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,9 @@ namespace VacationTrackingSoftware.Controllers
         private ICompanyHolidayRepository _companyHolidayRepository;
         private ICompanyHolidayService _companyHolidayService;
 
-        public HolidayController(ICompanyHolidayRepository companyHolidayRepository, ICompanyHolidayService companyHolidayService)
+        public HolidayController(
+            ICompanyHolidayRepository companyHolidayRepository, 
+            ICompanyHolidayService companyHolidayService)
         {
             _companyHolidayRepository = companyHolidayRepository;
             _companyHolidayService = companyHolidayService;
@@ -30,69 +33,59 @@ namespace VacationTrackingSoftware.Controllers
         [HttpGet("[action]")]
         public List<CompanyHoliday> GetForCurrentYear()
         {
-            var result = _companyHolidayRepository.GetAllHolidaysForCurrentYear().ToList();
+            var result = _companyHolidayRepository.GetAllHolidaysForCurrentYear();
             return result;
         }
 
-        [HttpDelete("[action]/{name}/{date}")]
+        [HttpDelete("[action]/{holidayId}")]
         [Authorize(Roles = "HrUser")]
-        public void DeleteHoliday(string name, DateTime date)
+        public ResponseForRequest DeleteHoliday(int holidayId)
         {
-            var currentHoliday = _companyHolidayRepository.FindByDateAndDescription(name, date);
+            var currentHoliday = _companyHolidayRepository.GetById(holidayId);
             if (currentHoliday != null)
             {
-                _companyHolidayRepository.Delete(currentHoliday);
-                _companyHolidayRepository.Save();
+                try
+                {
+                    _companyHolidayRepository.Delete(currentHoliday);
+                    _companyHolidayRepository.Save();
+                    return new ResponseForRequest() { Successful = true };
+                }
+                catch {
+                    return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
+                }
             }
+            return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
         }
 
         [HttpPost("[action]")]
         [Authorize(Roles = "HrUser")]
-        public IActionResult AddHoliday(CompanyHoliday newHoliday)
+        public ResponseForRequest AddHoliday(CompanyHoliday newHoliday)
         {
             //var response;
             if (ModelState.IsValid)
             {
-                var result = _companyHolidayService.AddHoliday(newHoliday);
-                //result == null? response = BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState)): response= new OkObjectResult("Holidays create");
-                if (result == null)
-                {
-                    return BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState));
-                }
-                else
-                {
-                    return new OkObjectResult("Holidays create");
+                try { return _companyHolidayService.AddOrUpdateHoliday(newHoliday, (int)Holidays.New); }
+                catch {
+                    return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
                 }
             }
-            else
-            {
-                return BadRequest(Errors.AddErrorToModelState("holidayError", "Invalid dates", ModelState));
-            }
+                return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
         }
 
-        [HttpPost("[action]")]
+        [HttpPut("[action]")]
         [Authorize(Roles = "HrUser")]
-        public IActionResult UpdateHoliday(CompanyHoliday companyHoliday)
+        public ResponseForRequest UpdateHoliday(CompanyHoliday companyHoliday)
         {
             if (ModelState.IsValid)
             {
-                var result = _companyHolidayService.UpdateHoliday(companyHoliday);
-                //result == null? response = BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState)): response= new OkObjectResult("Holidays create");
-                if (result == null)
+                try { return _companyHolidayService.AddOrUpdateHoliday(companyHoliday, (int)Holidays.Update); }
+                catch
                 {
-                    return BadRequest(Errors.AddErrorToModelState("holidayError", "This DateTime is not available", ModelState));
+                    return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
                 }
-                else
-                {
-                    return new OkObjectResult("Holidays update");
-                }
+                
             }
-            else
-            {
-                return BadRequest(Errors.AddErrorToModelState("holidayError", "Invalid dates", ModelState));
-            }
+                return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
         }
-
-
     }
 }

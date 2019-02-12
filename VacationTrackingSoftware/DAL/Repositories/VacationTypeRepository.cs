@@ -14,7 +14,7 @@ namespace DAL.Repositories
 
         public VacationType FindByName(string name)
         {
-            return RepositoryContext.VacationTypes.Where(x => x.Name == name).First();
+            return RepositoryContext.VacationTypes.FirstOrDefault(x => x.Name == name);
         }
     }
 }

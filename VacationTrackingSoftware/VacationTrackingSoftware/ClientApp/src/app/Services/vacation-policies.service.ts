@@ -19,13 +19,13 @@ export class VacationPoliciesService {
   }
 
   updateVacationPolicy(vacationPolicy: VacationPolicy): Observable<VacationPolicy> {
-    return this.http.post<VacationPolicy>("api/VacationPolicies/UpdateVacationPolicy", vacationPolicy);
+    return this.http.put<VacationPolicy>("api/VacationPolicies/UpdateVacationPolicy", vacationPolicy);
   }
   showAll(): Observable<VacationPolicy[]> {
     return this.http.get<VacationPolicy[]>("api/VacationPolicies/GetVacationPolicies");
   }
 
-  deleteVacationPolicy(vacationPolicy: VacationPolicy): void {
-    this.http.delete<VacationPolicy>("api/VacationPolicies/DeleteVacationPolicy/" + vacationPolicy.workingYear + "/" + vacationPolicy.vacationType + "/" + vacationPolicy.payments).subscribe();
+  deleteVacationPolicy(vacationPolicy: VacationPolicy): Observable<any> {
+    return this.http.delete<VacationPolicy>("api/VacationPolicies/DeleteVacationPolicy/" + vacationPolicy.id);
   }
 }

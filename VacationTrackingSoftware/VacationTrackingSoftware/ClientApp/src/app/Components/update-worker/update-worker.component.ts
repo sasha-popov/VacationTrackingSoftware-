@@ -61,13 +61,13 @@ export class UpdateWorkerComponent implements OnInit {
       }
     });
   }
-  updateUser(userId: string) {
+  updateUser(user: any) {
     this.teamsId = [];
     this.selectedItems.forEach(item => {
       this.teamsId.push(item.id)
     })
-    this.employeeService.updateUser(userId, this.selectedItem, this.teamsId).subscribe(result => {
-      if (result.result === true) {
+    this.employeeService.updateUser(user, this.selectedItem, this.teamsId).subscribe(result => {
+      if (result.successful === true) {
         this.success = "Data have changed already!";
         this.router.navigate(['/allWorkers']);
       }

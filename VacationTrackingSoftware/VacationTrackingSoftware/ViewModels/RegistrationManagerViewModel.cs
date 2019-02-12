@@ -11,7 +11,6 @@ namespace VacationTrackingSoftware.ViewModels
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [Range(6, 50)]
         public string Password { get; set; }
         [Required]
         public string FirstName { get; set; }

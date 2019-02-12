@@ -12,15 +12,15 @@ namespace DAL.Repositories
     {
         public VacationPolicyRepository(ProjectContext context) : base(context) { }
 
-        public IEnumerable<VacationPolicy> GetAllVacationPoliciesWithTypes()
+        public List<VacationPolicy> GetAllVacationPoliciesWithTypes()
         {
-            return RepositoryContext.VacationPolicies.Include(x => x.VacationType);
+            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).ToList();
         }
 
         public List<VacationPolicy> FindCurrentVacationPolicy(UserVacationRequest userVacationRequest)
         {
 
-            int workingYears = DateTime.Now.Year - RepositoryContext.Workers.Include(x=>x.User).First(x=>x.User.Id==userVacationRequest.User.Id).DateRecruitment.Year;
+            int workingYears = DateTime.Now.Year - RepositoryContext.Workers.Include(x=>x.User).FirstOrDefault(x=>x.User.Id==userVacationRequest.User.Id).DateRecruitment.Year;
 
             return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.VacationType.Id == userVacationRequest.VacationType.Id)
                                     .Where(x => x.WorkingYear >= workingYears).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;

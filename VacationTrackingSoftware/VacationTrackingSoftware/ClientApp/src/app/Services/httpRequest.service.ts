@@ -27,9 +27,13 @@ export class HttpRequestService {
     return this.http.post<T>(url, item, httpOptions);
   }
 
+  put<T>(url: string, item: T): Observable<T> {
+    return this.http.put<T>(url, item, httpOptions);
+  }
+
   postToken<T>(url: string, item: T): Observable<Response> {
     return this.http.post<Response>(url, item, httpOptions);
   }
 
 }
-httpOptions
+

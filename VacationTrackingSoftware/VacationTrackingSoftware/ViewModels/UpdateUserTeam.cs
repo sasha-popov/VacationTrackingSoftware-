@@ -13,6 +13,8 @@ namespace VacationTrackingSoftware.ViewModels
         //if the user have status employee
         public int TeamId { get; set; }
         //if the user have status hrUser 
-        public List<int> TeamsId { get; set; }
+        public List<int> TeamIds { get; set; }
+
+        public int Role { get; set; }
     }
 }

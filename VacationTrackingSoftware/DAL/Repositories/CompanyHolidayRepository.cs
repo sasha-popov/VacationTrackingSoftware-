@@ -5,6 +5,7 @@ using System.Text;
 using BLL.IRepositories;
 using BLL.Models;
 using DAL.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -12,19 +13,19 @@ namespace DAL.Repositories
     {
         public CompanyHolidayRepository(ProjectContext context) : base(context) { }
 
-        public IEnumerable<CompanyHoliday> FindByDate(DateTime date)
+        public List<CompanyHoliday> FindByDate(DateTime date)
         {
-            return RepositoryContext.CompanyHolidays.Where(x => x.Date==date);
+            return RepositoryContext.CompanyHolidays.AsNoTracking().Where(x => x.Date==date).ToList();
         }
 
         public CompanyHoliday FindByDateAndDescription(string description, DateTime date)
         {
-            return RepositoryContext.CompanyHolidays.Where(x => x.Description == description && x.Date == date).FirstOrDefault();
+            return RepositoryContext.CompanyHolidays.AsNoTracking().FirstOrDefault(x => x.Description == description && x.Date == date);
         }
 
-        public IEnumerable<CompanyHoliday> GetAllHolidaysForCurrentYear()
+        public List<CompanyHoliday> GetAllHolidaysForCurrentYear()
         {
-            return RepositoryContext.CompanyHolidays.Where(x => x.Date.Year == DateTime.Now.Year);
+            return RepositoryContext.CompanyHolidays.AsNoTracking().Where(x => x.Date.Year == DateTime.Now.Year).ToList();
         }
     }
 }

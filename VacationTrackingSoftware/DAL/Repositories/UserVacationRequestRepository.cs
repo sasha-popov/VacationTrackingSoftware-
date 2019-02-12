@@ -21,11 +21,10 @@ namespace DAL.Repositories
             return result;
         }
 
-        public IEnumerable<UserVacationRequest> FindForUser(string userId)
+        public List<UserVacationRequest> FindForUser(string userId)
         {
-            var allRequest = this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType);
-            var result = allRequest.Where(x => x.User.Id == userId);
-            return result;
+            var allRequest = this.RepositoryContext.UserVacantionRequests.Include(x => x.User).Include(x => x.VacationType).Where(x => x.User.Id == userId).ToList();
+            return allRequest;
         }
 
 

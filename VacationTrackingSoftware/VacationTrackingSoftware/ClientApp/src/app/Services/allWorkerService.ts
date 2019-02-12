@@ -9,6 +9,6 @@ export class allWorkerService {
   constructor(private http: HttpRequestService) { }
 
   showAll() {
-   return this.http.get("api/Employee/GetALLWorkersForHrUser");
+   return this.http.get("api/Teams/GetALLWorkersForHrUser");
   }
 }

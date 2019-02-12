@@ -11,22 +11,22 @@ export class VacationRequestService {
   constructor(private http: HttpRequestService) { }
 
   createVacationRequest(vacationRequest: UserVacationRequest): Observable<UserVacationRequest> {
-    return this.http.post<UserVacationRequest>("api/Employee/CreateVacationRequest", vacationRequest); 
+    return this.http.post<UserVacationRequest>("api/VacationRequest/CreateVacationRequest", vacationRequest); 
   }
   showUserVacationRequest(): Observable<UserVacationRequest[]> {
-    return this.http.get<UserVacationRequest[]>("api/Employee/ShowUserVacationRequest/");  
+    return this.http.get<UserVacationRequest[]>("api/VacationRequest/ShowUserVacationRequest/");  
   }
 
   showUserVacationRequestForManager(): Observable<UserVacationRequest[]> {
-    return this.http.get<UserVacationRequest[]>("api/Employee/ShowUserVacationRequestForManager");
+    return this.http.get<UserVacationRequest[]>("api/VacationRequest/ShowUserVacationRequestForManager");
   }
 
-  deleteUserVacationRequest(userVacationRequest: UserVacationRequest){
-    return this.http.delete<UserVacationRequest>("api/Employee/deleteUserVacationRequest/" + userVacationRequest.startDate + "/" + userVacationRequest.endDate);      
+  deleteUserVacationRequest(userVacationRequest: UserVacationRequest): Observable<any> {
+    return this.http.delete<UserVacationRequest>("api/VacationRequest/deleteUserVacationRequest/" + userVacationRequest.id);      
   }
 
   changeStatus(choose: boolean, id: number)
   {
-    return this.http.post("api/Manager/ChangeStatus", JSON.stringify({ choose: choose, id: id }));  
+    return this.http.put("api/VacationRequest/ChangeStatus", JSON.stringify({ choose: choose, id: id }));  
   }
 }
