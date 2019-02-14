@@ -46,6 +46,12 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         //test
+        [HttpGet("[action]")]
+        public void GetByListId() {
+            List<int> teamsId = new List<int>() { 9, 11, 1005 };
+            var result = _teamRepository.FindByListIdTeam(teamsId);
+        }
+        //test
         [HttpPost("[action]")]
         public ResponseForRequest AddTeam()
         {

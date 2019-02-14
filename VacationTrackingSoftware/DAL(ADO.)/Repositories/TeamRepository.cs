@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.HasRows)
                     {
-                        teams.Add(new Team() {Id=(int)reader.GetValue(0),Name= (string)reader.GetValue(1),Manager=formOfUser(3,reader)});
+                        teams.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager = formOfUser(3, reader) });
                     }
                 }
             }
@@ -65,7 +66,7 @@ namespace DAL_ADO._.Repositories
 
         public void Create(Team entity)
         {
-            
+
             string sqlExpression = $"INSERT INTO dbo.Teams (Name,ManagerId) VALUES (@name,@managerId)";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name), new SqlParameter("@managerId", entity.Manager.Id) };
             OperationUDI(sqlExpression, sqlParameters);
@@ -80,13 +81,35 @@ namespace DAL_ADO._.Repositories
 
         public List<Team> FindByListIdTeam(List<int> teamsId)
         {
-            throw new NotImplementedException();
-        }
+            List<Team> teams = new List<Team>();
 
-        public List<Team> FindByManager(string managerId)
-        {
-            throw new NotImplementedException();
+            using (var connection = Database.GetConnection())
+            {
+                var parameters = new string[teamsId.Count];
+                var cmd = new SqlCommand();
+                for (int i = 0; i < teamsId.Count; i++)
+                {
+                    parameters[i] = string.Format("@teamsId{0}", i);
+                    cmd.Parameters.AddWithValue(parameters[i], teamsId[i]);
+                }
+                cmd.CommandText = string.Format("SELECT[x].[Id], [x].[ManagerId], [x].[Name] FROM[Teams] AS[x] WHERE[x].[Id] IN ({0})", string.Join(", ", parameters));
+                cmd.Connection = Database.GetConnection();
+                cmd.Connection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        teams.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager = null });
+                    }
+                }
+            }
+            return teams;
         }
+        //public List<Team> FindByManager(string managerId)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<Team> FindTeamsByManager(string managerId)
         {
