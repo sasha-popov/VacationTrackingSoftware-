@@ -36,6 +36,28 @@ namespace VacationTrackingSoftware.Controllers
             _teamService = teamService;
         }
 
+        //test
+        [HttpGet("[action]")]
+        public TeamUser TeamUser()
+        {
+            var result = _teamUserRepository.FindByUser("39446018-9b23-40f3-8a6c-3a2957bd364f");
+            return result;
+        }
+
+        //test
+        [HttpGet("[action]")]
+        public List<AppUser> FindForManager()
+        {
+            var result = _teamUserRepository.FindForManager("fd38c574-4f9f-4e57-9e28-af1ff7c476b8");
+            return result;
+        }
+
+        //test
+        [HttpGet("[action]")]
+        public void GetAllWithDetails()
+        {
+            var x = _teamUserRepository.GetAllWithDetails();
+        }
         [HttpGet("[action]")]
         //[Authorize(Roles = "Manager")]
         public List<Team> GetTeamsForManager()
@@ -45,21 +67,6 @@ namespace VacationTrackingSoftware.Controllers
             var userId = "fd38c574-4f9f-4e57-9e28-af1ff7c476b8";
             var result = _teamRepository.FindTeamsByManager(userId);
             return result;
-        }
-
-        //test
-        [HttpGet("[action]")]
-        public void GetByListId() {
-            List<int> teamsId = new List<int>() { 9, 11, 1005 };
-            var result = _teamRepository.FindByListIdTeam(teamsId);
-        }
-        //test
-        [HttpPost("[action]")]
-        public ResponseForRequest AddTeam()
-        {
-            Team team = new Team() { Manager = null, Name = "testAdo1" };
-            _teamRepository.Create(team);
-            return new ResponseForRequest() { Successful = true };
         }
 
         [HttpGet("[action]")]
