@@ -11,6 +11,22 @@ namespace DAL_ADO._.Repositories
 {
     public class TeamRepository : ITeamRepository
     {
+        private AppUser formOfUser(int skip, SqlDataReader reader) {
+            return new AppUser()
+            {
+                Id = (string)reader.GetValue(0 + skip),
+                UserName = (string)reader.GetValue(1 + skip),
+                NormalizedUserName = (string)reader.GetValue(2 + skip),
+                Email = (string)reader.GetValue(3 + skip),
+                NormalizedEmail = (string)reader.GetValue(4 + skip),
+                PasswordHash = (string)reader.GetValue(6 + skip),
+                SecurityStamp = (string)reader.GetValue(7 + skip),
+                ConcurrencyStamp = (string)reader.GetValue(8 + skip),
+                LockoutEnabled = (bool)reader.GetValue(13 + skip),
+                FirstName = (string)reader.GetValue(15 + skip),
+                LastName = (string)reader.GetValue(16 + skip),
+            };
+        }
         //UDI-UPDATE, DELETE,INSERT 
         private void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null)
         {
@@ -29,14 +45,29 @@ namespace DAL_ADO._.Repositories
         }
         public List<Team> AllTeamsWithManager()
         {
-            throw new NotImplementedException();
+            List<Team> teams = new List<Team>();
+            string sqlExpression = "SELECT * FROM dbo.Teams LEFT JOIN dbo.AspNetUsers on AspNetUsers.Id = Teams.ManagerId";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.HasRows)
+                    {
+                        teams.Add(new Team() {Id=(int)reader.GetValue(0),Name= (string)reader.GetValue(1),Manager=formOfUser(3,reader)});
+                    }
+                }
+            }
+            return teams;
         }
 
         public void Create(Team entity)
         {
             
             string sqlExpression = $"INSERT INTO dbo.Teams (Name,ManagerId) VALUES (@name,@managerId)";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name), new SqlParameter("@managerId", "fd38c574-4f9f-4e57-9e28-af1ff7c476b8") };
+            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name), new SqlParameter("@managerId", entity.Manager.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
 
@@ -78,9 +109,9 @@ namespace DAL_ADO._.Repositories
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    while (reader.HasRows)
+                    while (reader.Read())
                     {
-                        companyHolidays.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1)/*, Manager = (string)reader.GetValue(2)*/ });
+                        companyHolidays.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager=null});
                     }
                 }
             }

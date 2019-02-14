@@ -59,6 +59,7 @@ namespace VacationTrackingSoftware
             services.AddDbContext<AppUserContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddScoped<IWorkerRepository, WorkerRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
@@ -87,7 +88,10 @@ namespace VacationTrackingSoftware
                 o.Password.RequiredLength = 6;
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            //For EF
             //builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
+            //For AdoNet
+            builder.AddEntityFrameworkStores<AppUserContext>().AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Get options from app settings

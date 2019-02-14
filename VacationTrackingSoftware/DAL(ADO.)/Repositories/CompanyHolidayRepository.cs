@@ -56,7 +56,7 @@ namespace DAL_ADO._.Repositories
                     SqlDataReader reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        while (reader.HasRows)
+                        while (reader.Read())
                         {
                             companyHolidays.Add(new CompanyHoliday() { Id = (int)reader.GetValue(0), Date = (DateTime)reader.GetValue(1), Description = (string)reader.GetValue(2) });
                         }
@@ -76,7 +76,7 @@ namespace DAL_ADO._.Repositories
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    while (reader.HasRows)
+                    while (reader.Read())
                     {
                         companyHolidays.Add(new CompanyHoliday() { Id = (int)reader.GetValue(0), Date = (DateTime)reader.GetValue(1), Description = (string)reader.GetValue(2) });
                     }
