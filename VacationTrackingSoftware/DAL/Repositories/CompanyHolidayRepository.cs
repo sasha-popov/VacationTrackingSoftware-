@@ -18,11 +18,6 @@ namespace DAL.Repositories
             return RepositoryContext.CompanyHolidays.AsNoTracking().Where(x => x.Date==date).ToList();
         }
 
-        public CompanyHoliday FindByDateAndDescription(string description, DateTime date)
-        {
-            return RepositoryContext.CompanyHolidays.AsNoTracking().FirstOrDefault(x => x.Description == description && x.Date == date);
-        }
-
         public List<CompanyHoliday> GetAllHolidaysForCurrentYear()
         {
             return RepositoryContext.CompanyHolidays.AsNoTracking().Where(x => x.Date.Year == DateTime.Now.Year).ToList();

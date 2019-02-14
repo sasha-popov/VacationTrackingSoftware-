@@ -17,7 +17,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
@@ -58,9 +58,13 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPost("[action]")]
-        [Authorize(Roles = "HrUser")]
-        public ResponseForRequest AddHoliday(CompanyHoliday newHoliday)
+        //[Authorize(Roles = "HrUser")]
+        public ResponseForRequest AddHoliday(/*CompanyHoliday newHoliday*/)
         {
+            //test
+            CompanyHoliday newHoliday = new CompanyHoliday();
+            newHoliday.Date = DateTime.Now;
+            newHoliday.Description = "parametrs";
             //var response;
             if (ModelState.IsValid)
             {
@@ -73,9 +77,14 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpPut("[action]")]
-        [Authorize(Roles = "HrUser")]
-        public ResponseForRequest UpdateHoliday(CompanyHoliday companyHoliday)
+        //[Authorize(Roles = "HrUser")]
+        public ResponseForRequest UpdateHoliday(/*CompanyHoliday companyHoliday*/)
         {
+            //test
+            CompanyHoliday companyHoliday = new CompanyHoliday();
+            companyHoliday.Id = 3017;
+            companyHoliday.Date = DateTime.Now;
+            companyHoliday.Description = "parametrsWork";
             if (ModelState.IsValid)
             {
                 try { return _companyHolidayService.AddOrUpdateHoliday(companyHoliday, (int)Holidays.Update); }

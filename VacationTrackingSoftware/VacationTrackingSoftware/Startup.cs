@@ -23,8 +23,10 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using BLL.Services.Interfaces;
 using BLL.Services.Classes;
-using DAL.Repositories;
-using DAL.Data;
+//using DAL.Repositories;
+//using DAL.Data;
+using DAL_ADO._.Repositories;
+using DAL_ADO._.Data;
 
 namespace VacationTrackingSoftware
 {
@@ -49,9 +51,13 @@ namespace VacationTrackingSoftware
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
-            services.AddDbContext<ProjectContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //EF
+            //      services.AddDbContext<ProjectContext>(options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //ADONET
+            services.AddDbContext<AppUserContext>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IWorkerRepository, WorkerRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -81,7 +87,7 @@ namespace VacationTrackingSoftware
                 o.Password.RequiredLength = 6;
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
-            builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
+            //builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Get options from app settings
@@ -128,17 +134,16 @@ namespace VacationTrackingSoftware
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(configureOptions =>
-            {
-                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                configureOptions.TokenValidationParameters = tokenValidationParameters;
-                configureOptions.SaveToken = true;
-            });
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }).AddJwtBearer(configureOptions =>
+                {
+                    configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                    configureOptions.TokenValidationParameters = tokenValidationParameters;
+                    configureOptions.SaveToken = true;
+                });
 
             // api user claim policy
             services.AddAuthorization(options =>

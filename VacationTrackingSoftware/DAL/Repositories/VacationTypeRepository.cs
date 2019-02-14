@@ -16,5 +16,10 @@ namespace DAL.Repositories
         {
             return RepositoryContext.VacationTypes.FirstOrDefault(x => x.Name == name);
         }
+
+        public List<VacationType> GetAllTest()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

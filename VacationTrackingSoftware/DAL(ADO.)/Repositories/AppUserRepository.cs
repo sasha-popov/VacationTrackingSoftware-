@@ -5,7 +5,7 @@ using BLL.IRepositories;
 
 namespace DAL_ADO._.Repositories
 {
-    public class AppUserRepository: GenericRepository<AppUser>, IAppUserRepository
+    public class AppUserRepository: IAppUserRepository
     {
     }
 }
