@@ -49,7 +49,7 @@ namespace DAL_ADO._.Repositories
             string sqlExpressionForYear = "Select DateRecruitment "
                                         + "from dbo.Workers "
                                         + "where UserId = @userId ";
-            int workingYears=0;
+            int workingYears = 0;
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -73,15 +73,21 @@ namespace DAL_ADO._.Repositories
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.Parameters.AddWithValue("@vacationTypeId",userVacationRequest.VacationType.Id);
+                command.Parameters.AddWithValue("@vacationTypeId", userVacationRequest.VacationType.Id);
                 command.Parameters.AddWithValue("@workingYears", workingYears);
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        vacationPolicies.Add(new VacationPolicy() {Id=reader.GetInt32(0),Count= reader.GetInt32(1),Payments= reader.GetInt32(2),WorkingYear= reader.GetInt32(4),
-                                                                   VacationType =new VacationType() {Id= reader.GetInt32(5),Name= reader.GetString(6) } });
+                        vacationPolicies.Add(new VacationPolicy()
+                        {
+                            Id = reader.GetInt32(0),
+                            Count = reader.GetInt32(1),
+                            Payments = reader.GetInt32(2),
+                            WorkingYear = reader.GetInt32(4),
+                            VacationType = new VacationType() { Id = reader.GetInt32(5), Name = reader.GetString(6) }
+                        });
                     }
                 }
             }
@@ -104,14 +110,20 @@ namespace DAL_ADO._.Repositories
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);                
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        vacationPolicies.Add(new VacationPolicy() {Id=reader.GetInt32(0),WorkingYear=reader.GetInt32(1),Count=reader.GetInt32(3),Payments= reader.GetInt32(4),
-                                                                   VacationType =new VacationType() {Id= reader.GetInt32(5),Name=reader.GetString(6) } });
+                        vacationPolicies.Add(new VacationPolicy()
+                        {
+                            Id = reader.GetInt32(0),
+                            WorkingYear = reader.GetInt32(1),
+                            Count = reader.GetInt32(3),
+                            Payments = reader.GetInt32(4),
+                            VacationType = new VacationType() { Id = reader.GetInt32(5), Name = reader.GetString(6) }
+                        });
                     }
                 }
             }
@@ -137,7 +149,7 @@ namespace DAL_ADO._.Repositories
                         vacationPolicy.VacationType = null;
                         vacationPolicy.Count = reader.GetInt32(3);
                         vacationPolicy.Payments = reader.GetInt32(4);
-                        }
+                    }
                 }
             }
             return vacationPolicy;
