@@ -15,17 +15,17 @@ namespace DAL_ADO._.Repositories
         {
             return new AppUser()
             {
-                Id = (string)reader.GetValue(0 + skip),
-                UserName = (string)reader.GetValue(1 + skip),
-                NormalizedUserName = (string)reader.GetValue(2 + skip),
-                Email = (string)reader.GetValue(3 + skip),
-                NormalizedEmail = (string)reader.GetValue(4 + skip),
-                PasswordHash = (string)reader.GetValue(6 + skip),
-                SecurityStamp = (string)reader.GetValue(7 + skip),
-                ConcurrencyStamp = (string)reader.GetValue(8 + skip),
-                LockoutEnabled = (bool)reader.GetValue(13 + skip),
-                FirstName = (string)reader.GetValue(15 + skip),
-                LastName = (string)reader.GetValue(16 + skip),
+                Id = reader.GetString(0 + skip),
+                UserName = reader.GetString(1 + skip),
+                NormalizedUserName = reader.GetString(2 + skip),
+                Email = reader.GetString(3 + skip),
+                NormalizedEmail = reader.GetString(4 + skip),
+                PasswordHash = reader.GetString(6 + skip),
+                SecurityStamp = reader.GetString(7 + skip),
+                ConcurrencyStamp = reader.GetString(8 + skip),
+                LockoutEnabled = reader.GetBoolean(13 + skip),
+                FirstName = reader.GetString(15 + skip),
+                LastName = reader.GetString(16 + skip),
             };
         }
         private void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null)
@@ -60,11 +60,11 @@ namespace DAL_ADO._.Repositories
         public TeamUser FindByUser(string userId)
         {
             TeamUser teamUser = new TeamUser();
-            string sqlExpression = "SELECT TOP(1) *"
-                                    + "FROM[TeamUsers] AS[x]"
-                                    + "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id]"
-                                    + "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id]"
-                                    + "WHERE[x].[UserId] = @userId";
+            string sqlExpression = "SELECT TOP(1) * "
+                                    + "FROM[TeamUsers] AS[x] "
+                                    + "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id] "
+                                    + "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id] "
+                                    + "WHERE[x].[UserId] = @userId ";
 
             using (var connection = Database.GetConnection())
             {
@@ -76,9 +76,9 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teamUser.Id=(int)reader.GetValue(0);
-                        teamUser.Team.Id = (int)reader.GetValue(1);
-                        teamUser.Team.Name = (string)reader.GetValue(23);
+                        teamUser.Id=reader.GetInt32(0);
+                        teamUser.Team.Id = reader.GetInt32(1);
+                        teamUser.Team.Name = reader.GetString(23);
                         teamUser.User = formOfUser(3, reader);
                     }
                 }
@@ -89,12 +89,12 @@ namespace DAL_ADO._.Repositories
         public List<AppUser> FindForManager(string managerId)
         {
             List<AppUser> users = new List<AppUser>();
-            string sqlExpression = "SELECT *"
-                                    + "FROM[TeamUsers] AS[x]"
-                                    + "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id]"
-                                    + "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id]"
-                                    + "LEFT JOIN[AspNetUsers] AS[x.Team.Manager] ON[x.Team].[ManagerId] = [x.Team.Manager].[Id]"
-                                    + "WHERE[x.Team.Manager].[Id] = @managerId";
+            string sqlExpression = "SELECT * "
+                                    + "FROM[TeamUsers] AS[x] "
+                                    + "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id] "
+                                    + "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id] "
+                                    + "LEFT JOIN[AspNetUsers] AS[x.Team.Manager] ON[x.Team].[ManagerId] = [x.Team.Manager].[Id] "
+                                    + "WHERE[x.Team.Manager].[Id] = @managerId ";
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -120,10 +120,10 @@ namespace DAL_ADO._.Repositories
         public List<TeamUser> GetAllWithDetails()
         {
             List<TeamUser> teamUsers = new List<TeamUser>();
-            string sqlExpression = "SELECT *" +
-                                    "FROM[TeamUsers] AS[x]" +
-                                    "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id]" +
-                                    "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id]";
+            string sqlExpression = "SELECT * " +
+                                    "FROM[TeamUsers] AS[x] " +
+                                    "LEFT JOIN[AspNetUsers] AS[x.User] ON[x].[UserId] = [x.User].[Id] " +
+                                    "LEFT JOIN[Teams] AS[x.Team] ON[x].[TeamId] = [x.Team].[Id] ";
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -133,8 +133,8 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        Team team = new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(23) };
-                        teamUsers.Add(new TeamUser() {Id=(int)reader.GetValue(0),Team=team,User=formOfUser(3,reader) });
+                        Team team = new Team() { Id = reader.GetInt32(0), Name = reader.GetString(23) };
+                        teamUsers.Add(new TeamUser() {Id=reader.GetInt32(0),Team=team,User=formOfUser(3,reader) });
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teamUser.Id = (int)reader.GetValue(0);
+                        teamUser.Id = reader.GetInt32(0);
                         teamUser.Team = null;
                         teamUser.User = null;
                     }

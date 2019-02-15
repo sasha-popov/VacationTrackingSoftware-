@@ -15,17 +15,17 @@ namespace DAL_ADO._.Repositories
         {
             return new AppUser()
             {
-                Id = (string)reader.GetValue(0 + skip),
-                UserName = (string)reader.GetValue(1 + skip),
-                NormalizedUserName = (string)reader.GetValue(2 + skip),
-                Email = (string)reader.GetValue(3 + skip),
-                NormalizedEmail = (string)reader.GetValue(4 + skip),
-                PasswordHash = (string)reader.GetValue(6 + skip),
-                SecurityStamp = (string)reader.GetValue(7 + skip),
-                ConcurrencyStamp = (string)reader.GetValue(8 + skip),
-                LockoutEnabled = (bool)reader.GetValue(13 + skip),
-                FirstName = (string)reader.GetValue(15 + skip),
-                LastName = (string)reader.GetValue(16 + skip),
+                Id = reader.GetString(0 + skip),
+                UserName = reader.GetString(1 + skip),
+                NormalizedUserName = reader.GetString(2 + skip),
+                Email = reader.GetString(3 + skip),
+                NormalizedEmail = reader.GetString(4 + skip),
+                PasswordHash = reader.GetString(6 + skip),
+                SecurityStamp = reader.GetString(7 + skip),
+                ConcurrencyStamp = reader.GetString(8 + skip),
+                LockoutEnabled = reader.GetBoolean(13 + skip),
+                FirstName = reader.GetString(15 + skip),
+                LastName = reader.GetString(16 + skip),
             };
         }
 
@@ -58,7 +58,7 @@ namespace DAL_ADO._.Repositories
         }
         public void Create(UserVacationRequest entity)
         {
-            string sqlExpression = $"INSERT INTO dbo.UserVacationRequest (StartDate,EndDate,VacationTypeId,Payment,Status,UserId) VALUES (@startDate,@endDate,@vacationTypeId,@payment,@status,@userId)";
+            string sqlExpression = $"INSERT INTO dbo.UserVacationRequest (StartDate,EndDate,VacationTypeId,Payment,Status,UserId) VALUES (@startDate,@endDate,@vacationTypeId,@payment,@status,@userId) ";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@startDate", entity.StartDate),
                                                                           new SqlParameter("@endDate", entity.EndDate),
                                                                           new SqlParameter("@vacationTypeId", entity.VacationType),
@@ -78,11 +78,11 @@ namespace DAL_ADO._.Repositories
         public List<UserVacationRequest> FindForUser(string userId)
         {
             List<UserVacationRequest> userVacationRequests = new List<UserVacationRequest>();
-            string sqlExpression = "SELECT *"
-                              + "FROM dbo.UserVacantionRequests"
-                              + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id"
-                              + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id"
-                              + "where dbo.UserVacantionRequests.UserId=@userId";
+            string sqlExpression = "SELECT * "
+                              + "FROM dbo.UserVacantionRequests "
+                              + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
+                              + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id "
+                              + "where dbo.UserVacantionRequests.UserId=@userId ";
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -108,10 +108,10 @@ namespace DAL_ADO._.Repositories
         public List<UserVacationRequest> GetAllWithTypeHolidays()
         {
             List<UserVacationRequest> userVacationRequests = new List<UserVacationRequest>();
-            string sqlExpression = "SELECT *"
-                              + "FROM dbo.UserVacantionRequests"
-                              + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id"
-                              + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id";
+            string sqlExpression = "SELECT * "
+                              + "FROM dbo.UserVacantionRequests "
+                              + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
+                              + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id ";
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -147,10 +147,10 @@ namespace DAL_ADO._.Repositories
                     parameters[i] = string.Format("@userIds{0}", i);
                     cmd.Parameters.AddWithValue(parameters[i], userIds[i]);
                 }
-                cmd.CommandText = string.Format("SELECT *"
-                          +"FROM dbo.UserVacantionRequests"
-                          + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id"
-                          + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id"
+                cmd.CommandText = string.Format("SELECT * "
+                          +"FROM dbo.UserVacantionRequests "
+                          + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
+                          + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id "
                           + "where dbo.UserVacantionRequests.UserId in ({0})", string.Join(", ", parameters));
                 cmd.Connection = Database.GetConnection();
                 cmd.Connection.Open();

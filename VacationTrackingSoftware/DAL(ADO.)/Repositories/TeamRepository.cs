@@ -15,17 +15,17 @@ namespace DAL_ADO._.Repositories
         private AppUser formOfUser(int skip, SqlDataReader reader) {
             return new AppUser()
             {
-                Id = (string)reader.GetValue(0 + skip),
-                UserName = (string)reader.GetValue(1 + skip),
-                NormalizedUserName = (string)reader.GetValue(2 + skip),
-                Email = (string)reader.GetValue(3 + skip),
-                NormalizedEmail = (string)reader.GetValue(4 + skip),
-                PasswordHash = (string)reader.GetValue(6 + skip),
-                SecurityStamp = (string)reader.GetValue(7 + skip),
-                ConcurrencyStamp = (string)reader.GetValue(8 + skip),
-                LockoutEnabled = (bool)reader.GetValue(13 + skip),
-                FirstName = (string)reader.GetValue(15 + skip),
-                LastName = (string)reader.GetValue(16 + skip),
+                Id = reader.GetString(0 + skip),
+                UserName = reader.GetString(1 + skip),
+                NormalizedUserName =reader.GetString(2 + skip),
+                Email = reader.GetString(3 + skip),
+                NormalizedEmail = reader.GetString(4 + skip),
+                PasswordHash = reader.GetString(6 + skip),
+                SecurityStamp = reader.GetString(7 + skip),
+                ConcurrencyStamp = reader.GetString(8 + skip),
+                LockoutEnabled = reader.GetBoolean(13 + skip),
+                FirstName = reader.GetString(15 + skip),
+                LastName = reader.GetString(16 + skip),
             };
         }
         //UDI-UPDATE, DELETE,INSERT 
@@ -57,7 +57,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.HasRows)
                     {
-                        teams.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager = formOfUser(3, reader) });
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = formOfUser(3, reader) });
                     }
                 }
             }
@@ -99,7 +99,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teams.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager = null });
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = null });
                     }
                 }
             }
@@ -113,10 +113,10 @@ namespace DAL_ADO._.Repositories
         public List<Team> FindTeamsByManager(string managerId)
         {
             List<Team> teams = new List<Team>();
-            string sqlExpression = "SELECT *"
-                                    + "FROM[Teams] AS[x]"
-                                    + "LEFT JOIN[AspNetUsers] AS[x.Manager] ON[x].[ManagerId] = [x.Manager].[Id]"
-                                    + "WHERE[x].[ManagerId] = @managerId";
+            string sqlExpression = "SELECT * "
+                                    + "FROM[Teams] AS[x] "
+                                    + "LEFT JOIN[AspNetUsers] AS[x.Manager] ON[x].[ManagerId] = [x.Manager].[Id] "
+                                    + "WHERE[x].[ManagerId] = @managerId ";
 
             using (var connection = Database.GetConnection())
             {
@@ -128,7 +128,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teams.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager =formOfUser(3,reader)});
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager =formOfUser(3,reader)});
                     }
                 }
             }
@@ -153,7 +153,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        companyHolidays.Add(new Team() { Id = (int)reader.GetValue(0), Name = (string)reader.GetValue(1), Manager=null});
+                        companyHolidays.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager=null});
                     }
                 }
             }
@@ -174,9 +174,9 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        team.Id = (int)reader.GetValue(0);
+                        team.Id = reader.GetInt32(0);
                         team.Manager = null;
-                        team.Name = (string)reader.GetValue(1);
+                        team.Name = reader.GetString(1);
                     }
                 }
             }

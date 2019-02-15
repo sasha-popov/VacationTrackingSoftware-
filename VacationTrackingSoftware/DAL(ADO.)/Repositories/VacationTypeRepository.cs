@@ -11,29 +11,64 @@ namespace DAL_ADO._.Repositories
 {
     public class VacationTypeRepository : IVacationTypeRepository
     {
+        private void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null)
+        {
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
 
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters.ToArray());
+                }
+                int number = command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
         public void Create(VacationType entity)
         {
-            throw new NotImplementedException();
+            //VacationType does not create
         }
 
         public void Delete(VacationType entity)
         {
-            throw new NotImplementedException();
+            //VacationType does not delete
         }
 
         public VacationType FindByName(string name)
         {
-            throw new NotImplementedException();
+            VacationType vacationType = new VacationType();
+            string sqlExpression = "SELECT TOP 1 *"
+                                + "from dbo.VacationTypes"
+                                + "where Name = @name";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand sqlCommand = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        vacationType.Id = reader.GetInt32(0);
+                        vacationType.Name = reader.GetString(1);
+                    }
+                }
+                reader.Close();
+            }
+            return vacationType;
+
         }
 
         public List<VacationType> GetAll()
         {
+            string sqlExpression= "select * from dbo.VacationTypes";
             List<VacationType> vacationTypes = new List<VacationType>();
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
-                SqlCommand sqlCommand = new SqlCommand("select * from dbo.VacationTypes", connection);
+                SqlCommand sqlCommand = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -50,22 +85,23 @@ namespace DAL_ADO._.Repositories
 
         public VacationType GetById(int id)
         {
-            throw new NotImplementedException();
+            return null;
+            //this method does not use
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            
         }
 
         public Task SaveAsync()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void Update(VacationType entity)
         {
-            throw new NotImplementedException();
+            //VacationType does not update
         }
     }
 }

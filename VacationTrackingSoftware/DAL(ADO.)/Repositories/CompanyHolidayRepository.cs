@@ -58,7 +58,7 @@ namespace DAL_ADO._.Repositories
                     {
                         while (reader.Read())
                         {
-                            companyHolidays.Add(new CompanyHoliday() { Id = (int)reader.GetValue(0), Date = (DateTime)reader.GetValue(1), Description = (string)reader.GetValue(2) });
+                            companyHolidays.Add(new CompanyHoliday() { Id = reader.GetInt32(0), Date = reader.GetDateTime(1), Description = reader.GetString(2) });
                         }
                     }
                 }
@@ -78,7 +78,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        companyHolidays.Add(new CompanyHoliday() { Id = (int)reader.GetValue(0), Date = (DateTime)reader.GetValue(1), Description = (string)reader.GetValue(2) });
+                        companyHolidays.Add(new CompanyHoliday() { Id = reader.GetInt32(0), Date = reader.GetDateTime(1), Description = reader.GetString(2) });
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace DAL_ADO._.Repositories
                     {
                         while (reader.Read())
                         {
-                            companyHolidays.Add(new CompanyHoliday() { Id = (int)reader.GetValue(0), Date = (DateTime)reader.GetValue(1), Description = (string)reader.GetValue(2) });
+                            companyHolidays.Add(new CompanyHoliday() { Id = reader.GetInt32(0), Date =reader.GetDateTime(1), Description = reader.GetString(2) });
                         }
                     }
             }
@@ -121,9 +121,9 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        companyHoliday.Id=(int)reader.GetValue(0);
-                        companyHoliday.Date = (DateTime)reader.GetValue(1);
-                        companyHoliday.Description = (string)reader.GetValue(2);
+                        companyHoliday.Id=reader.GetInt32(0);
+                        companyHoliday.Date = reader.GetDateTime(1);
+                        companyHoliday.Description =reader.GetString(2);
                     }
                 }
             }
