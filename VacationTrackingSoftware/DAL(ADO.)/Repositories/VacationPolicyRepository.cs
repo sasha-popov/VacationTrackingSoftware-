@@ -155,7 +155,7 @@ namespace DAL_ADO._.Repositories
 
         public void Update(VacationPolicy entity)
         {
-            string sqlExpression = $"UPDATE dbo.VacaiomPolicies SET WorkingYear=@workingYear, VacationTypeId=@vacationTypeId,Count=@count,Payments=@payments WHERE Id = @id";
+            string sqlExpression = $"UPDATE dbo.VacationPolicies SET WorkingYear=@workingYear, VacationTypeId=@vacationTypeId,Count=@count,Payments=@payments WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@workingYear", entity.WorkingYear),
                 new SqlParameter("@vacationTypeId", entity.VacationType.Id),
                 new SqlParameter("@count", entity.Count),

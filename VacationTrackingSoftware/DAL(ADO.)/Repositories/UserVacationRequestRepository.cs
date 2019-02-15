@@ -130,7 +130,28 @@ namespace DAL_ADO._.Repositories
 
         public UserVacationRequest GetById(int id)
         {
-            throw new NotImplementedException();
+            UserVacationRequest userVacationRequest = null;
+            string sqlExpression = $"Select * from dbo.UserVacantionRequests where Id=@id";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.Parameters.AddWithValue("@id", id);
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        userVacationRequest.Id = reader.GetInt32(0);
+                        userVacationRequest.StartDate = reader.GetDateTime(1);
+                        userVacationRequest.EndDate = reader.GetDateTime(2);
+                        userVacationRequest.VacationType = null;
+                        userVacationRequest.Payment = reader.GetInt32(4);
+                        userVacationRequest.Status = reader.GetInt32(5);
+                    }
+                }
+            }
+            return userVacationRequest;
         }
 
         public List<UserVacationRequest> GetForListOfUsers(List<AppUser> users)

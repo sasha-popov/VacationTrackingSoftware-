@@ -132,7 +132,7 @@ namespace DAL_ADO._.Repositories
 
         public void Update(CompanyHoliday entity)
         {
-            string sqlExpression = $"UPDATE dbo.CompanyHolidays SET Date=@date, Description =@description WHERE Id = @id";
+            string sqlExpression = $"UPDATE dbo.CompanyHolidays SET Date=@date, Description=@description WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@date", entity.Date), new SqlParameter("@id", entity.Id), new SqlParameter("@description", entity.Description)};
 
             OperationUDI(sqlExpression,sqlParameters);

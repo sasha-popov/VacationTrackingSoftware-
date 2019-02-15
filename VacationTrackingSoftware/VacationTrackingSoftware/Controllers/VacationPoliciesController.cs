@@ -80,7 +80,7 @@ namespace VacationTrackingSoftware.Controllers
                 _vacationPoliciesService.DeleteVacationPolicy(vacationPolicyId);
                 return new ResponseForRequest() { Successful = true };
             }
-            catch
+            catch(Exception ex)
             {
                 return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
             }
@@ -99,7 +99,7 @@ namespace VacationTrackingSoftware.Controllers
                     _vacationPolicyRepository.Save();
                     return new OkObjectResult("Vacation policy have updated");
                 }
-                catch {
+                catch(Exception ex){
                     return BadRequest(Errors.AddErrorToModelState("vacationPolicyError", "Please, try later.", ModelState));
                 }
 
