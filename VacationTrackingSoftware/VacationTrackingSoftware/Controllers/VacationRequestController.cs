@@ -32,6 +32,7 @@ namespace VacationTrackingSoftware.Controllers
             _userVacationRequestRepository = userVacationRequestRepository;
             _userManager = userManager;            
         }
+
         [HttpPut("[action]")]
         [Authorize(Roles = "Manager")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel)
