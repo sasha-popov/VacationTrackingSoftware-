@@ -10,6 +10,5 @@ namespace BLL.IRepositories
         List<VacationPolicy> GetAllVacationPoliciesWithTypes();
         List<VacationPolicy> FindCurrentVacationPolicy(UserVacationRequest userVacationRequest);
 
-        VacationPolicy FindForDelete(int years, string vacationType, int payments);
     }
 }

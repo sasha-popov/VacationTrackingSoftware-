@@ -26,10 +26,6 @@ namespace DAL.Repositories
                                     .Where(x => x.WorkingYear >= workingYears).ToList().OrderBy(x => x.WorkingYear).Take(2).ToList(); ;
         }
 
-        public VacationPolicy FindForDelete(int years, string vacationType, int payments)
-        {
-            return RepositoryContext.VacationPolicies.Include(x => x.VacationType).Where(x => x.WorkingYear == years && x.VacationType.Name == vacationType && x.Payments == payments).First();
-        }
 
     }
 }

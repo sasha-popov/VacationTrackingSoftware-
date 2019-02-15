@@ -34,9 +34,9 @@ namespace DAL.Repositories
         }
 
 
-        public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
-        {
-            return RepositoryContext.UserVacantionRequests.Include(x => x.User).FirstOrDefault(x => x.StartDate == startDate && x.EndDate == endDate && x.User.Id == userId);
-        }
+        //public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
+        //{
+        //    return RepositoryContext.UserVacantionRequests.Include(x => x.User).FirstOrDefault(x => x.StartDate == startDate && x.EndDate == endDate && x.User.Id == userId);
+        //}
     }
 }

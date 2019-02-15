@@ -8,7 +8,7 @@ namespace BLL.IRepositories
 {
     public interface IUserVacationRequestRepository : IGenericRepository<UserVacationRequest>
     {
-        UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId);
+        //UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId);
 
         List<UserVacationRequest> GetAllWithTypeHolidays();
 

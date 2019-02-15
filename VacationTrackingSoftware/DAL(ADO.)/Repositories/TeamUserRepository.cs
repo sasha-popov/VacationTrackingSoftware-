@@ -143,7 +143,25 @@ namespace DAL_ADO._.Repositories
 
         public TeamUser GetById(int id)
         {
-            throw new NotImplementedException();
+            TeamUser teamUser = null;
+            string sqlExpression = $"Select * from dbo.TeamUsers where Id=@id";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.Parameters.AddWithValue("@id", id);
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        teamUser.Id = (int)reader.GetValue(0);
+                        teamUser.Team = null;
+                        teamUser.User = null;
+                    }
+                }
+            }
+            return teamUser;
         }
 
         public void Save()
