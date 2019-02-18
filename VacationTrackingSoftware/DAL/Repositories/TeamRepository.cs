@@ -15,22 +15,24 @@ namespace DAL.Repositories
 
         public List<Team> AllTeamsWithManager()
         {
-            return RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).ToList();
+            return RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().ToList();
         }
 
         public List<Team> FindByListIdTeam(List<int> teamsId)
         {
-            return RepositoryContext.Teams.AsNoTracking().Where(x => teamsId.Contains(x.Id)).ToList();
+
+                return RepositoryContext.Teams.AsNoTracking().Where(x => teamsId.Contains(x.Id)).AsNoTracking().ToList();
+
         }
 
         public List<Team> FindByManager(string managerId)
         {
-            return RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x=>x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
+            return RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().Include(x=>x.TeamUsers).AsNoTracking().Include("TeamUsers.User").AsNoTracking().Where(x => x.Manager.Id == managerId).ToList();
         }
         public List<Team> FindTeamsByManager(string managerId)
         {
             //it need to change
-            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
+            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().Include(x => x.TeamUsers).AsNoTracking().Include("TeamUsers.User").AsNoTracking().Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
             //this need because in json it is a cycle
             foreach (var team in getTeamssOfManager)
             {
@@ -44,8 +46,8 @@ namespace DAL.Repositories
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
         {
-            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
-            return getTeamssOfManager;
+                var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().Include(x => x.TeamUsers).AsNoTracking().Include("TeamUsers.User").AsNoTracking().Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
+                return getTeamssOfManager;
         }
     }
 }

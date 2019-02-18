@@ -23,25 +23,27 @@ namespace VacationTrackingSoftware.Controllers
         private ITeamUserRepository _teamUserRepository;
         private ITeamRepository _teamRepository;
         private ITeamService _teamService;
+        private IManagerService _managerService;
         public TeamsController( 
             UserManager<AppUser> userManager,
             ITeamUserRepository teamUserRepository,
             ITeamRepository teamRepository,
-            ITeamService teamService
+            ITeamService teamService,
+            IManagerService managerService
             )
         {
             _userManager = userManager;
             _teamUserRepository = teamUserRepository;
             _teamRepository = teamRepository;
             _teamService = teamService;
+            _managerService = managerService;
         }
 
         [HttpGet("[action]")]
         //[Authorize(Roles = "Manager")]
         public List<Team> GetTeamsForManager()
         {
-            //var userId = User.FindFirst("id").Value;
-            var userId = "fd38c574-4f9f-4e57-9e28-af1ff7c476b8";
+            var userId = User.FindFirst("id").Value;
             var result = _teamRepository.FindTeamsByManager(userId);
             return result;
         }
@@ -63,10 +65,10 @@ namespace VacationTrackingSoftware.Controllers
                 }
                 else
                 {
-                    return _teamService.CreateOrUpdateTeams(userForUpdate, updateUserTeam.TeamIds);
+                    return _managerService.UpdateTeams(userForUpdate, updateUserTeam.TeamIds);
                 }
             }
-            catch {
+            catch(Exception ex) {
                 return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
             }            
         }

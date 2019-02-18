@@ -7,6 +7,6 @@ namespace BLL.Services
 {
    public interface IManagerService
     {
-        void CreateWorkerAndUpdateTeams(AppUser user, List<int> teamIds = null);
+        ResponseForRequest UpdateTeams(AppUser user, List<int> teamIds = null);
     }
 }

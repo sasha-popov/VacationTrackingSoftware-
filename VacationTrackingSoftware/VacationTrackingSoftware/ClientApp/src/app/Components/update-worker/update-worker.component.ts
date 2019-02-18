@@ -69,13 +69,19 @@ export class UpdateWorkerComponent implements OnInit {
     this.employeeService.updateUser(user, this.selectedItem, this.teamsId).subscribe(result => {
       if (result.successful === true) {
         this.success = "Data have changed already!";
+        this.errors = ""
         this.router.navigate(['/allWorkers']);
       }
-      else this.errors = "Data did not change.Please try later!";
+      else {
+        this.errors = "Data did not change.Please try later!";
+        this.success=""
+      }
+
       
     }),
       error => {
         this.errors = "Data did not change.Please try later!";
+        this.success = ""
       }
   };
   onItemSelect(item: any) {

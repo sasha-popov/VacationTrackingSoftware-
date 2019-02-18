@@ -17,25 +17,27 @@ namespace BLL.Services
             _teamRepository = teamRepository;
             _workerRepository = workerRepository;
         }
-        public void CreateWorkerAndUpdateTeams(AppUser user, List<int> teamIds = null)
+        public ResponseForRequest UpdateTeams(AppUser user, List<int> teamIds = null)
         {
-            Worker Worker = new Worker() { DateRecruitment = DateTime.Now, User = user };
-            _workerRepository.Create(Worker);
-
+            //change this method
             List<Team> oldTeams = _teamRepository.FindTeamsByManagerForUpdate(user.Id);
-            oldTeams.ForEach(x =>
+
+            foreach (var team in oldTeams)
             {
-                x.Manager = null;
-                _teamRepository.Update(x);
-            });
-            _teamRepository.Save();
+                var currentTeam = _teamRepository.GetById(team.Id);
+                currentTeam.Manager = null;
+                _teamRepository.Update(currentTeam);
+                _teamRepository.Save();
+            }
+
             List<Team> newTeams = _teamRepository.FindByListIdTeam(teamIds);
-            newTeams.ForEach(x =>
-            {
-                x.Manager = user;
-                _teamRepository.Update(x);
-            });
-            _teamRepository.Save();           
+            foreach (var team in newTeams) {
+                var currentTeam = _teamRepository.GetById(team.Id);
+                currentTeam.Manager = user;
+                _teamRepository.Update(currentTeam);
+            }
+            _teamRepository.Save();
+            return new ResponseForRequest() { Successful = true };
         }
 
     }

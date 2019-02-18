@@ -41,15 +41,23 @@ namespace BLL.Services.Classes
             _teamUserRepository.Save();
             return new ResponseForRequest() { Successful = true };
         }
-        public ResponseForRequest CreateOrUpdateTeams(AppUser user, List<int> teamsId)
+        public ResponseForRequest CreateOrUpdateTeams(AppUser user, List<int> teamIds)
         {
-            List<Team> teams = _teamRepository.FindByListIdTeam(teamsId);
-            foreach (var team in teams)
-            {
-                team.Manager = user;
+            List<Team> oldTeams = _teamRepository.FindTeamsByManagerForUpdate(user.Id);
+
+            foreach (var team in oldTeams) {
+                team.Manager = null;
                 _teamRepository.Update(team);
             }
             _teamRepository.Save();
+            List<Team> newTeams = _teamRepository.FindByListIdTeam(teamIds);
+            newTeams.ForEach(x =>
+            {
+                x.Manager = user;
+                _teamRepository.Update(x);
+            });
+            _teamRepository.Save();   
+
             return new ResponseForRequest() { Successful = true };
         }
     }
