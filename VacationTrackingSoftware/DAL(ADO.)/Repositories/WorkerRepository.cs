@@ -37,7 +37,7 @@ namespace DAL_ADO._.Repositories
         {
             string sqlExpression = $"DELETE FROM dbo.Workers WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id) };
-            OperationUDI(sqlExpression);
+            OperationUDI(sqlExpression, sqlParameters);
         }
 
         public List<Worker> GetAll()

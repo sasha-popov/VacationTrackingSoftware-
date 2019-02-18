@@ -54,7 +54,7 @@ namespace DAL_ADO._.Repositories
         {
             string sqlExpression = $"DELETE FROM dbo.TeamUsers WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id) };
-            OperationUDI(sqlExpression);
+            OperationUDI(sqlExpression, sqlParameters);
         }
 
         public TeamUser FindByUser(string userId)
@@ -143,7 +143,7 @@ namespace DAL_ADO._.Repositories
 
         public TeamUser GetById(int id)
         {
-            TeamUser teamUser = null;
+            TeamUser teamUser = new TeamUser();
             string sqlExpression = $"Select * from dbo.TeamUsers where Id=@id";
             using (var connection = Database.GetConnection())
             {

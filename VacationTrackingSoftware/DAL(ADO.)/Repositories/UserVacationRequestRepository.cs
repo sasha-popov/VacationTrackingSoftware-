@@ -72,7 +72,7 @@ namespace DAL_ADO._.Repositories
         {
             string sqlExpression = $"DELETE FROM dbo.UserVacationRequests WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id) };
-            OperationUDI(sqlExpression);
+            OperationUDI(sqlExpression, sqlParameters);
         }
 
         public List<UserVacationRequest> FindForUser(string userId)
@@ -130,7 +130,7 @@ namespace DAL_ADO._.Repositories
 
         public UserVacationRequest GetById(int id)
         {
-            UserVacationRequest userVacationRequest = null;
+            UserVacationRequest userVacationRequest = new UserVacationRequest();
             string sqlExpression = $"Select * from dbo.UserVacantionRequests where Id=@id";
             using (var connection = Database.GetConnection())
             {

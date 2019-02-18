@@ -41,7 +41,7 @@ namespace DAL_ADO._.Repositories
             //change
             string sqlExpression = $"DELETE FROM dbo.CompanyHolidays WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id)};
-            OperationUDI(sqlExpression);            
+            OperationUDI(sqlExpression,sqlParameters);            
         }
 
         public List<CompanyHoliday> FindByDate(DateTime date)
@@ -109,7 +109,7 @@ namespace DAL_ADO._.Repositories
 
         public CompanyHoliday GetById(int id)
         {
-            CompanyHoliday companyHoliday = null;
+            CompanyHoliday companyHoliday = new CompanyHoliday();
             string sqlExpression = $"Select * from dbo.CompanyHolidays where Id=@id";
             using (var connection = Database.GetConnection())
             {

@@ -40,7 +40,7 @@ namespace DAL_ADO._.Repositories
         {
             string sqlExpression = $"DELETE FROM dbo.VacationPolicies WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id) };
-            OperationUDI(sqlExpression);
+            OperationUDI(sqlExpression,sqlParameters);
         }
 
         public List<VacationPolicy> FindCurrentVacationPolicy(UserVacationRequest userVacationRequest)
@@ -132,7 +132,7 @@ namespace DAL_ADO._.Repositories
 
         public VacationPolicy GetById(int id)
         {
-            VacationPolicy vacationPolicy = null;
+            VacationPolicy vacationPolicy = new VacationPolicy();
             string sqlExpression = $"Select * from dbo.VacationPolicies where Id=@id";
             using (var connection = Database.GetConnection())
             {
