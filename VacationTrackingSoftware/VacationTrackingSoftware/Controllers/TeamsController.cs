@@ -89,7 +89,7 @@ namespace VacationTrackingSoftware.Controllers
                     return _teamService.CreateOrUpdateTeams(userForUpdate, updateUserTeam.TeamIds);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
             }

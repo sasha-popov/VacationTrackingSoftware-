@@ -55,7 +55,7 @@ namespace DAL_ADO._.Repositories
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    while (reader.HasRows)
+                    while (reader.Read())
                     {
                         teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = formOfUser(3, reader) });
                     }
@@ -99,7 +99,7 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = null });
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(2), Manager = null });
                     }
                 }
             }
@@ -194,9 +194,10 @@ namespace DAL_ADO._.Repositories
 
         public void Update(Team entity)
         {
-            string sqlExpression = $"UPDATE dbo.CompanyHolidays SET Name=@name, ManagerId =@managerId WHERE Id = @id";
+            string sqlExpression = $"UPDATE dbo.Teams SET Name=@name, ManagerId =@managerId WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name),
-                                                                          new SqlParameter("@managerId", entity.Manager.Id) };
+                                                                          new SqlParameter("@managerId", entity.Manager.Id),
+                                                                          new SqlParameter("@id",entity.Id)};
 
             OperationUDI(sqlExpression, sqlParameters);
         }

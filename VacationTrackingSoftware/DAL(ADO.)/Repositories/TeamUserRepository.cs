@@ -77,8 +77,14 @@ namespace DAL_ADO._.Repositories
                     while (reader.Read())
                     {
                         teamUser.Id=reader.GetInt32(0);
-                        teamUser.Team.Id = reader.GetInt32(1);
-                        teamUser.Team.Name = reader.GetString(23);
+                        try
+                        {
+                            teamUser.Team = new Team() { Id = reader.GetInt32(1), Name = reader.GetString(23) };
+                        }
+                        catch {
+                            teamUser.Team = null;
+                        }
+                        
                         teamUser.User = formOfUser(3, reader);
                     }
                 }
@@ -133,7 +139,14 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        Team team = new Team() { Id = reader.GetInt32(0), Name = reader.GetString(23) };
+                        Team team = new Team();
+                        try
+                        {
+                            team = new Team() { Id = reader.GetInt32(1), Name = reader.GetString(23) };
+                        }
+                        catch {
+                            team = null;
+                        }
                         teamUsers.Add(new TeamUser() {Id=reader.GetInt32(0),Team=team,User=formOfUser(3,reader) });
                     }
                 }
