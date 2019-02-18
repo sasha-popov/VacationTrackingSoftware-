@@ -23,17 +23,20 @@ namespace VacationTrackingSoftware.Controllers
         private ITeamUserRepository _teamUserRepository;
         private ITeamRepository _teamRepository;
         private ITeamService _teamService;
+        private IManagerService _managerService;
         public TeamsController( 
             UserManager<AppUser> userManager,
             ITeamUserRepository teamUserRepository,
             ITeamRepository teamRepository,
-            ITeamService teamService
+            ITeamService teamService,
+            IManagerService managerService
             )
         {
             _userManager = userManager;
             _teamUserRepository = teamUserRepository;
             _teamRepository = teamRepository;
             _teamService = teamService;
+            _managerService = managerService;
         }
 
         //test
@@ -86,7 +89,7 @@ namespace VacationTrackingSoftware.Controllers
                 }
                 else
                 {
-                    return _teamService.CreateOrUpdateTeams(userForUpdate, updateUserTeam.TeamIds);
+                    return _managerService.UpdateTeams(userForUpdate, updateUserTeam.TeamIds);
                 }
             }
             catch(Exception ex)

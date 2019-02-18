@@ -23,14 +23,17 @@ namespace VacationTrackingSoftware.Controllers
         private readonly UserManager<AppUser> _userManager;
         private IManagerService _managerService;
         private IWorkerService _workerService;
+        private IWorkerRepository _workerRepository;
         public ManagerController(
             UserManager<AppUser> userManager,
            IManagerService managerService,
-            IWorkerService workerService)
+            IWorkerService workerService,
+            IWorkerRepository workerRepository)
         {
             _userManager = userManager;       
             _managerService = managerService;
             _workerService = workerService;
+            _workerRepository = workerRepository;
         }
 
         [HttpPost("[action]")]
@@ -48,8 +51,10 @@ namespace VacationTrackingSoftware.Controllers
                 if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
                 else
                 {
+                    Worker Worker = new Worker() { DateRecruitment = DateTime.Now, User = userIdentity };
+                    _workerRepository.Create(Worker);
                     await _userManager.AddToRoleAsync(userIdentity, model.Role);
-                    _managerService.CreateWorkerAndUpdateTeams(userIdentity, model.TeamsId);
+                    _managerService.UpdateTeams(userIdentity, model.TeamsId);
                     return new OkObjectResult("Account created");
                 }
             }

@@ -57,7 +57,15 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = formOfUser(3, reader) });
+                        var currentManager = new AppUser();
+                        try
+                        {
+                            currentManager = formOfUser(3, reader);
+                        }
+                        catch {
+                            currentManager = null;
+                        }
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = currentManager });
                     }
                 }
             }
