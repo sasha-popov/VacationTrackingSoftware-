@@ -46,7 +46,10 @@ namespace DAL_ADO._.Repositories
         public void Create(TeamUser entity)
         {
             string sqlExpression = $"INSERT INTO dbo.TeamUsers (TeamId,UserId) VALUES (@teamId,@userId)";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@teamId", entity.Team.Id), new SqlParameter("@userId", entity.User.Id) };
+            SqlParameter sqlParamTeam;
+            if (entity.Team == null) sqlParamTeam = new SqlParameter("@teamId", DBNull.Value);
+            else sqlParamTeam = new SqlParameter("@teamId", entity.Team.Id);
+            List <SqlParameter> sqlParameters = new List<SqlParameter>() { sqlParamTeam, new SqlParameter("@userId", entity.User.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
 
@@ -189,7 +192,9 @@ namespace DAL_ADO._.Repositories
         public void Update(TeamUser entity)
         {
             string sqlExpression = $"UPDATE dbo.TeamUsers SET TeamId=@teamId, UserId=@userId WHERE Id = @id";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@teamId", entity.Team.Id), new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            if (entity.Team != null) sqlParameters= new List<SqlParameter>() { new SqlParameter("@teamId", entity.Team.Id), new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
+            else sqlParameters = new List<SqlParameter>() { new SqlParameter("@teamId",DBNull.Value), new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
     }

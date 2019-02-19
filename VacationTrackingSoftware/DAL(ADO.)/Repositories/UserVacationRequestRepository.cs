@@ -204,13 +204,12 @@ namespace DAL_ADO._.Repositories
 
         public void Update(UserVacationRequest entity)
         {
-            string sqlExpression = $"UPDATE dbo.UserVacationRequests SET StartDate=@startDate, EndDate=@endDate, VacationTypeId=@vacationTypeId,Payment=@payment,Status=@status,UserId=@userId WHERE Id = @id";
+            string sqlExpression = $"UPDATE dbo.UserVacantionRequests SET StartDate=@startDate, EndDate=@endDate,Payment=@payment,Status=@status WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@startDate", entity.StartDate),
-                                                                          new SqlParameter("@endDate", entity.EndDate),
-                                                                          new SqlParameter("@vacationTypeId", entity.VacationType.Id),
+                                                                          new SqlParameter("@endDate", entity.EndDate),                                                                         
                                                                           new SqlParameter("@payment", entity.Payment),
                                                                           new SqlParameter("@status", entity.Status),
-                                                                          new SqlParameter("@userId", entity.User.Id)};
+                                                                          new SqlParameter("@id",entity.Id)};
 
             OperationUDI(sqlExpression, sqlParameters);
         }

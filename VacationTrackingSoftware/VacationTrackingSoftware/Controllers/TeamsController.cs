@@ -65,9 +65,7 @@ namespace VacationTrackingSoftware.Controllers
         //[Authorize(Roles = "Manager")]
         public List<Team> GetTeamsForManager()
         {
-            //var userId = User.FindFirst("id").Value;
-            //test
-            var userId = "fd38c574-4f9f-4e57-9e28-af1ff7c476b8";
+            var userId = User.FindFirst("id").Value;
             var result = _teamRepository.FindTeamsByManager(userId);
             return result;
         }

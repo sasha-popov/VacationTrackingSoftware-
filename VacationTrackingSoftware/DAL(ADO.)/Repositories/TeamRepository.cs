@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.IRepositories;
@@ -86,28 +87,30 @@ namespace DAL_ADO._.Repositories
             OperationUDI(sqlExpression, sqlParameters);
         }
 
-        public List<Team> FindByListIdTeam(List<int> teamsId)
+        public List<Team> FindByListIdTeam(List<int> teamIds)
         {
             List<Team> teams = new List<Team>();
 
             using (var connection = Database.GetConnection())
             {
-                var parameters = new string[teamsId.Count];
+                var parameters = new string[teamIds.Count];
                 var cmd = new SqlCommand();
-                for (int i = 0; i < teamsId.Count; i++)
+                for (int i = 0; i < teamIds.Count; i++)
                 {
                     parameters[i] = string.Format("@teamsId{0}", i);
-                    cmd.Parameters.AddWithValue(parameters[i], teamsId[i]);
+                    cmd.Parameters.AddWithValue(parameters[i], teamIds[i]);
                 }
-                cmd.CommandText = string.Format("SELECT[x].[Id], [x].[ManagerId], [x].[Name] FROM[Teams] AS[x] WHERE[x].[Id] IN ({0})", string.Join(", ", parameters));
-                cmd.Connection = Database.GetConnection();
-                cmd.Connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
+                if (teamIds.Any()) {
+                    cmd.CommandText = string.Format("SELECT[x].[Id], [x].[ManagerId], [x].[Name] FROM[Teams] AS[x] WHERE[x].[Id] IN ({0})", string.Join(", ", parameters));
+                    cmd.Connection = Database.GetConnection();
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(2), Manager = null });
+                        while (reader.Read())
+                        {
+                            teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(2), Manager = null });
+                        }
                     }
                 }
             }
@@ -145,12 +148,43 @@ namespace DAL_ADO._.Repositories
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
         {
+            //var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().Include(x => x.TeamUsers).AsNoTracking().Include("TeamUsers.User").AsNoTracking().Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
+            List<Team> teams = new List<Team>();
+            string sqlExpression = "SELECT * "
+                                 + "FROM[Teams] AS[x] " 
+                                 + "LEFT JOIN[AspNetUsers] AS[x.Manager] ON[x].[ManagerId] = [x.Manager].[Id] "
+                                 + "WHERE[x].[ManagerId] = @managerId "
+                                 +"ORDER BY[x].[Id]";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.Parameters.AddWithValue("@managerId",managerId);
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var currentManager = new AppUser();
+                        try
+                        {
+                            currentManager = formOfUser(3, reader);
+                        }
+                        catch
+                        {
+                            currentManager = null;
+                        }
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = currentManager });
+                    }
+                }
+            }
+            return teams;
             throw new NotImplementedException();
         }
 
         public List<Team> GetAll()
         {
-            List<Team> companyHolidays = new List<Team>();
+            List<Team> teams = new List<Team>();
             string sqlExpression = $"Select * from dbo.Teams";
             using (var connection = Database.GetConnection())
             {
@@ -161,11 +195,11 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        companyHolidays.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager=null});
+                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager=null});
                     }
                 }
             }
-            return companyHolidays;
+            return teams;
         }
 
         public Team GetById(int id)
@@ -174,18 +208,24 @@ namespace DAL_ADO._.Repositories
             string sqlExpression = $"Select * from dbo.Teams where Id=@id";
             using (var connection = Database.GetConnection())
             {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.Parameters.AddWithValue("@id", id);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                if (id != 0)
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
+                    command.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        team.Id = reader.GetInt32(0);
-                        team.Manager = null;
-                        team.Name = reader.GetString(1);
+                        while (reader.Read())
+                        {
+                            team.Id = reader.GetInt32(0);
+                            team.Manager = null;
+                            team.Name = reader.GetString(1);
+                        }
                     }
+                }
+                else {
+                    team = null;
                 }
             }
             return team;
@@ -203,9 +243,18 @@ namespace DAL_ADO._.Repositories
         public void Update(Team entity)
         {
             string sqlExpression = $"UPDATE dbo.Teams SET Name=@name, ManagerId =@managerId WHERE Id = @id";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name),
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            if (entity.Manager == null)
+            {
+                sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name),
+                                                                          new SqlParameter("@managerId", DBNull.Value),
+                                                                          new SqlParameter("@id",entity.Id)};
+            }
+            else {
+                sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name),
                                                                           new SqlParameter("@managerId", entity.Manager.Id),
                                                                           new SqlParameter("@id",entity.Id)};
+            }
 
             OperationUDI(sqlExpression, sqlParameters);
         }
