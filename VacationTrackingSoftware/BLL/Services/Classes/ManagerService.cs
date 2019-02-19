@@ -24,23 +24,22 @@ namespace BLL.Services
 
             foreach (var team in oldTeams)
             {
-                var currentTeam = _teamRepository.GetById(team.Id);
-                //Team currentTeam = new Team();
-                //currentTeam = team;
-                currentTeam.TeamUsers = null;
+                //for EF
+                //var currentTeam = _teamRepository.GetById(team.Id);
+                Team currentTeam = new Team();
+                currentTeam = team;
                 currentTeam.Manager = null;
                 _teamRepository.Update(currentTeam);
             }
             _teamRepository.Save();
-
             List<Team> newTeams = _teamRepository.FindByListIdTeam(teamIds);
             foreach (var team in newTeams)
             {
-                var currentTeam = _teamRepository.GetById(team.Id);
-                //Team currentTeam = new Team();
-                //currentTeam = team;
+                //for EF
+                //var currentTeam = _teamRepository.GetById(team.Id);
+                Team currentTeam = new Team();
+                currentTeam = team;
                 currentTeam.Manager = user;
-                currentTeam.TeamUsers = null;
                 _teamRepository.Update(currentTeam);
             }
             _teamRepository.Save();

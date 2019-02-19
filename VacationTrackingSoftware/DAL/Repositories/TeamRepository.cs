@@ -40,7 +40,9 @@ namespace DAL.Repositories
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
         {
-            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
+            //var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
+            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Where(x => x.Manager.Id == managerId).ToList();
+
             return getTeamssOfManager;
         }
     }
