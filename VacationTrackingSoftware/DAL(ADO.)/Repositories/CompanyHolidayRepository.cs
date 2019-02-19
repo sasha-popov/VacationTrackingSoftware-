@@ -7,27 +7,12 @@ using System.Threading.Tasks;
 using BLL.IRepositories;
 using BLL.Models;
 using DAL_ADO._.Data;
+using DAL_ADO._.Generic;
 
 namespace DAL_ADO._.Repositories
 {
-    public class CompanyHolidayRepository : ICompanyHolidayRepository
+    public class CompanyHolidayRepository : GenericMethods, ICompanyHolidayRepository
     {
-
-        //UDI-UPDATE, DELETE,INSERT 
-        private void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null) {
-            using (var connection = Database.GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-
-                if (parameters != null)
-                {
-                    command.Parameters.AddRange(parameters.ToArray());
-                }
-                int number = command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
         public void Create(CompanyHoliday entity)
         {
             string sqlExpression = $"INSERT INTO dbo.CompanyHolidays (Date,Description) VALUES (@date,@description)";

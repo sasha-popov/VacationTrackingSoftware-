@@ -6,26 +6,12 @@ using System.Threading.Tasks;
 using BLL.IRepositories;
 using BLL.Models;
 using DAL_ADO._.Data;
+using DAL_ADO._.Generic;
 
 namespace DAL_ADO._.Repositories
 {
-    public class WorkerRepository : IWorkerRepository
+    public class WorkerRepository : GenericMethods, IWorkerRepository
     {
-        private void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null)
-        {
-            using (var connection = Database.GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-
-                if (parameters != null)
-                {
-                    command.Parameters.AddRange(parameters.ToArray());
-                }
-                int number = command.ExecuteNonQuery();
-                connection.Close();
-            }
-        }
         public void Create(Worker entity)
         {
             string sqlExpression = $"INSERT INTO dbo.Workers (DateRecruitment,UserId) VALUES (@dateRecruitment,@userId)";
