@@ -25,8 +25,8 @@ namespace BLL.Services
             foreach (var team in oldTeams)
             {
                 //for EF
-                //var currentTeam = _teamRepository.GetById(team.Id);
-                Team currentTeam = new Team();
+                var currentTeam = _teamRepository.GetById(team.Id);
+                //Team currentTeam = new Team();
                 currentTeam = team;
                 currentTeam.Manager = null;
                 _teamRepository.Update(currentTeam);
@@ -36,8 +36,8 @@ namespace BLL.Services
             foreach (var team in newTeams)
             {
                 //for EF
-                //var currentTeam = _teamRepository.GetById(team.Id);
-                Team currentTeam = new Team();
+                var currentTeam = _teamRepository.GetById(team.Id);
+                //Team currentTeam = new Team();
                 currentTeam = team;
                 currentTeam.Manager = user;
                 _teamRepository.Update(currentTeam);
