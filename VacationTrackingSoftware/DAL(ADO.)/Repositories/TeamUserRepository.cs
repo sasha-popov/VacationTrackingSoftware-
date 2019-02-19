@@ -18,7 +18,7 @@ namespace DAL_ADO._.Repositories
             SqlParameter sqlParamTeam;
             if (entity.Team == null) sqlParamTeam = new SqlParameter("@teamId", DBNull.Value);
             else sqlParamTeam = new SqlParameter("@teamId", entity.Team.Id);
-            List <SqlParameter> sqlParameters = new List<SqlParameter>() { sqlParamTeam, new SqlParameter("@userId", entity.User.Id) };
+            List<SqlParameter> sqlParameters = new List<SqlParameter>() { sqlParamTeam, new SqlParameter("@userId", entity.User.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
 
@@ -48,15 +48,16 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teamUser.Id=reader.GetInt32(0);
+                        teamUser.Id = reader.GetInt32(0);
                         try
                         {
                             teamUser.Team = new Team() { Id = reader.GetInt32(1), Name = reader.GetString(23) };
                         }
-                        catch {
+                        catch
+                        {
                             teamUser.Team = null;
                         }
-                        
+
                         teamUser.User = formOfUser(3, reader);
                     }
                 }
@@ -116,10 +117,11 @@ namespace DAL_ADO._.Repositories
                         {
                             team = new Team() { Id = reader.GetInt32(1), Name = reader.GetString(23) };
                         }
-                        catch {
+                        catch
+                        {
                             team = null;
                         }
-                        teamUsers.Add(new TeamUser() {Id=reader.GetInt32(0),Team=team,User=formOfUser(3,reader) });
+                        teamUsers.Add(new TeamUser() { Id = reader.GetInt32(0), Team = team, User = formOfUser(3, reader) });
                     }
                 }
             }
@@ -161,9 +163,11 @@ namespace DAL_ADO._.Repositories
         public void Update(TeamUser entity)
         {
             string sqlExpression = $"UPDATE dbo.TeamUsers SET TeamId=@teamId, UserId=@userId WHERE Id = @id";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            if (entity.Team != null) sqlParameters= new List<SqlParameter>() { new SqlParameter("@teamId", entity.Team.Id), new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
-            else sqlParameters = new List<SqlParameter>() { new SqlParameter("@teamId",DBNull.Value), new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
+            SqlParameter sqlParameterTeamId = new SqlParameter();
+            if (entity.Team == null) sqlParameterTeamId = new SqlParameter("@teamId", DBNull.Value);
+            else sqlParameterTeamId = new SqlParameter("@teamId", entity.Team.Id);
+
+            List<SqlParameter> sqlParameters = new List<SqlParameter>() { sqlParameterTeamId, new SqlParameter("@id", entity.Id), new SqlParameter("@userId", entity.User.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
     }

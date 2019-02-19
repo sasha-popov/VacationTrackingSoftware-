@@ -23,10 +23,6 @@ namespace DAL.Repositories
             return RepositoryContext.Teams.AsNoTracking().Where(x => teamsId.Contains(x.Id)).ToList();
         }
 
-        //public List<Team> FindByManager(string managerId)
-        //{
-        //    return RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x=>x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
-        //}
         public List<Team> FindTeamsByManager(string managerId)
         {
             //it need to change

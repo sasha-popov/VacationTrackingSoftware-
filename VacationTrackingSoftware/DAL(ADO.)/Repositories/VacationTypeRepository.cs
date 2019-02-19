@@ -25,24 +25,26 @@ namespace DAL_ADO._.Repositories
         public VacationType FindByName(string name)
         {
             VacationType vacationType = new VacationType();
-            string sqlExpression = "SELECT TOP 1 * "
-                                + "from dbo.VacationTypes " 
+            if (name != null) {
+                string sqlExpression = "SELECT TOP 1 * "
+                                + "from dbo.VacationTypes "
                                 + "where Name = @name ";
-            using (var connection = Database.GetConnection())
-            {
-                connection.Open();
-                SqlCommand sqlCommand = new SqlCommand(sqlExpression, connection);
-                sqlCommand.Parameters.AddWithValue("@name", name);
-                SqlDataReader reader = sqlCommand.ExecuteReader();
-                if (reader.HasRows)
+                using (var connection = Database.GetConnection())
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    SqlCommand sqlCommand = new SqlCommand(sqlExpression, connection);
+                    sqlCommand.Parameters.AddWithValue("@name", name);
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        vacationType.Id = reader.GetInt32(0);
-                        vacationType.Name = reader.GetString(1);
+                        while (reader.Read())
+                        {
+                            vacationType.Id = reader.GetInt32(0);
+                            vacationType.Name = reader.GetString(1);
+                        }
                     }
+                    reader.Close();
                 }
-                reader.Close();
             }
             return vacationType;
 

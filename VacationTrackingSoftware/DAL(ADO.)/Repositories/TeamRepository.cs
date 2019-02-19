@@ -45,7 +45,10 @@ namespace DAL_ADO._.Repositories
         public void Create(Team entity)
         {
             string sqlExpression = $"INSERT INTO dbo.Teams (Name,ManagerId) VALUES (@name,@managerId)";
-            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name), new SqlParameter("@managerId", entity.Manager.Id) };
+            var sqlParameterManagerId = new SqlParameter();
+            if (entity.Manager == null) sqlParameterManagerId = new SqlParameter("@managerId", DBNull.Value);
+            else sqlParameterManagerId = new SqlParameter("@managerId", entity.Manager.Id);
+            List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@name", entity.Name),sqlParameterManagerId  };
             OperationUDI(sqlExpression, sqlParameters);
         }
 
@@ -85,11 +88,6 @@ namespace DAL_ADO._.Repositories
             }
             return teams;
         }
-        //public List<Team> FindByManager(string managerId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public List<Team> FindTeamsByManager(string managerId)
         {
             List<Team> teams = new List<Team>();
@@ -151,7 +149,6 @@ namespace DAL_ADO._.Repositories
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
         {
-            //var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).AsNoTracking().Include(x => x.TeamUsers).AsNoTracking().Include("TeamUsers.User").AsNoTracking().Where(x => x.Manager.Id == managerId).AsNoTracking().ToList();
             List<Team> teams = new List<Team>();
             string sqlExpression = "SELECT * "
                                  + "FROM[Teams] AS[x] " 

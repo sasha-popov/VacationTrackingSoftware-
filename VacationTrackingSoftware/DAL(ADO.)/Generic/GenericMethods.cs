@@ -8,7 +8,7 @@ namespace DAL_ADO._.Generic
 {
     public class GenericMethods
     {
-        //UDI-UPDATE, DELETE,INSERT 
+        /**UDI-update,delete,insert*/
         public void OperationUDI(string sqlExpression, List<SqlParameter> parameters = null)
         {
             using (var connection = Database.GetConnection())

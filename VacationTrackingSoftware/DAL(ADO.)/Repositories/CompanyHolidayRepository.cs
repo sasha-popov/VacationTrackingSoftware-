@@ -78,8 +78,7 @@ namespace DAL_ADO._.Repositories
             {
                     connection.Open();
                     SqlCommand command = new SqlCommand(sqlExpression, connection);
-                    command.Parameters.Add("@currentYear", SqlDbType.Int);
-                    command.Parameters["@currentYear"].Value = DateTime.Today.Year;
+                    command.Parameters.AddWithValue("@currentYear", DateTime.Today.Year);
                     SqlDataReader reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {

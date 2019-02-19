@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.IRepositories;
@@ -46,22 +47,24 @@ namespace DAL_ADO._.Repositories
         public List<UserVacationRequest> FindForUser(string userId)
         {
             List<UserVacationRequest> userVacantionRequests = new List<UserVacationRequest>();
-            string sqlExpression = "SELECT * "
+            if (userId != null) {
+                string sqlExpression = "SELECT * "
                               + "FROM dbo.UserVacantionRequests "
                               + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
                               + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id "
                               + "where dbo.UserVacantionRequests.UserId=@userId ";
-            using (var connection = Database.GetConnection())
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.Parameters.AddWithValue("@userId", userId);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                using (var connection = Database.GetConnection())
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
+                    command.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        userVacantionRequests.Add(formOfVacationRequest(0, reader));
+                        while (reader.Read())
+                        {
+                            userVacantionRequests.Add(formOfVacationRequest(0, reader));
+                        }
                     }
                 }
             }
@@ -99,25 +102,30 @@ namespace DAL_ADO._.Repositories
         public UserVacationRequest GetById(int id)
         {
             UserVacationRequest userVacationRequest = new UserVacationRequest();
-            string sqlExpression = $"Select * from dbo.UserVacantionRequests where Id=@id";
-            using (var connection = Database.GetConnection())
+            try
             {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.Parameters.AddWithValue("@id", id);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                string sqlExpression = $"Select * from dbo.UserVacantionRequests where Id=@id";
+                using (var connection = Database.GetConnection())
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
+                    command.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        userVacationRequest.Id = reader.GetInt32(0);
-                        userVacationRequest.StartDate = reader.GetDateTime(1);
-                        userVacationRequest.EndDate = reader.GetDateTime(2);
-                        userVacationRequest.VacationType = null;
-                        userVacationRequest.Payment = reader.GetInt32(4);
-                        userVacationRequest.Status = reader.GetInt32(5);
+                        while (reader.Read())
+                        {
+                            userVacationRequest.Id = reader.GetInt32(0);
+                            userVacationRequest.StartDate = reader.GetDateTime(1);
+                            userVacationRequest.EndDate = reader.GetDateTime(2);
+                            userVacationRequest.VacationType = null;
+                            userVacationRequest.Payment = reader.GetInt32(4);
+                            userVacationRequest.Status = reader.GetInt32(5);
+                        }
                     }
                 }
+            }
+            catch {
             }
             return userVacationRequest;
         }
@@ -125,40 +133,37 @@ namespace DAL_ADO._.Repositories
         public List<UserVacationRequest> GetForListOfUsers(List<AppUser> users)
         {
             List<UserVacationRequest> userVacationRequests = new List<UserVacationRequest>();
-            List<string> userIds = new List<string>(); 
-            users.ForEach(x => userIds.Add(x.Id));
-            using (var connection = Database.GetConnection())
-            {
-                var parameters = new string[userIds.Count];
-                var cmd = new SqlCommand();
-                for (int i = 0; i < userIds.Count; i++)
+            if (users.Any()) {
+                List<string> userIds = new List<string>();
+                users.ForEach(x => userIds.Add(x.Id));
+                using (var connection = Database.GetConnection())
                 {
-                    parameters[i] = string.Format("@userIds{0}", i);
-                    cmd.Parameters.AddWithValue(parameters[i], userIds[i]);
-                }
-                cmd.CommandText = string.Format("SELECT * "
-                          +"FROM dbo.UserVacantionRequests "
-                          + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
-                          + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id "
-                          + "where dbo.UserVacantionRequests.UserId in ({0})", string.Join(", ", parameters));
-                cmd.Connection = Database.GetConnection();
-                cmd.Connection.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
+                    var parameters = new string[userIds.Count];
+                    var cmd = new SqlCommand();
+                    for (int i = 0; i < userIds.Count; i++)
                     {
-                        userVacationRequests.Add(formOfVacationRequest(0, reader));
+                        parameters[i] = string.Format("@userIds{0}", i);
+                        cmd.Parameters.AddWithValue(parameters[i], userIds[i]);
+                    }
+                    cmd.CommandText = string.Format("SELECT * "
+                              + "FROM dbo.UserVacantionRequests "
+                              + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
+                              + "Inner join dbo.AspNetUsers on dbo.UserVacantionRequests.UserId = dbo.AspNetUsers.Id "
+                              + "where dbo.UserVacantionRequests.UserId in ({0})", string.Join(", ", parameters));
+                    cmd.Connection = Database.GetConnection();
+                    cmd.Connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            userVacationRequests.Add(formOfVacationRequest(0, reader));
+                        }
                     }
                 }
             }
             return userVacationRequests;
         }
-
-        //public UserVacationRequest GetWithWorker(DateTime startDate, DateTime endDate, string userId)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public void Save()
         {
