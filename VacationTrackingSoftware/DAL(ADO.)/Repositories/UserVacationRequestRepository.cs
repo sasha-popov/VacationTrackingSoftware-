@@ -58,10 +58,10 @@ namespace DAL_ADO._.Repositories
         }
         public void Create(UserVacationRequest entity)
         {
-            string sqlExpression = $"INSERT INTO dbo.UserVacationRequest (StartDate,EndDate,VacationTypeId,Payment,Status,UserId) VALUES (@startDate,@endDate,@vacationTypeId,@payment,@status,@userId) ";
+            string sqlExpression = $"INSERT INTO dbo.UserVacantionRequests (StartDate,EndDate,VacationTypeId,Payment,Status,UserId) VALUES (@startDate,@endDate,@vacationTypeId,@payment,@status,@userId) ";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@startDate", entity.StartDate),
                                                                           new SqlParameter("@endDate", entity.EndDate),
-                                                                          new SqlParameter("@vacationTypeId", entity.VacationType),
+                                                                          new SqlParameter("@vacationTypeId", entity.VacationType.Id),
                                                                           new SqlParameter("@payment", entity.Payment),
                                                                           new SqlParameter("@status", entity.Status),
                                                                           new SqlParameter("@userId", entity.User.Id)};
@@ -70,14 +70,14 @@ namespace DAL_ADO._.Repositories
 
         public void Delete(UserVacationRequest entity)
         {
-            string sqlExpression = $"DELETE FROM dbo.UserVacationRequests WHERE Id = @id";
+            string sqlExpression = $"DELETE FROM dbo.UserVacantionRequests WHERE Id = @id";
             List<SqlParameter> sqlParameters = new List<SqlParameter>() { new SqlParameter("@id", entity.Id) };
             OperationUDI(sqlExpression, sqlParameters);
         }
 
         public List<UserVacationRequest> FindForUser(string userId)
         {
-            List<UserVacationRequest> userVacationRequests = new List<UserVacationRequest>();
+            List<UserVacationRequest> userVacantionRequests = new List<UserVacationRequest>();
             string sqlExpression = "SELECT * "
                               + "FROM dbo.UserVacantionRequests "
                               + "Inner join dbo.VacationTypes on dbo.UserVacantionRequests.VacationTypeId = dbo.VacationTypes.Id "
@@ -93,11 +93,11 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        userVacationRequests.Add(formOfVacationRequest(0, reader));
+                        userVacantionRequests.Add(formOfVacationRequest(0, reader));
                     }
                 }
             }
-            return userVacationRequests;
+            return userVacantionRequests;
         }
 
         public List<UserVacationRequest> GetAll()

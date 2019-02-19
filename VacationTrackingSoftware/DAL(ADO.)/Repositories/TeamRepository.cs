@@ -125,10 +125,16 @@ namespace DAL_ADO._.Repositories
         {
             List<Team> teams = new List<Team>();
             string sqlExpression = "SELECT * "
-                                    + "FROM[Teams] AS[x] "
-                                    + "LEFT JOIN[AspNetUsers] AS[x.Manager] ON[x].[ManagerId] = [x.Manager].[Id] "
-                                    + "WHERE[x].[ManagerId] = @managerId ";
-
+                                 + "FROM[TeamUsers] AS[x.TeamUsers] "
+                                 + "LEFT JOIN[AspNetUsers] AS[t.User] ON[x.TeamUsers].[UserId] = [t.User].[Id] "
+                                 + "LEFT JOIN [Teams] AS [t.Team] ON [x.TeamUsers].[TeamId] = [t.Team].[Id] "
+                                 + "INNER JOIN( "
+                                 + "SELECT DISTINCT [x0].[Id] "
+                                 + "FROM [Teams] AS [x0] " 
+                                 +"LEFT JOIN [AspNetUsers] AS[x.Manager0] ON [x0].[ManagerId] = [x.Manager0].[Id] "
+                                 + "WHERE[x0].[ManagerId] = @managerId "
+                                 + ") AS[t] ON[x.TeamUsers].[TeamId] = [t].[Id] "
+                                 +"ORDER BY[t].[Id] ";
             using (var connection = Database.GetConnection())
             {
                 connection.Open();
@@ -139,7 +145,35 @@ namespace DAL_ADO._.Repositories
                 {
                     while (reader.Read())
                     {
-                        teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager =formOfUser(3,reader)});
+                        var teamUserId = reader.GetInt32(0);
+                        var teamId = reader.GetInt32(1);
+                        var teamName = reader.GetString(23);
+                        var team = teams.Where(x => x.Id == teamId).FirstOrDefault();
+                        if (team == null)
+                        {
+                            team = new Team()
+                            {
+                                Id = teamId,
+                                Name = teamName,
+                                TeamUsers = new List<TeamUser>()
+                            };
+                            team.TeamUsers.Add(new TeamUser()
+                            {
+                                Id=teamUserId,
+                                Team = null,
+                                User = formOfUser(3, reader)
+                            });
+                            teams.Add(team);
+                        }
+                        else {
+                            team.TeamUsers.Add(new TeamUser()
+                            {
+                                Id = teamUserId,
+                                Team = null,
+                                User = formOfUser(3, reader)
+                            });
+                        }
+                        
                     }
                 }
             }
