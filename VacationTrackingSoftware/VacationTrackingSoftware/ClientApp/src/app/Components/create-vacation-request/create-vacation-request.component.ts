@@ -6,6 +6,7 @@ import { VacationPoliciesService } from '../../Services/vacation-policies.servic
 import { Roles } from '../../Enums/Roles';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { StatusesRequest } from '../../Enums/StatusesRequest';
 
 @Component({
   selector: 'app-create-vacation-request',
@@ -44,7 +45,7 @@ export class CreateVacationRequestComponent implements OnInit {
       userId: localStorage.getItem('id'),
       userName: localStorage.getItem('name'),
       vacationType: vacationType,
-      status: "new",
+      status: StatusesRequest.new,
       payment: 0
     }
     this.vacationRequestService.createVacationRequest(this.userVacationRequest).subscribe(rez => {

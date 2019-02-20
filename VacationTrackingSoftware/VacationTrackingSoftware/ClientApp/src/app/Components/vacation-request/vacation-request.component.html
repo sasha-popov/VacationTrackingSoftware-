@@ -7,7 +7,7 @@
   <li *ngFor="let userVacationRequest of userVacationRequests| filterVacationrequest:term" class="textHolidays">
     <div>
       <a>
-        On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}, with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{userVacationRequest.status}}
+        On dates:{{userVacationRequest.startDate | date}}---{{userVacationRequest.endDate | date}}, Employee : {{userVacationRequest.userName}}, with type:{{userVacationRequest.vacationType}},and {{userVacationRequest.payment}} payment days, have a status: {{StatusesRequest[userVacationRequest.status]}}.
       </a>
     <span *ngIf="roles.Employee===currentRole">
       <button *ngIf="userVacationRequest.startDate>dateNowISO" class="delete btn btn-secondary btn-sm" title="delete holiday" (click)="clickdeleteVacationRequest('delete',userVacationRequest)">

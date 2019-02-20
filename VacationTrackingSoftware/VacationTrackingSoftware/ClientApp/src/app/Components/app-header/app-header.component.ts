@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Roles } from '../../Enums/Roles';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { CreateEmployeeComponent } from '../create-employee/create-employee.component';
-import { HeaderService } from '../../Services/HeaderService/header-service.service'
+import { HeaderService } from '../../Services/HeaderService/header-service.service';
+
 
 @Component({
   selector: 'app-app-header',
@@ -27,16 +28,15 @@ export class AppHeaderComponent implements OnInit {
 
   logOut() {
     this.authorizeService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
+
 
   fileNameDialogRef: MatDialogRef<CreateEmployeeComponent>;
   openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    //dialogConfig.autoFocus = true;  
     dialogConfig.hasBackdrop = true;
-    //this.dialog.open(CreateEmployeeComponent, dialogConfig);
     let dialogRef = this.dialog.open(CreateEmployeeComponent, dialogConfig);
   }
 

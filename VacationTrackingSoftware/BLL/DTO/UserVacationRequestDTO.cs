@@ -19,7 +19,7 @@ namespace BLL.DTO
         [Required]
         public string VacationType { get; set; }
         [Required]
-        public string Status { get; set; }
+        public int Status { get; set; }
         [Required]
         public int Payment { get; set; }
     }

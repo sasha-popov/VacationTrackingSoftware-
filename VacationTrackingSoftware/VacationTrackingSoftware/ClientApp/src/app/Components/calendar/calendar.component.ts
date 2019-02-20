@@ -17,12 +17,12 @@ import { Holiday } from '../../InterfacesAndClasses/Holiday';
 import { UserVacationRequest } from '../../InterfacesAndClasses/UserVacationRequest';
 import { HolidayService } from '../../Services/holiday.service';
 import { VacationRequestService } from '../../Services/vacation-request.service';
-import { forEach } from '@angular/router/src/utils/collection';
 import { map } from "rxjs/operators";
 import { EventColor } from 'calendar-utils';
 import { Roles } from '../../Enums/Roles';
 import { DatePipe } from '@angular/common';
 import { request } from 'http';
+import { StatusesRequest } from '../../Enums/StatusesRequest';
 
 const colors: any = {
   red: {
@@ -46,7 +46,7 @@ const colors: any = {
 };
 @Component({
   selector: 'mwl-demo-component',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['angular-calendar.css', 'flatpickr.css'],
   templateUrl: './calendar.component.html'
 })
@@ -85,13 +85,11 @@ export class CalendarComponent implements OnInit, OnChanges {
   constructor(private modal: NgbModal, private holidayService: HolidayService, private vacationRequestService: VacationRequestService) {
   }
   ngOnInit() {
-    //this.showAllHolidays();
-    //this.showUserVacationRequest();
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
     this.showAllHolidays();
     if (parseInt(localStorage.getItem('rolesUser'), 10) != Roles.HrUser) {
       this.showUserVacationRequest();
-    }   //this.createEvents();
+    }   
   }
   showUserVacationRequest(): void {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
@@ -142,13 +140,13 @@ export class CalendarComponent implements OnInit, OnChanges {
         description = "Employee: " + element.userName + ", vacation type: " + element.vacationType + ", StartDate:" + this.pipe.transform(element.startDate) + ", and EndDate:" + this.pipe.transform(element.endDate) + ".";
       }
       var color: EventColor;
-      if (element.status == "New") {
+      if (element.status == StatusesRequest.new) {
         color = colors.blue;
       }
-      else if (element.status == "Declined") {
+      else if (element.status == StatusesRequest.declined) {
         color = colors.red;
       }
-      else if (element.status == "Accepted") {
+      else if (element.status == StatusesRequest.accepted) {
         color = colors.green;
       }
       return {

@@ -12,14 +12,13 @@ import { error } from 'protractor';
 import { CreateVacationRequestComponent } from '../create-vacation-request/create-vacation-request.component';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
-import { request } from 'https';
-import { FilterVacationRequestPipe } from '../../Pipes/filter-vacationrequest.pipe';
 @Component({
   selector: 'app-vacation-request',
   templateUrl: './vacation-request.component.html',
   styleUrls: ['./vacation-request.component.css'],
 })
 export class VacationRequestComponent implements OnInit, OnChanges {
+  StatusesRequest = StatusesRequest;
   userVacationRequest: UserVacationRequest;
   @Input() userVacationRequests;
   date: string;
@@ -69,6 +68,7 @@ export class VacationRequestComponent implements OnInit, OnChanges {
     if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Manager) {
       this.vacationRequestService.showUserVacationRequestForManager().subscribe(requests => {
         this.userVacationRequests = requests;
+        var re = StatusesRequest[requests[0].status];
       });
     }
     else if (parseInt(localStorage.getItem('rolesUser'), 10) == Roles.Employee) {
@@ -82,11 +82,7 @@ export class VacationRequestComponent implements OnInit, OnChanges {
       if (res != null) {
         var index = this.userVacationRequests.indexOf(userVacationRequest);
         this.userVacationRequests.splice(index, 1);
-        if (res["status"] == StatusesRequest.accepted)
-          userVacationRequest.status = "Accepted";
-        else
-          userVacationRequest.status = "Declined";
-        this.userVacationRequests.push(userVacationRequest);
+        this.router.navigate(['/vacationRequests']);
       }
     });
   }

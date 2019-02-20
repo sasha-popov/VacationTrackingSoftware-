@@ -1,3 +1,5 @@
+import { StatusesRequest } from '../Enums/StatusesRequest';
+
 export interface UserVacationRequest {
   id: number;
   userName: string;
@@ -5,7 +7,7 @@ export interface UserVacationRequest {
   startDate: Date;
   endDate: Date;
   vacationType: string;
-  status: string;
+  status: StatusesRequest;
   payment: number;
 }  
 
