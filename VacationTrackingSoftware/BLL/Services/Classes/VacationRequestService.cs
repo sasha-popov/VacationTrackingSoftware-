@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Models;
+using BLL.Result;
 using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
@@ -180,6 +181,36 @@ namespace BLL.Services
                 }
             }
             return allDateTimes;
+        }
+
+        public UserVacationRequest ChangeStatus(int id, bool response)
+        {
+            var uservacationRequest = _userVacationRequestRepository.GetById(id);
+            if (response == true) uservacationRequest.Status = (int)StatusesRequest.Accepted;
+            if (response == false) uservacationRequest.Status = (int)StatusesRequest.Declined;
+            _userVacationRequestRepository.Update(uservacationRequest);
+            _userVacationRequestRepository.Save();
+            return uservacationRequest;
+        }
+
+        public ResponseForRequest DeleteVacationRequest(int vacationRequestId)
+        {
+            var currentVacationRequest = _userVacationRequestRepository.GetById(vacationRequestId);
+            if (currentVacationRequest != null && currentVacationRequest.StartDate > DateTime.Now)
+            {
+                try
+                {
+                    _userVacationRequestRepository.Delete(currentVacationRequest);
+                    _userVacationRequestRepository.Save();
+                    return new ResponseForRequest() { Successful = true };
+
+                }
+                catch
+                {
+                    return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Your request have already deleted." } };
+                }
+            }
+            return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Your request have already deleted." } };
         }
     }
 }

@@ -39,30 +39,8 @@ namespace VacationTrackingSoftware.Controllers
             _managerService = managerService;
         }
 
-        //test
         [HttpGet("[action]")]
-        public TeamUser TeamUser()
-        {
-            var result = _teamUserRepository.FindByUser("39446018-9b23-40f3-8a6c-3a2957bd364f");
-            return result;
-        }
-
-        //test
-        [HttpGet("[action]")]
-        public List<AppUser> FindForManager()
-        {
-            var result = _teamUserRepository.FindForManager("fd38c574-4f9f-4e57-9e28-af1ff7c476b8");
-            return result;
-        }
-
-        //test
-        [HttpGet("[action]")]
-        public void GetAllWithDetails()
-        {
-            var x = _teamUserRepository.GetAllWithDetails();
-        }
-        [HttpGet("[action]")]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public List<Team> GetTeamsForManager()
         {
             var userId = User.FindFirst("id").Value;

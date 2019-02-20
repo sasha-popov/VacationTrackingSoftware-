@@ -20,28 +20,20 @@ namespace VacationTrackingSoftware.Controllers
     [ApiController]
     public class VacationRequestController : ControllerBase
     {
-        private IVacationRequestService _employeeService;
-        private IUserVacationRequestRepository _userVacationRequestRepository;
+        private IVacationRequestService _vacationRequestService;
         private readonly UserManager<AppUser> _userManager;
         public VacationRequestController(
-            IVacationRequestService employeeService, 
-            IUserVacationRequestRepository userVacationRequestRepository,
+            IVacationRequestService employeeService,           
             UserManager<AppUser> userManager)
         {
-            _employeeService = employeeService;
-            _userVacationRequestRepository = userVacationRequestRepository;
+            _vacationRequestService = employeeService;
             _userManager = userManager;            
         }
         [HttpPut("[action]")]
         [Authorize(Roles = "Manager")]
         public UserVacationRequest ChangeStatus([FromBody] ChangeStatusViewModel changeStatusViewModel)
         {
-            var uservacationRequest = _userVacationRequestRepository.GetById(changeStatusViewModel.Id);
-            if (changeStatusViewModel.Choose == true) uservacationRequest.Status = (int)StatusesRequest.Accepted;
-            if (changeStatusViewModel.Choose == false) uservacationRequest.Status = (int)StatusesRequest.Declined;
-            _userVacationRequestRepository.Update(uservacationRequest);
-            _userVacationRequestRepository.Save();
-            return uservacationRequest;
+            return _vacationRequestService.ChangeStatus(changeStatusViewModel.Id, changeStatusViewModel.Choose);
         }
         [HttpGet("[action]")]
         [Authorize(Roles = "Employee")]
@@ -52,7 +44,7 @@ namespace VacationTrackingSoftware.Controllers
             var check = _userManager.IsInRoleAsync(user, "Employee");
             if (check.Result)
             {
-                var result = _employeeService.ShowUserVacationRequest(userId);
+                var result = _vacationRequestService.ShowUserVacationRequest(userId);
                 return result;
             }
             return null;
@@ -66,7 +58,7 @@ namespace VacationTrackingSoftware.Controllers
             var check = _userManager.IsInRoleAsync(user, "Manager");
             if (check.Result)
             {
-                var result = _employeeService.ShowUserVacationRequestForManager(user);
+                var result = _vacationRequestService.ShowUserVacationRequestForManager(user);
                 return result;
             }
 
@@ -80,7 +72,7 @@ namespace VacationTrackingSoftware.Controllers
             {
                 return BadRequest(Errors.AddErrorToModelState("vacationRequestError", "Invalid data, please try again", ModelState));
             }
-            var vacationRequest = _employeeService.CreateVacationRequest(newVacationRequest);
+            var vacationRequest = _vacationRequestService.CreateVacationRequest(newVacationRequest);
             if (vacationRequest != null)
             {
                 return new OkObjectResult(vacationRequest);
@@ -93,22 +85,8 @@ namespace VacationTrackingSoftware.Controllers
         public ResponseForRequest DeleteUserVacationRequest(int vacationRequestId)
         {
             //change this
-            var currentVacationRequest = _userVacationRequestRepository.GetById(vacationRequestId);
-            if (currentVacationRequest != null && currentVacationRequest.StartDate > DateTime.Now)
-            {
-                try
-                {
-                    _userVacationRequestRepository.Delete(currentVacationRequest);
-                    _userVacationRequestRepository.Save();
-                    return new ResponseForRequest() { Successful = true };
-
-                }
-                catch {
-                    return new ResponseForRequest() { Successful = false, Errors= new List<string>() { "Your request have already deleted."} };
-                }
-            }
-            return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Your request have already deleted." } };
-
+            return _vacationRequestService.DeleteVacationRequest(vacationRequestId);
+            
         }
     }
 }

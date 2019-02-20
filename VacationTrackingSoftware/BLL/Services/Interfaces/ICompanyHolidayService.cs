@@ -9,5 +9,6 @@ namespace BLL.Services
     public interface ICompanyHolidayService
     {
         ResponseForRequest AddOrUpdateHoliday(CompanyHoliday newHoliday, int status);
+        ResponseForRequest DeleteById(int id);
     }
 }

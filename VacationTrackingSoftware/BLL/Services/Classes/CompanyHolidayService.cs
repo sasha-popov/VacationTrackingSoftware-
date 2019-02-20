@@ -32,6 +32,25 @@ namespace BLL.Services
             return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Inavalid data.Please try again" } };
         }
 
+        public ResponseForRequest DeleteById(int id)
+        {
+            var currentHoliday = _companyHolidayRepository.GetById(id);
+            if (currentHoliday != null)
+            {
+                try
+                {
+                    _companyHolidayRepository.Delete(currentHoliday);
+                    _companyHolidayRepository.Save();
+                    return new ResponseForRequest() { Successful = true };
+                }
+                catch
+                {
+                    return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
+                }
+            }
+            return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
+        }
+
         private ResponseForRequest CheckResult(CompanyHoliday result) {
             if (result == null)
             {

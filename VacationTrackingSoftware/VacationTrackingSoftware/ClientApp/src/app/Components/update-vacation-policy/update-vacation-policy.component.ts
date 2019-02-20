@@ -48,9 +48,6 @@ export class UpdateVacationPolicyComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
-  closeNew() {
-    this.router.navigate([{ outlets: { update: null } }]);
-  }
 
 
 }
