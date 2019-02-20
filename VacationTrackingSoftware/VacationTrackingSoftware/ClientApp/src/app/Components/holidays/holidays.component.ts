@@ -63,7 +63,6 @@ export class HolidaysComponent implements OnInit {
     if (confirm(describe + " Just refresh page.")) {
     }
   }
-  fileNameDialogRef: MatDialogRef<CreateHolidaysComponent>;
   openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
