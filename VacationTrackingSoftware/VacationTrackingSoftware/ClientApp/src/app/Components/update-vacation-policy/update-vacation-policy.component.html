@@ -1,3 +1,4 @@
+<!--for old example-->
 <p>ADD NEW VACATION POLICY:</p>
 <div class="formVacation">
   <label>
@@ -21,18 +22,21 @@
     <span class="col-sm-4">
       Count:
     </span>
-    <input #count class="col-sm-8 " value="{{data.count}}"/>
+    <input #count class="col-sm-8 " value="{{data.count}}" />
   </label><br>
   <label>
     <span class="col-sm-4">
       Payments:
     </span>
-    <input #payments class="col-sm-8" value="{{data.payments}}"/>
+    <input #payments class="col-sm-8" value="{{data.payments}}" />
   </label><br>
   <button (click)="updateVacationPolicy(data.id,years.value, vacationType, count.value, payments.value)" class="btn btn-primary btn-sm">
     Update
   </button>
   <button class="btn btn-secondary btn-sm" (click)="close()">
+    Close
+  </button>
+  <button class="btn btn-secondary btn-sm" (click)="closeNew()">
     Close
   </button>
   <div *ngIf="errors" class="alert alert-danger" role="alert">
@@ -41,5 +45,4 @@
   <div *ngIf="success" class="alert alert-success" role="alert">
     {{success}}
   </div>
-
 </div>
