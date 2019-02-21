@@ -16,14 +16,12 @@ export class AppHeaderComponent implements OnInit {
   userName: string;
   currentRole: number;
   roles;
-  isActiveVacationPolicy: boolean;
   pathImages: any = require("../../Images/schedule.png");
   constructor(private authorizeService: AuthorizeService, private router: Router, private dialog: MatDialog) { }
   ngOnInit() {
     this.userName = localStorage.getItem('name');
     this.roles = Roles;
     this.currentRole = parseInt(localStorage.getItem('rolesUser'), 10);
-    this.isActiveVacationPolicy = true;
   }
 
   logOut() {
