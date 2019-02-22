@@ -22,23 +22,21 @@ namespace BLL.Services
             //fix this method
             List<Team> oldTeams = _teamRepository.FindTeamsByManagerForUpdate(user.Id);
 
-            foreach (var team in oldTeams)
+            foreach (var currentTeam in oldTeams)
             {
                 //for EF
-                var currentTeam = _teamRepository.GetById(team.Id);
-                //Team currentTeam = new Team();
-                currentTeam = team;
+                //var currentTeam = _teamRepository.GetById(team.Id);
+                //currentTeam = team;
                 currentTeam.Manager = null;
                 _teamRepository.Update(currentTeam);
             }
             _teamRepository.Save();
             List<Team> newTeams = _teamRepository.FindByListIdTeam(teamIds);
-            foreach (var team in newTeams)
+            foreach (var currentTeam in newTeams)
             {
                 //for EF
-                var currentTeam = _teamRepository.GetById(team.Id);
-                //Team currentTeam = new Team();
-                currentTeam = team;
+                //var currentTeam = _teamRepository.GetById(team.Id);
+                //currentTeam = team;
                 currentTeam.Manager = user;
                 _teamRepository.Update(currentTeam);
             }

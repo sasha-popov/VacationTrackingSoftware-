@@ -20,7 +20,7 @@ namespace DAL.Repositories
 
         public List<Team> FindByListIdTeam(List<int> teamsId)
         {
-            return RepositoryContext.Teams.AsNoTracking().Where(x => teamsId.Contains(x.Id)).ToList();
+            return RepositoryContext.Teams.Where(x => teamsId.Contains(x.Id)).ToList();
         }
 
         public List<Team> FindTeamsByManager(string managerId)
@@ -40,7 +40,8 @@ namespace DAL.Repositories
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
         {          
-            var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x=>x.TeamUsers).Where(x => x.Manager.Id == managerId).ToList();
+            //var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x=>x.TeamUsers).Where(x => x.Manager.Id == managerId).ToList();
+            var getTeamssOfManager = RepositoryContext.Teams.Where(x => x.Manager.Id == managerId).ToList();
 
             return getTeamssOfManager;
         }

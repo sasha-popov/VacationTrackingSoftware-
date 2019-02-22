@@ -58,8 +58,7 @@ namespace VacationTrackingSoftware.Controllers
                     return new OkObjectResult("Account created");
                 }
             }
-            catch { return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState)); }
-            
+            catch { return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState)); }           
         }
     }
 }
