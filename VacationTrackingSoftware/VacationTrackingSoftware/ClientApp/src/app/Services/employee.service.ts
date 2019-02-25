@@ -16,7 +16,7 @@ export class EmployeeService {
     return this.http.post("api/Manager/Create", personalData);
   }
 
-  updateUser(user: any, teamId?: number, teamIds?: number[]): Observable<any> {
+  updateUserTeam(user: any, teamId?: number, teamIds?: number[]): Observable<any> {
     return this.http.put("api/Teams/UpdateUserTeam", { userId: user.id, teamId: teamId, teamIds: teamIds, role: user.role });
     }
 }

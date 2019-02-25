@@ -1,0 +1,49 @@
+<div class="form" id="formRegistration">
+  <span class="contact2-form-title">
+    Form for create
+  </span>
+  <mat-dialog-content>
+    <form class="contact2-form validate-form">
+      <div class="wrap-input2 validate-input">
+        <span class="focus-input2" data-placeholder="USER NAME"></span>
+        <input class="input2" type="text" #userName name="userName" value={{user.userName}}>
+      </div>
+      <div class="wrap-input2 validate-input" data-validate="Name is required">
+        <span class="focus-input2" data-placeholder="FIRST NAME"></span>
+        <input class="input2" type="text" #firstName name="name" value={{user.firstName}}>
+      </div>
+      <div class="wrap-input2 validate-input">
+        <span class="focus-input2" data-placeholder="LASTNAME"></span>
+        <input class="input2" type="text" #lastName name="name" value={{user.lastName}}>
+      </div>
+
+      <div class="wrap-input2 validate-input">
+        <span class="focus-input2" data-placeholder="PHONE NUMBER"></span>
+        <input class="input2" type="text" #phoneNumber name="name" value={{user.phoneNumber}}>
+      </div>
+
+      <div class="wrap-input2 validate-input">
+        <span class="focus-input2" data-placeholder="EMAIL"></span>
+        <input class="input2" type="text" #email name="email" value={{user.email}}>
+      </div>
+    </form>
+    <mat-dialog-actions>
+      <div class="buttons">
+        <button class="btn btn-primary btn-lg" (click)="updateUser(userName.value,firstName.value,lastName.value,phoneNumber.value,email.value)">
+          Update
+        </button>
+        <button class="btn btn-secondary btn-lg" (click)="close()">
+          Close
+        </button>
+      </div><br>
+    </mat-dialog-actions>
+    <div *ngIf="errors" class="alert alert-danger" role="alert">
+      <strong>Oops!</strong> {{errors}}
+    </div>
+    <div *ngIf="success" class="alert alert-success" role="alert">
+      {{success}}
+    </div>
+  </mat-dialog-content>
+</div>
+
+

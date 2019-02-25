@@ -11,11 +11,11 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogConfig } from "@angular/materia
 import { Roles } from "../../Enums/Roles"
 
 @Component({
-  selector: 'app-update-worker',
-  templateUrl: './update-worker.component.html',
-  styleUrls: ['./update-worker.component.css']
+  selector: 'app-update-UserTeam',
+  templateUrl: './update-UserTeam.component.html',
+  styleUrls: ['./update-UserTeam.component.css']
 })
-export class UpdateWorkerComponent implements OnInit {
+export class UpdateUserTeamComponent implements OnInit {
   roles;
   selectedRole: string;
   teams: Team[];
@@ -28,7 +28,7 @@ export class UpdateWorkerComponent implements OnInit {
   errors: string;
   success: string;
   userName: string;
-  constructor(private route: ActivatedRoute, private dialogRef: MatDialogRef<UpdateWorkerComponent>, private router: Router,
+  constructor(private route: ActivatedRoute, private dialogRef: MatDialogRef<UpdateUserTeamComponent>, private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any, private teamService: TeamService, private employeeService: EmployeeService) { }
 
   ngOnInit() {
@@ -66,7 +66,7 @@ export class UpdateWorkerComponent implements OnInit {
     this.selectedItems.forEach(item => {
       this.teamsId.push(item.id)
     })
-    this.employeeService.updateUser(user, this.selectedItem, this.teamsId).subscribe(result => {
+    this.employeeService.updateUserTeam(user, this.selectedItem, this.teamsId).subscribe(result => {
       if (result.successful === true) {
         this.success = "Data have changed already!";
         this.errors = "";

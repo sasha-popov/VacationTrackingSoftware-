@@ -52,9 +52,7 @@ namespace VacationTrackingSoftware.Controllers
             }
             catch {
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates. Please try later.", ModelState));
-            }
-            
-
+            }          
         }
     }
 }

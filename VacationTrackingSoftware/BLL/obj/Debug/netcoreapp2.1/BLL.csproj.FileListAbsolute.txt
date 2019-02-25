@@ -52,4 +52,3 @@ C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.csproj.CopyComplete
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.dll
 C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.pdb
-C:\Users\opopov3\Desktop\VacationTrackingSoftware-\VacationTrackingSoftware\BLL\obj\Debug\netcoreapp2.1\BLL.csprojAssemblyReference.cache

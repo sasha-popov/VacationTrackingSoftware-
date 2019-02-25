@@ -3,7 +3,7 @@ import { Roles } from '../../Enums/Roles';
 import {allWorkerService } from "../../Services/allWorkerService"
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
-import { UpdateWorkerComponent } from '../update-worker/update-worker.component';
+import { UpdateUserTeamComponent } from '../update-UserTeam/update-UserTeam.component';
 
 @Component({
   selector: 'app-view-all-workers',
@@ -49,7 +49,7 @@ export class ViewAllWorkersComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.hasBackdrop = true;
     dialogConfig.data = worker;
-    let dialogRef = this.dialog.open(UpdateWorkerComponent, dialogConfig);
+    let dialogRef = this.dialog.open(UpdateUserTeamComponent, dialogConfig);
   }
 
 }

@@ -43,8 +43,9 @@ import { UpdateVacationPolicyComponent } from './Components/update-vacation-poli
 import { UpdateHolidayComponent } from './Components/update-holiday/update-holiday.component';
 import { FilterVacationRequestPipe } from './Pipes/filter-vacationrequest.pipe';
 import { ViewAllWorkersComponent } from './Components/view-all-workers/view-all-workers.component';
-import { UpdateWorkerComponent } from './Components/update-worker/update-worker.component';
+import { UpdateUserTeamComponent } from './Components/update-UserTeam/update-UserTeam.component';
 import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
+import { UpdateUserComponent } from './Components/update-user/update-user.component';
   
 
 @NgModule({
@@ -66,8 +67,9 @@ import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
     UpdateHolidayComponent,
     FilterVacationRequestPipe,
     ViewAllWorkersComponent,
-    UpdateWorkerComponent,
-    FilterListOfUsersPipe
+    UpdateUserTeamComponent,
+    FilterListOfUsersPipe,
+    UpdateUserComponent
   ],
   imports: [
     NgbModule,
@@ -85,11 +87,9 @@ import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
       { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers: 'always' },
       { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       { path: 'allWorkers', component: ViewAllWorkersComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
-      {
-        path: 'home',
+      { path: 'home',
         canActivate: [AuthGuard],
-        component: HomeComponent
-      },
+        component: HomeComponent },
       { path: 'yourTeams', component: ScheduleTeamsComponent, canActivate: [AuthGuard]}
     ], {onSameUrlNavigation:'reload'}), 
     BrowserAnimationsModule,
@@ -114,14 +114,15 @@ import { FilterListOfUsersPipe } from './Pipes/filter-listOfUsers.pipe';
   ],
 
   bootstrap: [AppComponent],
-  //exports: [CalendarComponent]
+  exports: [CalendarComponent],
   entryComponents: [CreateEmployeeComponent,
     CreateVacationPolicyComponent,
     CreateHolidaysComponent,
     CreateVacationRequestComponent,
     UpdateVacationPolicyComponent,
     UpdateHolidayComponent,
-    UpdateWorkerComponent
+    UpdateUserTeamComponent,
+    UpdateUserComponent
   ]
 })
 export class AppModule { }  

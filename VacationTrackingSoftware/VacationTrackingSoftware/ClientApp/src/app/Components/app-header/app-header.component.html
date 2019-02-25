@@ -10,21 +10,24 @@
         <a class="nav-link" routerLink="/vacationPolicies">VacationPolicy</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" routerLink="/holidays" >Holidays</a>
+        <a class="nav-link" routerLink="/holidays">Holidays</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests" >Vacation request</a>
+        <a class="nav-link" *ngIf="currentRole!==roles.HrUser" routerLink="/vacationRequests">Vacation request</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link" routerLink="/calendar">Calendar</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" *ngIf="currentRole===roles.Manager" routerLink="/yourTeams" >Teams</a>
+        <a class="nav-link" *ngIf="currentRole===roles.Manager" routerLink="/yourTeams">Teams</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers" >Workers</a>
+        <a class="nav-link" *ngIf="currentRole===roles.HrUser" routerLink="/allWorkers">Workers</a>
       </li>
     </ul>
+    <button class="btn btn-primary btn-lg float-right nav-item" (click)="update()" type="submit">
+      UpdateLog
+    </button>
     <button *ngIf="currentRole===roles.HrUser" class="btn btn-primary btn-lg float-right nav-item" (click)="openDialog()" type="submit">
       Create a new worker
     </button>
