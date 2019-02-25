@@ -10,7 +10,7 @@ export class UpdateUserService {
   constructor(private http: HttpRequestService) { }
 
   getCurrentAppUser() {
-    return this.http.get("api/UpdateUser/GetCurrentUser");
+    return this.http.get<UpdateUser>("api/UpdateUser/GetCurrentUser");
   }
   update(user: any) {
     return this.http.post("api/UpdateUser/Update", user);

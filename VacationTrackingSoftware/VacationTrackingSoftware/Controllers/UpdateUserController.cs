@@ -46,10 +46,10 @@ namespace VacationTrackingSoftware.Controllers
                 {
                     //UpdatePassword(appUser, currentChanges.Password);
                     _userManager.UpdateAsync(appUser);
-                    _workerRepository.Save();
+                    _workerRepository.SaveAsync();
                     return new ResponseForRequest() { Successful = true };
                 }
-                catch
+                catch(Exception ex)
                 {
                     return new ResponseForRequest() { Successful = false, Errors = new List<string> { "Invalid datas, try again!" } };
                 }
