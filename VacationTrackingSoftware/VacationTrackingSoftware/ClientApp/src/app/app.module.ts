@@ -87,8 +87,9 @@ import { UpdateUserComponent } from './Components/update-user/update-user.compon
       { path: 'vacationRequests', canActivate: [AuthGuard], component: VacationRequestComponent, runGuardsAndResolvers: 'always' },
       { path: 'holidays', component: HolidaysComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
       { path: 'allWorkers', component: ViewAllWorkersComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
-      { path: 'home',
-        canActivate: [AuthGuard],
+      {
+        path: 'home',
+        //canActivate: [AuthGuard],
         component: HomeComponent },
       { path: 'yourTeams', component: ScheduleTeamsComponent, canActivate: [AuthGuard]}
     ], {onSameUrlNavigation:'reload'}), 

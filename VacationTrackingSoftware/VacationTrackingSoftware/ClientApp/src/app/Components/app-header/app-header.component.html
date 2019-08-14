@@ -28,7 +28,8 @@
     <button class="btn btn-primary btn-lg float-right nav-item" (click)="update()" type="submit">
       UpdateLog
     </button>
-    <button *ngIf="currentRole===roles.HrUser" class="btn btn-primary btn-lg float-right nav-item" (click)="openDialog()" type="submit">
+    <!--*ngIf="currentRole===roles.HrUser"-->
+    <button class="btn btn-primary btn-lg float-right nav-item" (click)="openDialog()" type="submit">
       Create a new worker
     </button>
     <button class="btn btn-secondary btn-lg float-right nav-item" type="submit" (click)="logOut()">

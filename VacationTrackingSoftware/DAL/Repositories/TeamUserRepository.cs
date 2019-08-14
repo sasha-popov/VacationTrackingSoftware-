@@ -27,5 +27,9 @@ namespace DAL.Repositories
         {
             return RepositoryContext.TeamUsers.Include(x => x.Team).Include(x => x.User).ToList();
         }
+        public TeamUser GetByIdDA(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

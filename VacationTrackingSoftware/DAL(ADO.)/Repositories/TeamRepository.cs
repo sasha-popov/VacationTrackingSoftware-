@@ -9,6 +9,7 @@ using BLL.IRepositories;
 using BLL.Models;
 using DAL_ADO._.Data;
 using DAL_ADO._.Generic;
+using NLog;
 
 namespace DAL_ADO._.Repositories
 {
@@ -32,7 +33,7 @@ namespace DAL_ADO._.Repositories
                         {
                             currentManager = formOfUser(3, reader);
                         }
-                        catch {
+                        catch(Exception ex) {
                             currentManager = null;
                         }
                         teams.Add(new Team() { Id = reader.GetInt32(0), Name = reader.GetString(1), Manager = currentManager });
@@ -74,7 +75,7 @@ namespace DAL_ADO._.Repositories
                 }
                 if (teamIds.Any()) {
                     cmd.CommandText = string.Format("SELECT[x].[Id], [x].[ManagerId], [x].[Name] FROM[Teams] AS[x] WHERE[x].[Id] IN ({0})", string.Join(", ", parameters));
-                    cmd.Connection = Database.GetConnection();
+                    cmd.Connection = connection;
                     cmd.Connection.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.HasRows)

@@ -8,6 +8,7 @@ using BLL.IRepositories;
 using BLL.Models;
 using BLL.Result;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace BLL.Services
 {
@@ -39,7 +40,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public UserVacationRequestDTO CreateVacationRequest(UserVacationRequestDTO userVacationRequestDTO)
         {
             Mapper.Reset();
@@ -205,8 +206,9 @@ namespace BLL.Services
                     return new ResponseForRequest() { Successful = true };
 
                 }
-                catch
+                catch(Exception ex)
                 {
+                    logger.Error(ex, "Request have already deleted");
                     return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "Your request have already deleted." } };
                 }
             }

@@ -18,7 +18,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class VacationPoliciesController : ControllerBase
     {
         private IVacationTypeRepository _vacationTypeRepository;

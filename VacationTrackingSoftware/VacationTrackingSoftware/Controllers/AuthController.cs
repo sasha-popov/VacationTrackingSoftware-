@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -6,8 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using NLog;
 using VacationTrackingSoftware.Auth;
 using VacationTrackingSoftware.Helpers;
 using VacationTrackingSoftware.Token;
@@ -32,9 +36,9 @@ namespace VacationTrackingSoftware.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
             _jwtFactory = jwtFactory;
-            _jwtOptions = jwtOptions.Value;
+            _jwtOptions = jwtOptions.Value;         
         }
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         // POST api/auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody]CredentialsViewModel credentials)
@@ -46,6 +50,7 @@ namespace VacationTrackingSoftware.Controllers
             var identity = await GetClaimsIdentity(credentials.UserName, credentials.Password);
             if (identity == null)
             {
+                logger.Info("user with username:" + credentials.UserName + " cant login");
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
             }
             var user = _userManager.FindByNameAsync(credentials.UserName).Result;
@@ -79,7 +84,18 @@ namespace VacationTrackingSoftware.Controllers
             }
 
             var jwt = await Tokens.GenerateJwt(identity, _jwtFactory, user, _jwtOptions, new JsonSerializerSettings { Formatting = Formatting.Indented }, RoleEnum, claims);
+            SendCookie(user);
+            //var userId = User.FindFirst("id").Value;
             return new OkObjectResult(jwt);
+
+        }
+
+
+        //test
+        private void SendCookie(AppUser user) {
+            var option = new CookieOptions();
+            option.Expires = DateTime.Now.AddMinutes(10);
+            Response.Cookies.Append("UserName", user.UserName, option);
         }
 
         private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)

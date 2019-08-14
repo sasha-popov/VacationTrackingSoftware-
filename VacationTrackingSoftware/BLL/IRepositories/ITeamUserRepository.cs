@@ -13,5 +13,6 @@ namespace BLL.IRepositories
 
         TeamUser FindByUser(string userId);
 
+        TeamUser GetByIdDA(int id);
     }
 }

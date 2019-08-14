@@ -17,7 +17,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class HolidayController : Controller
     {
         private ICompanyHolidayRepository _companyHolidayRepository;
@@ -38,7 +38,7 @@ namespace VacationTrackingSoftware.Controllers
         }
 
         [HttpDelete("[action]/{holidayId}")]
-        [Authorize(Roles = "HrUser")]
+        //[Authorize(Roles = "HrUser")]
         public ResponseForRequest DeleteHoliday(int holidayId)
         {
            return _companyHolidayService.DeleteById(holidayId);

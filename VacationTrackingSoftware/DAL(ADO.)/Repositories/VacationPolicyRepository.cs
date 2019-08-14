@@ -42,7 +42,7 @@ namespace DAL_ADO._.Repositories
                 SqlCommand command = new SqlCommand(sqlExpressionForYear, connection);
                 command.Parameters.AddWithValue("@userId", userVacationRequest.User.Id);
                 SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                if (reader.HasRows) 
                 {
                     while (reader.Read())
                     {

@@ -105,5 +105,12 @@ namespace VacationTrackingSoftware.Controllers
 
             return workersViewModel;
         }
+
+
+        [HttpGet]
+        public TeamUser GetByDA(int id) {
+            var test=_teamUserRepository.GetByIdDA(id);
+            return test;
+        }
     }
 }

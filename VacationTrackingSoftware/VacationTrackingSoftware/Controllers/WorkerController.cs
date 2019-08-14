@@ -12,7 +12,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class WorkerController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

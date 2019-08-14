@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BLL.DTO;
 using BLL.IRepositories;
 using BLL.Result;
-using DAL.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +16,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UpdateUserController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -29,8 +28,10 @@ namespace VacationTrackingSoftware.Controllers
 
         [HttpGet("[action]")]
         public async Task<AppUser> GetCurrentUser() {
-            string userId = User.FindFirst("id").Value;
-            AppUser appUser = _userManager.FindByIdAsync(userId).Result;
+            //test
+            string userId="5046440f-dbb0-4eaa-aa64-e2136fa524f3";
+            //string userId = User.FindFirst("id").Value;
+           AppUser appUser =await _userManager.FindByIdAsync(userId);
             return appUser;
         }
 

@@ -6,6 +6,7 @@ using BLL.IRepositories;
 using BLL.Models;
 using BLL.Result;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace BLL.Services
 {
@@ -18,6 +19,7 @@ namespace BLL.Services
             _companyHolidayRepository = companyHolidayService;
         }
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public ResponseForRequest AddOrUpdateHoliday(CompanyHoliday holiday, int status)
         {
             var checkDublicate = _companyHolidayRepository.FindByDate(holiday.Date);
@@ -35,20 +37,17 @@ namespace BLL.Services
         public ResponseForRequest DeleteById(int id)
         {
             var currentHoliday = _companyHolidayRepository.GetById(id);
-            if (currentHoliday != null)
-            {
                 try
                 {
                     _companyHolidayRepository.Delete(currentHoliday);
                     _companyHolidayRepository.Save();
                     return new ResponseForRequest() { Successful = true };
                 }
-                catch
+                catch(Exception ex)
                 {
+                    logger.Error(ex.Message);
                     return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
                 }
-            }
-            return new ResponseForRequest() { Successful = false, Errors = new List<string>() { "This holiday have already deleted" } };
         }
 
         private ResponseForRequest CheckResult(CompanyHoliday result) {

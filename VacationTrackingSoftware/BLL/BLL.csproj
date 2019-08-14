@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="NLog" Version="4.6.2" />
   </ItemGroup>
 
   <ItemGroup>

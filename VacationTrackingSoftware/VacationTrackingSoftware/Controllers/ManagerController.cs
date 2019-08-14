@@ -16,8 +16,7 @@ namespace VacationTrackingSoftware.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    [Authorize]
+    //[Authorize]
     public class ManagerController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -44,8 +43,8 @@ namespace VacationTrackingSoftware.Controllers
                 return BadRequest(Errors.AddErrorToModelState("registration", "Invalid dates", ModelState));
             }
             try {
-                var response = _workerService.SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
-                if (response.Successful == false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
+                //var response = _workerService.SendDataToWorker(model.Email, model.FirstName + model.LastName, model.Password);
+                //if (response.Successful == false) return new BadRequestObjectResult(Errors.AddErrorToModelState("registration", response.Errors.FirstOrDefault(), ModelState));
                 AppUser userIdentity = new AppUser { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.FirstName + model.LastName };
                 var result = await _userManager.CreateAsync(userIdentity, model.Password);
                 if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));

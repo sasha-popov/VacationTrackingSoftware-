@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,6 +109,7 @@ namespace DAL_ADO._.Repositories
                 connection.Open();
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
+               
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -150,6 +152,26 @@ namespace DAL_ADO._.Repositories
             }
             return teamUser;
         }
+        public TeamUser GetByIdDA(int id)
+        {
+            //For dataAdapter
+            TeamUser teamUser = new TeamUser();
+            string sqlExpression = $"Select * from dbo.VacationTypes where Id=@id";
+            using (var connection = Database.GetConnection())
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.Parameters.AddWithValue("@id", id);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                sqlDataAdapter.Fill(ds);
+                var result=ds.Tables[0].Rows;
+                var cloneText = ds.Clone();
+                var copyTest = ds.Copy();
+            }
+            return teamUser;
+        }
+
 
         public void Save()
         {

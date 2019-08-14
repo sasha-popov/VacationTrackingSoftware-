@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using BLL.IRepositories;
@@ -25,7 +26,6 @@ namespace DAL.Repositories
 
         public List<Team> FindTeamsByManager(string managerId)
         {
-            //it need to change
             var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x => x.TeamUsers).Include("TeamUsers.User").Where(x => x.Manager.Id == managerId).ToList();
             //this need because in json it is a cycle
             foreach (var team in getTeamssOfManager)
@@ -39,10 +39,18 @@ namespace DAL.Repositories
         }
 
         public List<Team> FindTeamsByManagerForUpdate(string managerId)
-        {          
-            //var getTeamssOfManager = RepositoryContext.Teams.AsNoTracking().Include(x => x.Manager).Include(x=>x.TeamUsers).Where(x => x.Manager.Id == managerId).ToList();
+        {
+            Stopwatch sWatch = new Stopwatch();
+            sWatch.Start();
             var getTeamssOfManager = RepositoryContext.Teams.Where(x => x.Manager.Id == managerId).ToList();
-
+            sWatch.Stop();
+            var resNotP = sWatch.ElapsedMilliseconds.ToString();
+            //for testing Parallel
+            //Stopwatch sWatchP = new Stopwatch();
+            //sWatchP.Start();
+            //var parallel = RepositoryContext.Teams.AsParallel().Where(x => x.Manager.Id == managerId).ToList();
+            //sWatchP.Stop();
+            //var resP = sWatchP.ElapsedMilliseconds.ToString();
             return getTeamssOfManager;
         }
     }

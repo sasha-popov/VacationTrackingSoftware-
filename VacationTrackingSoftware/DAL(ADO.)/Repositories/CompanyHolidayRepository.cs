@@ -46,6 +46,7 @@ namespace DAL_ADO._.Repositories
                             companyHolidays.Add(new CompanyHoliday() { Id = reader.GetInt32(0), Date = reader.GetDateTime(1), Description = reader.GetString(2) });
                         }
                     }
+                reader.Close();
                 }
             return companyHolidays;
         }

@@ -22,8 +22,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using BLL.Services.Interfaces;
 using BLL.Services.Classes;
-using DAL.Data;
-using DAL.Repositories;
+using DAL_ADO._.Repositories;
+using DAL_ADO._.Data;
 
 namespace VacationTrackingSoftware
 {
@@ -49,12 +49,12 @@ namespace VacationTrackingSoftware
                 options.SuppressModelStateInvalidFilter = true;
             });
             //EF
-            services.AddDbContext<ProjectContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //      services.AddDbContext<ProjectContext>(options =>
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             //ADONET
-            // services.AddDbContext<AppUserContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("defaultconnection")));
+            services.AddDbContext<AppUserContext>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("defaultconnection")));
 
 
             services.AddScoped<IWorkerRepository, WorkerRepository>();
@@ -71,6 +71,7 @@ namespace VacationTrackingSoftware
             services.AddScoped<ICompanyHolidayService, CompanyHolidayService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<ITeamService, TeamService>();
+
             services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
             // add identity
@@ -86,10 +87,10 @@ namespace VacationTrackingSoftware
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
 
             //For EF
-            builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
+            //builder.AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
             //For AdoNet
-            //builder.AddEntityFrameworkStores<AppUserContext>().AddDefaultTokenProviders();
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            builder.AddEntityFrameworkStores<AppUserContext>().AddDefaultTokenProviders();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Get options from app settings
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
